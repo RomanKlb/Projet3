@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html">
+
+<ui:composition template="/WEB-INF/template.xhtml">
+
+	<ui:define name="title">
+PAGE PRECEDENTE Modifier projet
+</ui:define>
+
+	<ui:define name="mainSection">
+		<fieldset>
+			<legend>PAGE PRECEDENTE Modifier projet :</legend>
+			<div>
+				<label>Titre :</label>
+				<h:inputText value="#{projetMb.projet.titre}" />
+			</div>
+			<div>
+				<h:commandButton action="#{projetMb.rechercherProjetParTitre()}" value="rechercher" />
+			</div>
+			<table>
+				<tr>
+					<th>Titre</th>
+					<th>Description courte</th>
+				</tr>
+				
+				<ui:repeat var="projet" value="#{projetMb.listeProjet}">
+				<tr>
+					<td>${projet.titre}</td>
+					<td>${projet.descriptionCourte}</td>
+				</tr>
+				
+				</ui:repeat>
+			</table>
+
+			<h:commandButton
+				action="#{projetMb.afficherLesDonneesDuProjetPourModification()}"
+				value="modifier" />
+
+		</fieldset>
+	</ui:define>
+
+</ui:composition>
+</html>
