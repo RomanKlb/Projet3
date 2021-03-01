@@ -1,12 +1,14 @@
 package fr.isika.cdi07.projet3demo.model;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 
 @Entity
@@ -21,7 +23,8 @@ public class Notification {
 	private String libelle;
 	
 	@Column(nullable = false)
-	private LocalDateTime date;
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date date;
 	
 	@Column(name="is_read")
 	private boolean isRead;
@@ -53,11 +56,11 @@ public class Notification {
 		this.libelle = libelle;
 	}
 
-	public LocalDateTime getDate() {
+	public Date getDate() {
 		return date;
 	}
 
-	public void setDate(LocalDateTime date) {
+	public void setDate(Date date) {
 		this.date = date;
 	}
 
@@ -73,7 +76,7 @@ public class Notification {
 		return id;
 	}
 
-	
+
 	
 	
 
