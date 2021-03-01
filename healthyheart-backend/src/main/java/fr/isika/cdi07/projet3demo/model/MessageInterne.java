@@ -1,5 +1,6 @@
 package fr.isika.cdi07.projet3demo.model;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -39,16 +40,18 @@ public class MessageInterne {
 
 	
 	@ManyToOne
+	@JoinColumn(name="email")
 	private Utilisateur emetteur;
 	
 	@OneToMany
-	private List<Utilisateur> destinataire;
+	private List<Utilisateur> destinataires;
 	
 	@OneToOne
 	private Notification notification;
 	
 	public MessageInterne() {
-		
+		this.destinataires = new ArrayList<Utilisateur>();
+		this.isRead = false;
 	}
 
 	public String getTitre() {
@@ -91,12 +94,16 @@ public class MessageInterne {
 		this.emetteur = emetteur;
 	}
 
-	public List<Utilisateur> getDestinataire() {
-		return destinataire;
+	public List<Utilisateur> getDestinataires() {
+		return destinataires;
 	}
 
-	public void setDestinataire(List<Utilisateur> destinataire) {
-		this.destinataire = destinataire;
+	public void setDestinataires(List<Utilisateur> destinataires) {
+		this.destinataires = destinataires;
+	}
+	
+	public void ajoutDestinaire(Utilisateur utilisateur) {
+		this.destinataires.add(utilisateur);
 	}
 
 	public Notification getNotification() {
@@ -127,7 +134,7 @@ public class MessageInterne {
 		builder.append(", emetteur=");
 		builder.append(emetteur.getEmail());
 		builder.append(", destinataire=");
-		builder.append(destinataire);
+		builder.append(destinataires);
 		builder.append(", notification=");
 		builder.append(notification.getLibelle());
 		builder.append("]");

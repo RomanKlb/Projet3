@@ -1,13 +1,11 @@
 package fr.isika.cdi07.projet3demo.model;
 
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToOne;
 
 
 @Entity
@@ -22,8 +20,8 @@ public class PortefeuilleProjet {
 	@Column(nullable = false)
 	private String libelle;
 	
-	@OneToMany
-	private List<Projet> listeProjet;
+	@ManyToOne
+	private PorteurProjet porteurprojet;
 
 	public String getLibelle() {
 		return libelle;
@@ -33,12 +31,12 @@ public class PortefeuilleProjet {
 		this.libelle = libelle;
 	}
 
-	public List<Projet> getListeProjet() {
-		return listeProjet;
+	public PorteurProjet getPorteurprojet() {
+		return porteurprojet;
 	}
 
-	public void setListeProjet(List<Projet> listeProjet) {
-		this.listeProjet = listeProjet;
+	public void setPorteurprojet(PorteurProjet porteurprojet) {
+		this.porteurprojet = porteurprojet;
 	}
 
 	public Long getIdPorteFeuille() {
@@ -52,14 +50,10 @@ public class PortefeuilleProjet {
 		builder.append(idPorteFeuille);
 		builder.append(", libelle=");
 		builder.append(libelle);
-		builder.append(", listeProjet=");
-		builder.append(listeProjet);
+		builder.append(", porteurprojet=");
+		builder.append(porteurprojet.getRole().getUtilisateur().getEmail());
 		builder.append("]");
 		return builder.toString();
 	}
-	
-
-		
-	
 	
 }
