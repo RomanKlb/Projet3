@@ -10,8 +10,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -43,7 +43,7 @@ public class MessageInterne {
 	@JoinColumn(name="email")
 	private Utilisateur emetteur;
 	
-	@OneToMany
+	@ManyToMany
 	private List<Utilisateur> destinataires;
 	
 	@OneToOne
