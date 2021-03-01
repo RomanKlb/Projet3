@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -25,6 +26,9 @@ public class Facture {
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(nullable = false)
 	private Date date;
+	
+	@OneToOne
+	private ParticipationProjet participationProjet;
 
 
 	@Override
@@ -61,10 +65,22 @@ public class Facture {
 	}
 
 
+	public ParticipationProjet getParticipationProjet() {
+		return participationProjet;
+	}
+
+
+	public void setParticipationProjet(ParticipationProjet participationProjet) {
+		this.participationProjet = participationProjet;
+	}
+
+
 	public Long getIdFacture() {
 		return idFacture;
 	}
-	
+
+
+
 	
 	
 	

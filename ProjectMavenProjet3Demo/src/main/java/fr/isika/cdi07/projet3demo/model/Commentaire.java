@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -31,9 +32,11 @@ public class Commentaire {
 	private Date date;
 	
 	@ManyToOne
+	@JoinColumn(name="id_projet")
 	private Projet projet;
 	
 	@ManyToOne
+	@JoinColumn(name="id_role")
 	private Role role;
 
 	@Override

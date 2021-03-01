@@ -1,6 +1,6 @@
 package fr.isika.cdi07.projet3demo.model;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,9 +9,12 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 
 
@@ -34,13 +37,15 @@ public class Historique {
 	private String libelle;
 	
 	@ManyToOne
+	@JoinColumn(name="email")
 	private Utilisateur acteur;
 	
-	//@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(nullable = false, name="date_heure")
-	private LocalDateTime dateHeure;
+	private Date dateHeure;
 	
 	@ManyToOne
+	@JoinColumn(name="id_projet")
 	private Projet projet;
 	
 	@OneToOne
@@ -52,9 +57,11 @@ public class Historique {
 	}
 
 
+	
 	public String getEvenement() {
 		return evenement;
 	}
+
 
 
 	public void setEvenement(String evenement) {
@@ -62,9 +69,11 @@ public class Historique {
 	}
 
 
+
 	public StatutProjet getEtatProjet() {
 		return etatProjet;
 	}
+
 
 
 	public void setEtatProjet(StatutProjet etatProjet) {
@@ -72,9 +81,11 @@ public class Historique {
 	}
 
 
+
 	public String getLibelle() {
 		return libelle;
 	}
+
 
 
 	public void setLibelle(String libelle) {
@@ -82,9 +93,11 @@ public class Historique {
 	}
 
 
+
 	public Utilisateur getActeur() {
 		return acteur;
 	}
+
 
 
 	public void setActeur(Utilisateur acteur) {
@@ -92,14 +105,17 @@ public class Historique {
 	}
 
 
-	public LocalDateTime getDateHeure() {
+
+	public Date getDateHeure() {
 		return dateHeure;
 	}
 
 
-	public void setDateHeure(LocalDateTime dateHeure) {
+
+	public void setDateHeure(Date dateHeure) {
 		this.dateHeure = dateHeure;
 	}
+
 
 
 	public Projet getProjet() {
@@ -107,9 +123,11 @@ public class Historique {
 	}
 
 
+
 	public void setProjet(Projet projet) {
 		this.projet = projet;
 	}
+
 
 
 	public Notification getNotification() {
@@ -117,14 +135,17 @@ public class Historique {
 	}
 
 
+
 	public void setNotification(Notification notification) {
 		this.notification = notification;
 	}
 
 
+
 	public Long getId() {
 		return id;
 	}
+
 
 
 	@Override

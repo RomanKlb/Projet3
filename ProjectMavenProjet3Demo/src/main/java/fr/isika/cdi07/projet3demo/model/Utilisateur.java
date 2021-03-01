@@ -1,10 +1,12 @@
 package fr.isika.cdi07.projet3demo.model;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 
 @Entity
@@ -23,8 +25,9 @@ public class Utilisateur {
 	@Column(nullable = false)
 	private String prenom;
 	
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(nullable = false, name="date_maj")
-	private LocalDateTime dateMaj;
+	private Date dateMaj;
 	
 	
 	public Utilisateur() {
@@ -81,14 +84,16 @@ public class Utilisateur {
 	}
 
 
-	public LocalDateTime getDateMaj() {
+	public Date getDateMaj() {
 		return dateMaj;
 	}
 
 
-	public void setDateMaj(LocalDateTime dateMaj) {
+
+	public void setDateMaj(Date dateMaj) {
 		this.dateMaj = dateMaj;
 	}
+
 
 
 	public String getEmail() {

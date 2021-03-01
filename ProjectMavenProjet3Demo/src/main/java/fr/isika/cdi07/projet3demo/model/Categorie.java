@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 
@@ -17,9 +18,11 @@ public class Categorie {
 	private Long idCategorie;
 	
 	@ManyToOne
+	@JoinColumn(name="id_territoire")
 	private Territoire territoire;
 	
 	@ManyToOne
+	@JoinColumn(name="id_type_projet")
 	private TypeProjet typeProjet;
 
 	public Categorie() {

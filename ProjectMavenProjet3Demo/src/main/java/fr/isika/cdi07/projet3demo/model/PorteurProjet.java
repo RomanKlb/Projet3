@@ -36,8 +36,6 @@ public class PorteurProjet {
 	@ManyToOne
 	private Role role;
 	
-	@OneToMany
-	private List<PortefeuilleProjet> listePorteFeuilleProjet;
 
 	public String getLibelle() {
 		return libelle;
@@ -71,13 +69,6 @@ public class PorteurProjet {
 		this.role = role;
 	}
 
-	public List<PortefeuilleProjet> getListePorteFeuilleProjet() {
-		return listePorteFeuilleProjet;
-	}
-
-	public void setListePorteFeuilleProjet(List<PortefeuilleProjet> listePorteFeuilleProjet) {
-		this.listePorteFeuilleProjet = listePorteFeuilleProjet;
-	}
 
 	public Long getIdPorteurProjet() {
 		return idPorteurProjet;
@@ -96,8 +87,6 @@ public class PorteurProjet {
 		builder.append(typePorteur);
 		builder.append(", role=");
 		builder.append(role.getTypeRole());
-		builder.append(", listePorteFeuilleProjet=");
-		builder.append(listePorteFeuilleProjet);
 		builder.append("]");
 		return builder.toString();
 	}

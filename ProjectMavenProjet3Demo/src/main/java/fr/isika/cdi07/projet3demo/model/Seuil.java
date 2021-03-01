@@ -25,6 +25,12 @@ public class Seuil {
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
 	private TypeParticipation typeParticipation;
+	
+	public Seuil() {
+		this.montant = 0.0;
+		this.quantite = 0L;
+		
+	}
 
 	public Double getMontant() {
 		return montant;

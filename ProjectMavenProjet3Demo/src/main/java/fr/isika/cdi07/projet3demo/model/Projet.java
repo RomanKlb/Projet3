@@ -9,6 +9,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -53,8 +55,17 @@ public class Projet {
 	
 	@Column(name="don_materiel")
 	private boolean donMateriel;
+	
 	@Column(name="date_temps")
 	private boolean donTemps;
+	
+	@ManyToOne
+	@JoinColumn(name="id_portefeuille")
+	private PortefeuilleProjet portefeuilleprojet;
+	
+	@ManyToOne
+	@JoinColumn(name="id_categorie")
+	private Categorie categorie;
 	
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false, name="statut_du_projet")
@@ -62,6 +73,8 @@ public class Projet {
 	
 
 	public Projet() {
+		this.donMateriel = false;
+		this.donTemps = false;
 	}
 
 
@@ -169,6 +182,28 @@ public class Projet {
 		return idProjet;
 	}
 
+	
+
+	public PortefeuilleProjet getPortefeuilleprojet() {
+		return portefeuilleprojet;
+	}
+
+
+	public void setPortefeuilleprojet(PortefeuilleProjet portefeuilleprojet) {
+		this.portefeuilleprojet = portefeuilleprojet;
+	}
+
+
+
+	public Categorie getCategorie() {
+		return categorie;
+	}
+
+
+	public void setCategorie(Categorie categorie) {
+		this.categorie = categorie;
+	}
+
 
 	@Override
 	public String toString() {
@@ -193,6 +228,8 @@ public class Projet {
 		builder.append(donMateriel);
 		builder.append(", donTemps=");
 		builder.append(donTemps);
+		builder.append(", PorteurProjet=");
+		builder.append(portefeuilleprojet.getPorteurprojet().getRole().getUtilisateur().getEmail());
 		builder.append(", statutDuProjet=");
 		builder.append(statutDuProjet);
 		builder.append("]");

@@ -7,10 +7,15 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 
 import fr.isika.cdi07.projet3demo.model.Appreciation;
+import fr.isika.cdi07.projet3demo.model.Categorie;
 import fr.isika.cdi07.projet3demo.model.Historique;
 import fr.isika.cdi07.projet3demo.model.Notification;
+import fr.isika.cdi07.projet3demo.model.PortefeuilleProjet;
+import fr.isika.cdi07.projet3demo.model.PorteurProjet;
 import fr.isika.cdi07.projet3demo.model.Projet;
 import fr.isika.cdi07.projet3demo.model.Role;
+import fr.isika.cdi07.projet3demo.model.Territoire;
+import fr.isika.cdi07.projet3demo.model.TypeProjet;
 import fr.isika.cdi07.projet3demo.model.Utilisateur;
 import fr.isika.cdi07.projet3demo.utils.HibernateUtil;
 
@@ -146,6 +151,58 @@ public class DalProjet {
 			Projet mergedProjet = entityManager.merge(projet);
 			transaction.commit();
 			return mergedProjet;
+		}
+
+
+		public void persisterPorteurProjet(PorteurProjet porteurprojet) {
+			EntityTransaction transaction = this.entityManager.getTransaction();
+			transaction.begin();
+			this.entityManager.persist(porteurprojet);
+
+			this.entityManager.flush();
+			transaction.commit();
+		}
+
+
+		public void persisterPortefeuilleProjet(PortefeuilleProjet portefeuilleprojet) {
+			EntityTransaction transaction = this.entityManager.getTransaction();
+			transaction.begin();
+			this.entityManager.persist(portefeuilleprojet);
+
+			this.entityManager.flush();
+			transaction.commit();
+			
+		}
+
+
+		public void persisterTypeProjet(TypeProjet typeprojet) {
+			EntityTransaction transaction = this.entityManager.getTransaction();
+			transaction.begin();
+			this.entityManager.persist(typeprojet);
+
+			this.entityManager.flush();
+			transaction.commit();
+			
+		}
+
+
+		public void persisterTerritoire(Territoire territoire) {
+			EntityTransaction transaction = this.entityManager.getTransaction();
+			transaction.begin();
+			this.entityManager.persist(territoire);
+
+			this.entityManager.flush();
+			transaction.commit();
+		}
+
+
+		public void persisterCategorie(Categorie categorie) {
+			EntityTransaction transaction = this.entityManager.getTransaction();
+			transaction.begin();
+			this.entityManager.persist(categorie);
+
+			this.entityManager.flush();
+			transaction.commit();
 		}
 		
 	
