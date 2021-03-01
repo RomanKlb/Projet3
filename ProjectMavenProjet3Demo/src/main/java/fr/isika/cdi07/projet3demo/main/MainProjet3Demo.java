@@ -1,6 +1,7 @@
 package fr.isika.cdi07.projet3demo.main;
 
 import java.sql.Date;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -28,8 +29,8 @@ public class MainProjet3Demo {
 		projet.setTitre("Test");
 		projet.setDescriptionCourte("testtest");
 		projet.setDescriptionLongue("Testtestestest");
-		projet.setDateFin(java.sql.Date.valueOf("2021-07-28"));
-		projet.setDateMaj(java.sql.Date.valueOf(LocalDate.now()));
+		projet.setDateFin(Date.valueOf(LocalDate.now()));
+		projet.setDateMaj(Date.from(Instant.now()));
 		projet.setDonMateriel(false);
 		projet.setDonTemps(false);
 		projet.setMontantAttendu(2000.0);
