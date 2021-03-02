@@ -13,31 +13,61 @@ PAGE PRECEDENTE Modifier projet
 	<ui:define name="mainSection">
 		<fieldset>
 			<legend>PAGE PRECEDENTE Modifier projet :</legend>
-			<div>
-				<label>Titre :</label>
-				<h:inputText value="#{projetMb.projet.titre}" />
-			</div>
-			<div>
-				<h:commandButton action="#{projetMb.rechercherProjetParTitre()}" value="rechercher" />
-			</div>
-			<table>
-				<tr>
-					<th>Titre</th>
-					<th>Description courte</th>
-				</tr>
-				
-				<ui:repeat var="projet" value="#{projetMb.listeProjet}">
-				<tr>
-					<td>${projet.titre}</td>
-					<td>${projet.descriptionCourte}</td>
-				</tr>
-				
-				</ui:repeat>
-			</table>
 
-			<h:commandButton
-				action="#{projetMb.afficherLesDonneesDuProjetPourModification()}"
-				value="modifier" />
+			<h:form id="form">
+
+				<div>
+					<label>Titre :</label>
+					<h:inputText value="#{projetMb.projet.titre}" />
+				</div>
+				<div>
+					<h:commandButton action="#{projetMb.rechercherProjetParTitre()}"
+						value="rechercher" />
+				</div>
+
+				<br />
+				<br />
+
+
+				<table>
+					<tr>
+						<th>IdProjet</th>
+						<th>Titre</th>
+
+						<th>Action</th>
+					</tr>
+
+					<ui:repeat var="projet" value="#{projetMb.listeProjet}">
+						<tr>
+							<td>${projet.idProjet}</td>
+							<td>${projet.titre}</td>
+
+							<td><h:commandButton action="#{projetMb.recuperationTitre()}"
+									value="Click Me">
+
+									<f:setPropertyActionListener target="#{projetMb.projet.titre}"
+										value="???" />
+
+								</h:commandButton></td>
+						</tr>
+
+					</ui:repeat>
+
+
+
+				</table>
+
+			</h:form>
+
+
+
+
+
+
+
+
+
+
 
 		</fieldset>
 	</ui:define>
