@@ -10,6 +10,7 @@ import fr.isika.cdi07.projet3demo.model.Appreciation;
 import fr.isika.cdi07.projet3demo.model.Categorie;
 import fr.isika.cdi07.projet3demo.model.Historique;
 import fr.isika.cdi07.projet3demo.model.MessageInterne;
+import fr.isika.cdi07.projet3demo.model.MessageRecu;
 import fr.isika.cdi07.projet3demo.model.Notification;
 import fr.isika.cdi07.projet3demo.model.PortefeuilleProjet;
 import fr.isika.cdi07.projet3demo.model.PorteurProjet;
@@ -216,6 +217,16 @@ public class DalProjet {
 			this.entityManager.flush();
 			transaction.commit();
 			
+		}
+
+
+		public void persisterMessageRecu(MessageRecu messageRecu) {
+			EntityTransaction transaction = this.entityManager.getTransaction();
+			transaction.begin();
+			this.entityManager.persist(messageRecu);
+
+			this.entityManager.flush();
+			transaction.commit();
 		}
 		
 	

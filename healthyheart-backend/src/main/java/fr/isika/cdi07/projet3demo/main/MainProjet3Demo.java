@@ -3,13 +3,13 @@ package fr.isika.cdi07.projet3demo.main;
 import java.sql.Date;
 import java.time.Instant;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 import fr.isika.cdi07.projet3demo.model.Appreciation;
 import fr.isika.cdi07.projet3demo.model.Categorie;
 import fr.isika.cdi07.projet3demo.model.Historique;
 import fr.isika.cdi07.projet3demo.model.MessageInterne;
+import fr.isika.cdi07.projet3demo.model.MessageRecu;
 import fr.isika.cdi07.projet3demo.model.Notification;
 import fr.isika.cdi07.projet3demo.model.PortefeuilleProjet;
 import fr.isika.cdi07.projet3demo.model.PorteurProjet;
@@ -64,9 +64,32 @@ public class MainProjet3Demo {
 		messageTest.setContenu("Ceci est un message\nsur plusieurs lignes\npour tests");
 		messageTest.setTitre("Message de test");
 		messageTest.setEmetteur(utilisateur);
-		messageTest.ajoutDestinaire(utilisateurDemo);
-		messageTest.ajoutDestinaire(utilisateurDest);
 		dalProjet.persisterMessageInterne(messageTest);
+		
+		MessageRecu messageRecuTest = new MessageRecu();
+		messageRecuTest.setMessageInterne(messageTest);
+		messageRecuTest.setUtilisateur(utilisateurDemo);
+		messageRecuTest.setDateHeure(Date.from(Instant.now()));
+		dalProjet.persisterMessageRecu(messageRecuTest);
+		
+		MessageRecu messageRecuTest2 = new MessageRecu();
+		messageRecuTest2.setMessageInterne(messageTest);
+		messageRecuTest2.setUtilisateur(utilisateurDest);
+		messageRecuTest2.setDateHeure(Date.from(Instant.now()));
+		dalProjet.persisterMessageRecu(messageRecuTest2);
+		
+		MessageInterne messageSecond = new MessageInterne();
+		messageSecond.setDate(Date.from(Instant.now()));
+		messageSecond.setContenu("Ceci est un second message\nsur plusieurs lignes\npour tests");
+		messageSecond.setTitre("deuxieme Message de test");
+		messageSecond.setEmetteur(utilisateur);
+		dalProjet.persisterMessageInterne(messageSecond);
+		
+		MessageRecu messageRecuSecond = new MessageRecu();
+		messageRecuSecond.setMessageInterne(messageSecond);
+		messageRecuSecond.setUtilisateur(utilisateurDemo);
+		messageRecuSecond.setDateHeure(Date.from(Instant.now()));
+		dalProjet.persisterMessageRecu(messageRecuSecond);
 		
 		
 		Role role = new Role();
