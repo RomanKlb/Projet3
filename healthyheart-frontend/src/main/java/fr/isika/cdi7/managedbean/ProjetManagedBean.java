@@ -1,7 +1,8 @@
 package fr.isika.cdi7.managedbean;
 
-import java.sql.Date;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -21,7 +22,7 @@ public class ProjetManagedBean {
 
 	private Projet projet;
 	private String message;
-	private List<Projet> listeProjet;
+	private List<Projet> projets;
 
 	public ProjetManagedBean() {
 		projet = new Projet();
@@ -30,10 +31,10 @@ public class ProjetManagedBean {
 	}
 
 	public String ajouterProjet() {
-		projet.setDateMaj(Date.valueOf(LocalDate.now()));
+		projet.setDateMaj(Date.from(Instant.now()));
 		projet.setMontantCollecte(Double.valueOf(0));
 		projet.setStatutDuProjet(StatutProjet.CREE);
-		daoProjet.persister(projet);
+		daoProjet.persisterProjet(projet);
 
 		message = "Le projet "+projet.getTitre() + " a bien été ajouté";
 
@@ -42,9 +43,18 @@ public class ProjetManagedBean {
 
 	public String rechercherProjetParTitre() {
 
-		listeProjet = daoProjet.rechercheProjetParTitre(projet.getTitre());
+		projets = daoProjet.rechercheProjetParTitre(projet.getTitre());
 
 		return "";	
+	}
+	
+	public String rechercherTousLesProjetsParStatutPublie() {
+		
+		projets = daoProjet.obtenirTousLesProjetsParStatutPublie();
+		
+		
+		return "";
+		
 	}
 
 	public String modifierProjet() {
@@ -78,14 +88,16 @@ public class ProjetManagedBean {
 		this.projet = projet;
 	}
 
-
-	public void setListeProjet(List<Projet> listeProjet) {
-		this.listeProjet = listeProjet;
+	public List<Projet> getProjets() {
+		return projets;
 	}
 
-	public List<Projet> getListeProjet() {
-		return listeProjet;
+	public void setProjets(List<Projet> projets) {
+		this.projets = projets;
 	}
+
+
+	
 
 
 
