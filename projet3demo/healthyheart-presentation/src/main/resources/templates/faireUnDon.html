@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Faire un don</title>
+</head>
+<body>
+
+	<fieldset>
+		<legend>Page Liste Dons Monetaires </legend>
+		<div>
+			<label>Total :</label>
+			<p th:text="${count}"></p>
+		</div>
+		<table>
+			<tr>
+				<th>id</th>
+				<th>montant</th>
+				<th>date</th>
+			</tr>
+			<tr th:each="don:${donMonetaireList}">
+				<td><p th:text="${don.idDon}"></p></td>
+				<td><p th:text="${don.montant}"></p></td>
+				<td><p th:text="${don.date}"></p></td>
+			</tr>
+		
+		</table>
+
+	</fieldset>
+
+</body>
+</html>
