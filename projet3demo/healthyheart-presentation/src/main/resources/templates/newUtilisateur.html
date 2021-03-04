@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Nouvel utilisateur</title>
+</head>
+<body>
+
+
+	<fieldset>
+		<legend>Créer mon compte utilisateur </legend>
+		<form action="#" th:action="@{/enregistrerUtilisateur}"
+			th:object="${utilisateur}" method="POST">
+			<div>
+				<label>Nom :</label> 
+				<input type="text" th:field="*{nom}"
+					placeholder="Nom">
+			</div>
+			<div>
+				<label>Prénom :</label> 
+				<input type="text" th:field="*{prenom}"
+					placeholder="Prenom">
+			</div>
+			<div>
+				<label>Email :</label> 
+				<input type="text" th:field="*{email}"
+					placeholder="Email">
+			</div>
+			<div>
+				<label>Mot de passe :</label> 
+				<input type="text" th:field="*{mdp}"
+					placeholder="Mot de passe">
+			</div>
+
+			<button type="submit">Enregistrer</button>
+		</form>
+	</fieldset>
+</body>
+</html>
