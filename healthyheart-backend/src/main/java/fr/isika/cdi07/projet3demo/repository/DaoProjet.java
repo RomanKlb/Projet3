@@ -7,11 +7,17 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 
+<<<<<<< HEAD
 import org.hibernate.resource.transaction.backend.jta.internal.StatusTranslator;
 import org.hibernate.sql.Select;
 
 import fr.isika.cdi07.projet3demo.model.Projet;
 import fr.isika.cdi07.projet3demo.model.StatutProjet;
+=======
+import org.hibernate.sql.Select;
+
+import fr.isika.cdi07.projet3demo.model.Projet;
+>>>>>>> 0d20fee00afe1dc275d9756a6e59d1bb81b6cdce
 import fr.isika.cdi07.projet3demo.utils.HibernateUtil;
 
 public class DaoProjet {
@@ -24,7 +30,11 @@ public class DaoProjet {
 	}
 
 
+<<<<<<< HEAD
 	public void persisterProjet(Projet projet) {
+=======
+	public void persister(Projet projet) {
+>>>>>>> 0d20fee00afe1dc275d9756a6e59d1bb81b6cdce
 
 		EntityTransaction transaction = this.entityManager.getTransaction();
 		transaction.begin();
@@ -47,6 +57,7 @@ public class DaoProjet {
 		return projets;
 	}
 
+<<<<<<< HEAD
 	public List<Projet> obtenirTousLesProjets(){
 		return this.entityManager
 				.createNamedQuery("Projet.findAll", Projet.class)
@@ -69,6 +80,8 @@ public class DaoProjet {
 	}
 
 
+=======
+>>>>>>> 0d20fee00afe1dc275d9756a6e59d1bb81b6cdce
 	public Projet rechercheProjetParId(Long id) {
 		return entityManager.find(Projet.class, id);
 

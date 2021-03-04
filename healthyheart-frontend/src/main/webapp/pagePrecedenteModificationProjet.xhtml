@@ -13,6 +13,7 @@ PAGE PRECEDENTE Modifier projet
 	<ui:define name="mainSection">
 		<fieldset>
 			<legend>PAGE PRECEDENTE Modifier projet :</legend>
+<<<<<<< HEAD
 
 			<h:form id="form">
 
@@ -58,6 +59,34 @@ PAGE PRECEDENTE Modifier projet
 				</table>
 
 			</h:form>
+=======
+			<div>
+				<label>Titre :</label>
+				<h:inputText value="#{projetMb.projet.titre}" />
+			</div>
+			<div>
+				<h:commandButton action="#{projetMb.rechercherProjetParTitre()}" value="rechercher" />
+			</div>
+			<table>
+				<tr>
+					<th>Titre</th>
+					<th>Description courte</th>
+				</tr>
+				
+				<ui:repeat var="projet" value="#{projetMb.listeProjet}">
+				<tr>
+					<td>${projet.titre}</td>
+					<td>${projet.descriptionCourte}</td>
+				</tr>
+				
+				</ui:repeat>
+			</table>
+
+			<h:commandButton
+				action="#{projetMb.afficherLesDonneesDuProjetPourModification()}"
+				value="modifier" />
+
+>>>>>>> 0d20fee00afe1dc275d9756a6e59d1bb81b6cdce
 		</fieldset>
 	</ui:define>
 
