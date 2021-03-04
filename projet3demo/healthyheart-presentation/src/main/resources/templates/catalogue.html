@@ -2,12 +2,10 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>List des Projets</title>
+<title>Catalogue</title>
 </head>
 <body>
-
-	<a th:href="@{/ShowNewProjetForm}">Add Projet</a>
-
+	<h1>Catalogue</h1>
 	<table>
 		<thead>
 			<tr>
@@ -15,17 +13,15 @@
 				<th>Description Courte</th>
 				<th>Montant</th>
 				<th>StatutProjet</th>
-				<th>Action</th>
 			</tr>
 
 		</thead>
 		<tbody>
-			<tr th:each="projet : ${listProjet}">
+			<tr th:each="projet : ${listProjetPublie}">
 				<td th:text="${projet.titre}"></td>
 				<td th:text="${projet.descriptionCourte}"></td>
 				<td th:text="${projet.montantAttendu}"></td>
 				<td th:text="${projet.statutDuProjet}"></td>
-				<td><a th:href="@{/ModifierProjetForm}">Modifier</a></td>
 			</tr>
 		</tbody>
 	</table>

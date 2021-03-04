@@ -16,10 +16,16 @@ public class ProjetController {
 	@Autowired
 	private ProjetService projetService;
 	
-	@GetMapping("/")
-	public String viewHomePage(Model model) {
+	@GetMapping("/ShowAllProjetList")
+	public String showAllProjetList(Model model) {
 		model.addAttribute("listProjet", projetService.afficherAllProjet());
 		return "listProjet";
+	}
+	
+	@GetMapping("/ShowProjetListPublie")
+	public String showProjetListPublie(Model model) {
+		model.addAttribute("listProjetPublie", projetService.afficherProjetPublie());
+		return "catalogue";
 	}
 	
 	@GetMapping("/ShowNewProjetForm")
