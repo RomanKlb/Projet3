@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<h1>créer un putain de projet</h1>
+
+	<form action="#" th:action="@{/saveProjet}" th:object="${projet}"
+		method="POST">
+			
+		<input type="text" th:field="*{titre}" placeholder="Titre du Projet">
+		
+		<textarea type="text" th:field="*{descriptionCourte}"
+			placeholder="Courte Description"></textarea> 
+			
+			<textarea type="text"
+			th:field="*{descriptionLongue}" placeholder="Longue Description"></textarea>
+			
+		<input type="text" th:field="*{montantAttendu}"
+			placeholder="Montant attendu"> 
+			
+			<!-- <input type="date"
+			th:field="*{dateFin}" > -->
+		<div>
+			<label>Don matériel? :</label> <input type="checkbox"
+				th:field="*{donMateriel}">
+		</div>
+		<div>
+			<label>Don de temps? :</label> <input type="checkbox"
+				th:field="*{donTemps}">
+		</div>
+
+		<button type="submit">Save Projet</button>
+	</form>
+
+</body>
+</html>

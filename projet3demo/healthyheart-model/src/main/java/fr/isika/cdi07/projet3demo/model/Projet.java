@@ -15,6 +15,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 
 
 @NamedQuery(name = "Projet.findAll", query="SELECT proj from Projet proj")
