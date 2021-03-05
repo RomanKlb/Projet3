@@ -4,8 +4,8 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
-import org.omg.CORBA.PUBLIC_MEMBER;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,13 +26,12 @@ public class ProjetService {
 
 
 		//DateFin en dur warning ...
-		projet.setDateFin(Date.from(Instant.now()));
+//		projet.setDateFin(Date.from(Instant.now()));
 		projet.setDateMaj(Date.from(Instant.now()));
 		projet.setMontantCollecte(Double.valueOf(0));
 		projet.setStatutDuProjet(StatutProjet.CREE);
 
 		return projetRepo.save(projet);
-
 	}
 
 	public List<Projet> afficherAllProjet() {
@@ -49,6 +48,31 @@ public class ProjetService {
 		}
 		return projetsPublies;
 	}
+
+	public Projet getProjetById(long id) {
+		Optional<Projet> optionalP = projetRepo.findById(id);
+		Projet projet = null;
+		if(optionalP.isPresent()) {
+			projet = optionalP.get();
+		} else {
+			throw new RuntimeException(" Projet not found for id : " + id);
+		}
+		return projet;
+	}
+
+//	public Projet UpdateProjet(Long id, String titre, String descriptionCourte, String longueDescription, Double montantAttendu,
+//			Boolean donMateriel, Boolean donTemps, Categorie categorie) {
+//		
+//		Projet projetTrouve;
+//		if(projetRepo.existsById(id)) {
+//			return projetTrouve = getProjetById(id);
+//		}
+//		
+//		projetTrouve.getTitre() = titre;
+//		projetRepo.save(projet);
+//
+//	}
+	
 
 
 }

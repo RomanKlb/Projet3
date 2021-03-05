@@ -46,6 +46,7 @@ public class Projet {
 	private Date dateMaj;
 	
 	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@Column(nullable = false, name="date_fin")
 	private Date dateFin;
 	
@@ -204,6 +205,12 @@ public class Projet {
 
 	public void setCategorie(Categorie categorie) {
 		this.categorie = categorie;
+	}
+	
+
+
+	public void setIdProjet(Long idProjet) {
+		this.idProjet = idProjet;
 	}
 
 

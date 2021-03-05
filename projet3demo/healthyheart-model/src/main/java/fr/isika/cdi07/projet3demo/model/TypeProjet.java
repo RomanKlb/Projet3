@@ -66,6 +66,8 @@ public class TypeProjet {
 		return idTypeProjet;
 	}
 	
-	
+	public void setIdTypeProjet(Long idTypeProjet) {
+		this.idTypeProjet = idTypeProjet;
+	}
 	
 }

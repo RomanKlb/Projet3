@@ -1,6 +1,8 @@
 package fr.isika.cdi07.projet3demo.main;
 import java.time.Instant;
 import java.util.Date;
+import java.util.Optional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,7 @@ import fr.isika.cdi07.projet3demo.model.TypePorteur;
 import fr.isika.cdi07.projet3demo.model.TypeProjet;
 import fr.isika.cdi07.projet3demo.model.TypeRole;
 import fr.isika.cdi07.projet3demo.model.Utilisateur;
+import fr.isika.cdi07.projet3demo.services.CategorieService;
 import fr.isika.cdi07.projet3demo.services.DonService;
 import fr.isika.cdi07.projet3demo.services.PersisterEnBaseProjet;
 
@@ -28,6 +31,10 @@ public class ProjetTest implements CommandLineRunner {
 
 	@Autowired
 	private PersisterEnBaseProjet persisterEnBaseProjet;
+	
+	@Autowired
+	private CategorieService categorieService;
+	
 //	private DonService donService;
 //	
 //	Logger log = LoggerFactory.getLogger(this.getClass());
@@ -41,6 +48,7 @@ public class ProjetTest implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
+		
 		
 		
 		Utilisateur monutilisateur = new Utilisateur();
@@ -89,6 +97,18 @@ public class ProjetTest implements CommandLineRunner {
 		maCategorie.setTypeProjet(monTypeProjet);
 		
 		persisterEnBaseProjet.persisterCategorie(maCategorie);
+		
+		Optional<Categorie> testCategorie = categorieService.getCategorieByTerritoireAndType(monTerritoire, monTypeProjet);
+		if(testCategorie.isPresent())
+			System.out.println("test catagorie is ok :)");
+		else
+			System.out.println("warning test categorie");
+		
+//		Categorie categorieFound = categorieService.testFindBy(monTerritoire, monTypeProjet);
+//		if(categorieFound == null)
+//			System.out.println("test catagorie is ok :)");
+//		else
+//			System.out.println("warning test categorie");
 
 		Projet monProjet = new Projet();
 		monProjet.setTitre("test");

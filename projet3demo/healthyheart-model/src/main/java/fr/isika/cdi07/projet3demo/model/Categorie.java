@@ -28,6 +28,10 @@ public class Categorie {
 	public Categorie() {
 	}
 
+	public void setIdCategorie(Long idCategorie) {
+		this.idCategorie = idCategorie;
+	}
+
 	public Territoire getTerritoire() {
 		return territoire;
 	}
@@ -59,6 +63,16 @@ public class Categorie {
 		builder.append(typeProjet.getLibelle());
 		builder.append("]");
 		return builder.toString();
+	}
+
+	public Categorie withTerritoire(Territoire territoire2) {
+		territoire = territoire2;
+		return this;
+	}
+
+	public Categorie withTypeProjet(TypeProjet typeProjet2) {
+		typeProjet = typeProjet2;
+		return this;
 	}
 
 	
