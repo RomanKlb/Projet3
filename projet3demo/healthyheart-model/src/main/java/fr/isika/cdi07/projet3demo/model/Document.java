@@ -100,6 +100,12 @@ public class Document {
 	public Long getIdDocument() {
 		return idDocument;
 	}
+	
+
+
+	public void setIdDocument(Long idDocument) {
+		this.idDocument = idDocument;
+	}
 
 
 	@Override

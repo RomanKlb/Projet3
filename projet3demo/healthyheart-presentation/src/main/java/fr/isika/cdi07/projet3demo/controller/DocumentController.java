@@ -27,7 +27,7 @@ public class DocumentController {
 	@Autowired
 	private DocumentService documentService;
 
-	@GetMapping("/ShowNewPictureForm/{id}")
+	@GetMapping("/showNewPictureForm/{id}")
 	public String showNewPictureForm(@PathVariable(value = "id") Long id, Model model) {
 
 		// create model attribute to bind form data
@@ -45,8 +45,8 @@ public class DocumentController {
 			@ModelAttribute("document") Document document) {
 		// save projet to database
 //		LOGGER.info();
-
-		documentService.saveImageJPG(document);
+		System.out.println("blob " + document.getFichier().toString());
+		documentService.saveImageJPEG(document);
 		return "redirect:/ShowAllProjetList";
 	}
 
