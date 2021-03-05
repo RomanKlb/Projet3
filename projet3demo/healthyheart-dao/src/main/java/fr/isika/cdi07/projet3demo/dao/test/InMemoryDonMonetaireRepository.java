@@ -1,5 +1,6 @@
 package fr.isika.cdi07.projet3demo.dao.test;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,7 +13,15 @@ import fr.isika.cdi07.projet3demo.dao.DonMonetaireRepository;
 import fr.isika.cdi07.projet3demo.model.DonMonetaire;
 
 public class InMemoryDonMonetaireRepository implements DonMonetaireRepository{
-
+	
+	private static List<DonMonetaire> temporaryDonMonetaireList = new ArrayList<>();
+	private static Long lastId;
+	
+	static {
+		temporaryDonMonetaireList.add(new DonMonetaire());
+		temporaryDonMonetaireList.add(new DonMonetaire());
+	}
+	
 	@Override
 	public List<DonMonetaire> findAll() {
 		// TODO Auto-generated method stub
