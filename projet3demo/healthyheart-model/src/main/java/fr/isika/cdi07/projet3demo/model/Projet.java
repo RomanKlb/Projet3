@@ -79,7 +79,7 @@ public class Projet {
 		this.donMateriel = false;
 		this.donTemps = false;
 	}
-
+	
 
 	public String getTitre() {
 		return titre;
@@ -183,9 +183,12 @@ public class Projet {
 
 	public Long getIdProjet() {
 		return idProjet;
+	}	
+
+	public void setIdProjet(Long idProjet) {
+		this.idProjet = idProjet;
 	}
 
-	
 
 	public PortefeuilleProjet getPortefeuilleprojet() {
 		return portefeuilleprojet;
