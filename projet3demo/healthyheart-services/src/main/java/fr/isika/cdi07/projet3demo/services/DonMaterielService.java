@@ -34,8 +34,7 @@ public class DonMaterielService implements  IDonService<DonMateriel>{
 	}
 
 	@Override
-	public void enregistrerDansLaBase(DonMateriel don) {
-		ParticipationProjet participationProjet = new ParticipationProjet();
+	public void enregistrerDansLaBase(DonMateriel don, ParticipationProjet participationProjet) {
 		participationProjet.withDate(Date.valueOf(LocalDate.now()))
 							.withTypeParticipation(TypeParticipation.MATERIEL)
 							.withIsAnonyme(false)

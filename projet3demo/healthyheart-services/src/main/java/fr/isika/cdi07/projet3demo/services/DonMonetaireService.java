@@ -10,8 +10,10 @@ import org.springframework.stereotype.Service;
 
 import fr.isika.cdi07.projet3demo.dao.DonMonetaireRepository;
 import fr.isika.cdi07.projet3demo.dao.ParticipationProjetRepository;
+import fr.isika.cdi07.projet3demo.dao.ProjetRepository;
 import fr.isika.cdi07.projet3demo.model.DonMonetaire;
 import fr.isika.cdi07.projet3demo.model.ParticipationProjet;
+import fr.isika.cdi07.projet3demo.model.Projet;
 import fr.isika.cdi07.projet3demo.model.StatutDon;
 import fr.isika.cdi07.projet3demo.model.TypeParticipation;
 
@@ -23,6 +25,17 @@ public class DonMonetaireService implements IDonService<DonMonetaire>{
 	
 	@Autowired
 	private ParticipationProjetRepository participationProjetRepo;
+	
+	//a enlever
+	@Autowired
+	private ProjetRepository projetRepo;
+	
+	public Projet getProjet(long id) {
+		Optional<Projet> optional = projetRepo.findById(id);
+		if(optional.isPresent())
+			return optional.get();
+		throw new RuntimeException("Projet not found");
+	}
 
 	@Override
 	public List<DonMonetaire> afficherDons() {
@@ -35,8 +48,7 @@ public class DonMonetaireService implements IDonService<DonMonetaire>{
 	}
 	
 	@Override
-	public void enregistrerDansLaBase(DonMonetaire don) {
-		ParticipationProjet participationProjet = new ParticipationProjet();
+	public void enregistrerDansLaBase(DonMonetaire don, ParticipationProjet participationProjet) {
 		participationProjet.withDate(Date.valueOf(LocalDate.now()))
 							.withTypeParticipation(TypeParticipation.MONETAIRE)
 							.withIsAnonyme(false)

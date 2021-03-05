@@ -2,12 +2,12 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>Ajouter don</title>
+<title>Fiche projet</title>
 <link rel="stylesheet" href="../static/lib/bootstrap.min.css">
 <script src="../static/lib/bootstrap.min.js"></script>
 </head>
 <body>
-	<h2>Ajouter don (bouton anonyme a ajouter)</h2>
+	<h2>Fiche projet</h2>
 	<hr>
 	<div class="form-check">
 		<input class="form-check-input" type="radio" name="flexRadioDefault"
@@ -29,9 +29,8 @@
 					<!-- don monetaire form -->
 					<h5>Don Monetaire form</h5>
 	<form action="#" th:action="@{/don/sauvegarderDonMonetaire}"
-		 method="POST">
-		<input type="hidden" th:field="*{partProjet.Projet.idProjet}" />
-		<label>Montant: </label> <input type="text" th:field="*{donMonetaire.montant}" />
+		th:object="${donMonetaire}" method="POST">
+		<label>Montant: </label> <input type="text" th:field="*{montant}" />
 		<br> 
 		<input type="submit" value="Ajouter" /> 
 		<br> 

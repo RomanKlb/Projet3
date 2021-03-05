@@ -35,8 +35,7 @@ public class DonTempsService implements IDonService<DonTemps>{
 	}
 
 	@Override
-	public void enregistrerDansLaBase(DonTemps don) {
-		ParticipationProjet participationProjet = new ParticipationProjet();
+	public void enregistrerDansLaBase(DonTemps don, ParticipationProjet participationProjet) {
 		participationProjet.withDate(Date.valueOf(LocalDate.now()))
 							.withTypeParticipation(TypeParticipation.TEMPS)
 							.withIsAnonyme(false)
