@@ -56,6 +56,7 @@ public class DonController {
 		participationProjet.setProjet(donMonetaireService.getProjet(id));
 		
 		//TODO check si id projet exist
+		//TODO check boolean don materiel et temps
 		
 		model.addAttribute("donMonetaire", donMonetaire);
 		model.addAttribute("donMateriel", donMateriel);

@@ -6,4 +6,5 @@ import fr.isika.cdi07.projet3demo.model.Commentaire;
 
 public interface CommentaireRepository extends JpaRepository<Commentaire, Long>{
 
+
 }
