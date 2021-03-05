@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html">
+
+<ui:composition template="/WEB-INF/template.xhtml">
+
+	<ui:define name="title">
+Recherche projet
+</ui:define>
+
+	<ui:define name="mainSection">
+
+		<f:view>
+			<h:form>
+				<fieldset>
+					<legend>Compte :</legend>
+					<div>
+						<label>Prénom : </label>
+						<h:inputText value="#{utilisateurMb.utilisateur.prenom}" />
+					</div>
+					<div>
+						<label>Nom : </label>
+						<h:inputText value="#{utilisateurMb.utilisateur.nom}" />
+					</div>
+					<div>
+						<label>E-mail : </label>
+						<h:inputText value="#{utilisateurMb.utilisateur.email}" />
+					</div>
+					<div>
+						<label>Mot de passe : </label>
+						<h:inputSecret value="#{utilisateurMb.utilisateur.mdp}" />
+					</div>
+					<h:commandButton
+						action="#{utilisateurMb.enregistrerNouvelUtilisateur()}"
+						value="S'enregister" />
+					<div>
+					<h:outputText value="#{utilisateurMb.message}" />
+					</div>
+				</fieldset>
+			</h:form>
+
+		</f:view>
+	</ui:define>
+</ui:composition>
+</html>

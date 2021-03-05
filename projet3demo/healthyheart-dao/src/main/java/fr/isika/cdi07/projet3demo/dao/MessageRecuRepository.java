@@ -1,9 +1,9 @@
 package fr.isika.cdi07.projet3demo.dao;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import fr.isika.cdi07.projet3demo.model.MessageRecu;
 
-public interface MessageRecuRepository extends CrudRepository<MessageRecu, Long>{
+public interface MessageRecuRepository extends JpaRepository<MessageRecu, Long>{
 
 }

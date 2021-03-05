@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Fiche projet</title>
+<link rel="stylesheet" href="../static/lib/bootstrap.min.css">
+<script src="../static/lib/bootstrap.min.js"></script>
+</head>
+<body>
+	<h2>Fiche projet</h2>
+	<hr>
+	<div class="form-check">
+		<input class="form-check-input" type="radio" name="flexRadioDefault"
+			id="flexRadioDefault1"> <label class="form-check-label"
+			for="flexRadioDefault1"> Don Monetaire </label>
+	</div>
+	<div class="form-check">
+		<input class="form-check-input" type="radio" name="flexRadioDefault"
+			id="flexRadioDefault2" checked> <label
+			class="form-check-label" for="flexRadioDefault2"> Don Materiel </label>
+	</div>
+	<div class="form-check">
+		<input class="form-check-input" type="radio" name="flexRadioDefault"
+			id="flexRadioDefault3" checked> <label
+			class="form-check-label" for="flexRadioDefault3"> Don Temps </label>
+	</div>
+	<hr>
+	
+					<!-- don monetaire form -->
+					<h5>Don Monetaire form</h5>
+	<form action="#" th:action="@{/don/sauvegarderDonMonetaire}"
+		th:object="${donMonetaire}" method="POST">
+		<label>Montant: </label> <input type="text" th:field="*{montant}" />
+		<br> 
+		<input type="submit" value="Ajouter" /> 
+		<br> 
+		<input type="reset" value="Reset fields">
+	</form>
+
+	<hr>
+					<!-- don materiel form -->
+					<h5>Don Materiel form</h5>
+	<form action="#" th:action="@{/don/sauvegarderDonMateriel}"
+		th:object="${donMateriel}" method="POST">
+		<label>Libelle: </label> 
+		<input type="text" th:field="*{libelle}" />
+		<label>Montant: </label> 
+		<input type="text" th:field="*{montant}" />
+		<label>Quantite: </label> 
+		<input type="text" th:field="*{quantite}" />
+		<br> 
+		<input type="submit" value="Ajouter" /> 
+		<br> 
+		<input type="reset" value="Reset fields">
+	</form>
+	
+	<hr>
+					<!-- don temps form -->
+					<h5>Don Temps form</h5>
+	<form action="#" th:action="@{/don/sauvegarderDonTemps}"
+		th:object="${donTemps}" method="POST">
+		<label>Nombre d'heures : </label> 
+		<input type="text" th:field="*{nbHeures}" />
+		<br> 
+		<input type="submit" value="Ajouter" /> 
+		<br> 
+		<input type="reset" value="Reset fields">
+	</form>	
+	
+	
+	<a th:href="@{/afficherListeDesDon}">Back to List</a>
+
+</body>

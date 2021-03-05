@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Importer les images pour le projet</title>
+</head>
+<body>
+	<h1>Importer des images du projet dans la db</h1>
+
+	<form action="#" th:action="@{/uploadPicture}" 
+	method="POST" enctype="application/x-www-form-urlencoded">
+
+		<!-- Add hidden form field to handle update -->
+		<input type="hidden" th:field="*{projet.idProjet}" />
+
+		<!-- 	<div>combo type</div>
+		<select th:id="ImageComboBox" th:field=*{}>
+			<option value="0">Selection image Projet</option>
+			<option th:value="${TypeLibelleDoc.IMAGE_PRINCIPALE}">Image Principale</option>
+			<option th:value="${TypeLibelleDoc.IMAGE_SECONDE}">Image Second</option>
+			<option th:value="${TypeLibelleDoc.IMAGE_TROISIEME}">Image Troisième</option>
+		</select>  -->
+
+	<!-- 	<input type="text" th:field="*{document.libelle}"
+			placeholder="libellé de l'image">  -->
+			<br />
+			 <input th:type="file"
+			th:field="*{document.fichier}" placeholder="Selection de l'image">
+
+		<button type="submit">Save picture Projet</button>
+	</form>
+
+</body>
+</html>

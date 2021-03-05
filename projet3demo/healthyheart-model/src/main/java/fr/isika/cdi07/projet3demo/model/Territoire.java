@@ -67,7 +67,9 @@ public class Territoire {
 		return idTerritoire;
 	}
 	
-	
+	public void setIdTerritoire(Long idTerritoire) {
+		this.idTerritoire = idTerritoire;
+	}
 	
 	
 }

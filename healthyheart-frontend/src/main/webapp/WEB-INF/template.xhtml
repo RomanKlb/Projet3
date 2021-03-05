@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html">
+
+<h:head>
+	<title><ui:insert name="title">HealthyHeart</ui:insert></title>
+
+	<link rel="stylesheet" href="css/bootstrap.min.css" type="text/css" />
+	<link rel="stylesheet" href="css/style.css" type="text/css" />
+
+</h:head>
+<body>
+	<f:view>
+		<h:form>
+			<header class="fixedtop">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-7">
+							<div style="margin-left: 70px;">
+								<div style="margin-top: 5px;">
+									<h4
+										style="font-family: 'Segoe Script', Verdana, Arial, Helvetica, sans-serif;">HealthyHeart</h4>
+								</div>
+							</div>
+							<div class="col">
+								<nav class="fixedtopleft">
+									<ul>
+<<<<<<< HEAD
+										<li><h:commandButton action="#{projetMb.rechercherTousLesProjetsParStatutPublie()}" value="Catalogue" /></li>
+=======
+										<li><a href="/Catalogue/Index">Catalogue</a></li>
+>>>>>>> 0d20fee00afe1dc275d9756a6e59d1bb81b6cdce
+										<li><a href="/Catalogue/SearchProj">Rechercher</a></li>
+										<li><a href="/CreationProjet/Index">Créer Projet</a></li>
+										<li><a href="/Login/Index">Connexion</a></li>
+									</ul>
+								</nav>
+							</div>
+						</div>
+					</div>
+				</div>
+			</header>
+
+			<article>
+				<ui:insert name="mainSection">
+
+				</ui:insert>
+			</article>
+
+			<footer>
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-4">
+							<div id="a_propos">
+								<h1>A propos</h1>
+								<a class="footerblabla" href="mailto:contact@healthheart.org">Contactez
+									nous</a><br /> <a class="footerblabla"
+									href="/Accueil/QuiSommesNous" target="_blank">Qui sommes
+									nous</a>
+							</div>
+						</div>
+						<div class="col-5">
+							<div id="Aide">
+								<h1>Comment ça marche</h1>
+								<div id="listes_sujets_2">
+									<a class="footerblabla" href="/Accueil/Don" target="_blank">Don</a><br />
+									<a class="footerblabla" href="/Accueil/GestionProjet"
+										target="_blank">Gestion de projet</a>
+								</div>
+							</div>
+						</div>
+						<div class="col-3">
+							<div>
+								<h1>Suivez nous</h1>
+								<p>
+									<a
+										href="https://www.facebook.com/PraYa-CrowdFunding-102506948483977"
+										target="_blank"> <img src="~/Content/Images/facebook.png"
+										alt="Facebook" /></a> <a
+										href="https://www.instagram.com/praya_crowdfunding/"
+										target="_blank"> <img
+										src="~/Content/Images/Logo_Instagram.png" height="52"
+										alt="Instagram" />
+									</a>
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</footer>
+		</h:form>
+	</f:view>
+</body>
+</html>

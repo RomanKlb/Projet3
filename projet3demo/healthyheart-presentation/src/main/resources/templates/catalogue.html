@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Catalogue</title>
+</head>
+<body>
+	<h1>Catalogue</h1>
+	<table>
+		<thead>
+			<tr>
+				<th>Titre</th>
+				<th>Description Courte</th>
+				<th>Montant</th>
+				<th>StatutProjet</th>
+			</tr>
+
+		</thead>
+		<tbody>
+			<tr th:each="projet : ${listProjetPublie}">
+				<td th:text="${projet.titre}"></td>
+				<td th:text="${projet.descriptionCourte}"></td>
+				<td th:text="${projet.montantAttendu}"></td>
+				<td th:text="${projet.statutDuProjet}"></td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+</html>

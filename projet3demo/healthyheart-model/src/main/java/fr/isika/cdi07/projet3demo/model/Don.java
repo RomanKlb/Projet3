@@ -21,14 +21,14 @@ public abstract class Don  {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="id_don")
-	private Long idDon;
+	protected Long idDon;
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(nullable = false)
-	private Date date;
+	protected Date date;
 	
 	@OneToOne
-	private ParticipationProjet participationProjet;
+	protected ParticipationProjet participationProjet;
 
 	public Date getDate() {
 		return date;
@@ -50,6 +50,10 @@ public abstract class Don  {
 		return idDon;
 	}
 
+	public void setIdDon(Long idDon) {
+		this.idDon = idDon;
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
@@ -61,6 +65,16 @@ public abstract class Don  {
 		builder.append(participationProjet.getTypeParticipation());
 		builder.append("]");
 		return builder.toString();
+	}
+	
+	public Don withDate(Date date) {
+		this.date = date;
+		return this;
+	}
+	
+	public Don withParticipationProjet(ParticipationProjet pp) {
+		this.participationProjet = pp;
+		return this;
 	}
 
 

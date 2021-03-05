@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+<<<<<<< HEAD
+=======
+	xmlns:f="http://java.sun.com/jsf/core"
+>>>>>>> 0d20fee00afe1dc275d9756a6e59d1bb81b6cdce
+	xmlns:h="http://java.sun.com/jsf/html">
+
+<ui:composition template="/WEB-INF/template.xhtml">
+
+<<<<<<< HEAD
+	<ui:define name="title">
+=======
+<ui:define name="title">
+>>>>>>> 0d20fee00afe1dc275d9756a6e59d1bb81b6cdce
+Modifier projet
+</ui:define>
+
+	<ui:define name="mainSection">
+		<fieldset>
+			<legend>Modifier projet :</legend>
+<<<<<<< HEAD
+
+			
+				#{projetMb.projet.titre}
+			
+
+		</fieldset>
+	</ui:define>
+
+=======
+			<div>
+				<label>Titre :</label>
+				<h:inputText value="#{projetMb.projet.titre}" />
+			</div>
+			<div>
+				<label>Description Courte</label>
+				<h:inputTextarea value="#{projetMb.projet.descriptionCourte}" />
+			</div>
+			<div>
+				<label>Description Longue :</label>
+				<h:inputTextarea value="#{projetMb.projet.descriptionLongue}" />
+			</div>
+			<div>
+				<label>Montant Attendu :</label>
+				<h:inputText value="#{projetMb.projet.montantAttendu}" />
+			</div>
+			<div>
+				<label> Date de fin : </label>
+				<h:inputText value="#{projetMb.projet.dateFin}">
+					<f:convertDateTime pattern="dd/MM/yyyy" />
+				</h:inputText>
+			</div>
+			<div>
+				<label>Don matériel? :</label>
+				<h:selectBooleanCheckbox value="#{projetMb.projet.donMateriel}" />
+			</div>
+			<div>
+				<label>Don de temps? :</label>
+				<h:selectBooleanCheckbox value="#{projetMb.projet.donTemps}" />
+			</div>
+			
+			<h:commandButton action="#{projetMb.modifierProjet()}" value="submit" />
+			
+			<div>
+			<h:outputText value="#{projetMb.message}" />
+			</div>
+		</fieldset>
+	</ui:define>
+	
+>>>>>>> 0d20fee00afe1dc275d9756a6e59d1bb81b6cdce
+</ui:composition>
+</html>
