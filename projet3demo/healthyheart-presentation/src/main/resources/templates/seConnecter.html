@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Se connecter</title>
+</head>
+<body>
+	<fieldset>
+		<legend>Se connecter </legend>
+		<form action="#" th:action="@{/ConnecterUtilsateur}"
+			th:object="${utilisateur}">
+			<div>
+				<label>Email :</label> 
+				<input type="text" placeholder="Email">
+			</div>
+			<div>
+				<label>Mot de passe :</label> 
+				<input type="password" placeholder="Mot de passe">
+			</div>
+			<a th:href="@{/ConnecterUtilsateur/{email}(email=${utilisateur.email})}">Se connecter</a></td>
+
+		</form>
+	</fieldset>
+
+</body>
+</html>
