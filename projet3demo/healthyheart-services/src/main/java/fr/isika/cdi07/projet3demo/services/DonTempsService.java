@@ -45,8 +45,7 @@ public class DonTempsService implements IDonService<DonTemps>{
 		
 		don.withDate(Date.valueOf(LocalDate.now()))
 			.withParticipationProjet(participationProjet);
-		donTempsRepo.save(don);
-		
+		donTempsRepo.save(don);		
 	}
 
 	@Override
