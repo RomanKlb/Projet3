@@ -8,7 +8,7 @@ import fr.isika.cdi07.projet3demo.dao.PortefeuilleProjetRepository;
 import fr.isika.cdi07.projet3demo.dao.PorteurProjetRepository;
 import fr.isika.cdi07.projet3demo.dao.ProjetRepository;
 import fr.isika.cdi07.projet3demo.dao.RoleRepository;
-import fr.isika.cdi07.projet3demo.dao.TerritoireReposistory;
+import fr.isika.cdi07.projet3demo.dao.TerritoireRepository;
 import fr.isika.cdi07.projet3demo.dao.TypeProjetRepository;
 import fr.isika.cdi07.projet3demo.dao.UtilisateurRepository;
 import fr.isika.cdi07.projet3demo.model.Categorie;
@@ -32,7 +32,7 @@ public class PersisterEnBaseProjet {
 	@Autowired
 	private PortefeuilleProjetRepository pfPRepo;
 	@Autowired
-	private TerritoireReposistory territoireRepo;
+	private TerritoireRepository territoireRepo;
 	@Autowired
 	private TypeProjetRepository typeProjRepo;
 	@Autowired
@@ -71,8 +71,6 @@ public class PersisterEnBaseProjet {
 	
 	public Projet persisterProjet(Projet projet){
 		return projetRepo.save(projet);
-	}
-	
-	
-	
+	}	
+
 }

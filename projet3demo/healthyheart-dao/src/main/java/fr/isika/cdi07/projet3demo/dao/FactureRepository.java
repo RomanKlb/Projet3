@@ -1,9 +1,9 @@
 package fr.isika.cdi07.projet3demo.dao;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import fr.isika.cdi07.projet3demo.model.Facture;
 
-public interface FactureRepository extends CrudRepository<Facture, Long>{
+public interface FactureRepository extends JpaRepository<Facture, Long>{
 
 }
