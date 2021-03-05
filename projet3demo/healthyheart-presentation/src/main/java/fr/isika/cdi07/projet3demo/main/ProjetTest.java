@@ -3,15 +3,12 @@ import java.time.Instant;
 import java.util.Date;
 import java.util.Optional;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 import fr.isika.cdi07.projet3demo.model.Categorie;
-import fr.isika.cdi07.projet3demo.model.DonMonetaire;
 import fr.isika.cdi07.projet3demo.model.PortefeuilleProjet;
 import fr.isika.cdi07.projet3demo.model.PorteurProjet;
 import fr.isika.cdi07.projet3demo.model.Projet;
@@ -23,7 +20,6 @@ import fr.isika.cdi07.projet3demo.model.TypeProjet;
 import fr.isika.cdi07.projet3demo.model.TypeRole;
 import fr.isika.cdi07.projet3demo.model.Utilisateur;
 import fr.isika.cdi07.projet3demo.services.CategorieService;
-import fr.isika.cdi07.projet3demo.services.DonService;
 import fr.isika.cdi07.projet3demo.services.PersisterEnBaseProjet;
 
 @ComponentScan(basePackages = "fr.isika.cdi07.projet3demo")

@@ -44,6 +44,12 @@ public class UtilisateurService {
 		}
 		return utilisateur;
 	}
+	
+	public Utilisateur ajoutUtilisateur(Utilisateur utilisateur) {
+		utilisateur.setDateMaj(Date.from(Instant.now()));
+
+		return utilisateurRepo.save(utilisateur);
+	}
 
 	public List<Utilisateur> afficherAllUtilisateur() {
 		return utilisateurRepo.findAll();

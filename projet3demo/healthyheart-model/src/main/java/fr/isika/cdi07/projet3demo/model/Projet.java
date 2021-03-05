@@ -209,13 +209,6 @@ public class Projet {
 	public void setCategorie(Categorie categorie) {
 		this.categorie = categorie;
 	}
-	
-
-
-	public void setIdProjet(Long idProjet) {
-		this.idProjet = idProjet;
-	}
-
 
 	@Override
 	public String toString() {

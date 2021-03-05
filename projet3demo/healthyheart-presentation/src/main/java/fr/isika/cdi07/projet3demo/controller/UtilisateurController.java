@@ -8,9 +8,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import fr.isika.cdi07.projet3demo.model.Projet;
-import org.springframework.web.bind.annotation.PostMapping;
-
 import fr.isika.cdi07.projet3demo.model.Utilisateur;
 import fr.isika.cdi07.projet3demo.services.UtilisateurService;
 
@@ -74,8 +71,7 @@ public class UtilisateurController {
 			
 		//return "utilisateurConnecte";
 	//}	
-	
-	
+
 	@GetMapping("/ShowAllUtilisateur")
 	public String showAllUtilisateur(Model model) {
 		model.addAttribute("listUtilisateur", utilisateurService.afficherAllUtilisateur());
@@ -95,6 +91,7 @@ public class UtilisateurController {
 	public String saveUtilisateur(@ModelAttribute("utilisateur") Utilisateur utilisateur) {
 		//save projet to database
 		utilisateurService.ajouterUtilisateur(utilisateur);
+		utilisateurService.ajoutUtilisateur(utilisateur);
 		return "listUtilisateur";
 	}
 
