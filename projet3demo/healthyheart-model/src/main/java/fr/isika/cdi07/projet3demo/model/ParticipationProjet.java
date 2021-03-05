@@ -130,5 +130,30 @@ public class ParticipationProjet {
 		return builder.toString();
 	}
 	
+	public ParticipationProjet withDate(Date date) {
+		this.date = date;
+		return this;
+	}
+	
+	public ParticipationProjet withTypeParticipation(TypeParticipation type) {
+		this.typeParticipation = type;
+		return this;
+	}
+	
+	public ParticipationProjet withIsAnonyme(boolean bool) {
+		this.isAnonyme = bool;
+		return this;
+	}
+	
+	public ParticipationProjet withStatutDon(StatutDon statutDon) {
+		this.statutDon = statutDon;
+		return this;
+	}
+	
+	public ParticipationProjet withFacture(Facture facture) {
+		this.facture = facture;
+		return this;
+	}
+	
 	
 }

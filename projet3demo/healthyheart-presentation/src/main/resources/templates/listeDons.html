@@ -5,23 +5,30 @@
 <title>Faire un don</title>
 </head>
 <body>
-
+	
 	<fieldset>
 		<legend>Page Liste Dons Monetaires </legend>
 		<div>
 			<label>Total :</label>
-			<p th:text="${count}"></p>
+			<label th:text="${count}"></label>
 		</div>
-		<table>
+		<br>
+		<a th:href="@{/don/faireUnDon}">Ajouter don</a>
+		<table border="1" >
 			<tr>
 				<th>id</th>
 				<th>montant</th>
 				<th>date</th>
+				<th>Actions</th>
 			</tr>
 			<tr th:each="don:${donMonetaireList}">
 				<td><p th:text="${don.idDon}"></p></td>
 				<td><p th:text="${don.montant}"></p></td>
-				<td><p th:text="${don.date}"></p></td>
+				<td><p th:text="${#dates.format(don.date, 'dd MMM yyyy')}"></p></td>
+				<td>
+					<a th:href="@{/modifierDon/{id}(id=${don.idDon})}">Modifier</a> //
+					<a th:href="@{/supprimerDon/{id}(id=${don.idDon})}">Supprimer</a>
+				</td>
 			</tr>
 		
 		</table>
