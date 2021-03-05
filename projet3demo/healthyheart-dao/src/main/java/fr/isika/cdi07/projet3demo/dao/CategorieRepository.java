@@ -1,9 +1,9 @@
 package fr.isika.cdi07.projet3demo.dao;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import fr.isika.cdi07.projet3demo.model.Categorie;
 
-public interface CategorieRepository extends CrudRepository<Categorie, Long>{
+public interface CategorieRepository extends JpaRepository<Categorie, Long>{
 
 }
