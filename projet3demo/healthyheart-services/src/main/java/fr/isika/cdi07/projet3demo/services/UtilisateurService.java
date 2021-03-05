@@ -45,4 +45,8 @@ public class UtilisateurService {
 		return utilisateur;
 	}
 
+	public List<Utilisateur> afficherAllUtilisateur() {
+		return utilisateurRepo.findAll();
+	}
+
 }
