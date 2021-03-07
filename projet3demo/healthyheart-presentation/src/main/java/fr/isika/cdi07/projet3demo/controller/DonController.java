@@ -16,6 +16,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import fr.isika.cdi07.projet3demo.model.Projet;
 import fr.isika.cdi07.projet3demo.model.StatutDon;
 import fr.isika.cdi07.projet3demo.modelform.DonForm;
+
+import fr.isika.cdi07.projet3demo.dao.ProjetRepository;
+import fr.isika.cdi07.projet3demo.model.DonMateriel;
+import fr.isika.cdi07.projet3demo.model.DonMonetaire;
+import fr.isika.cdi07.projet3demo.model.DonTemps;
+import fr.isika.cdi07.projet3demo.model.ParticipationProjet;
+import fr.isika.cdi07.projet3demo.model.Projet;
+import fr.isika.cdi07.projet3demo.model.StatutDon;
+
 import fr.isika.cdi07.projet3demo.services.DonMaterielService;
 import fr.isika.cdi07.projet3demo.services.DonMonetaireService;
 import fr.isika.cdi07.projet3demo.services.DonTempsService;
@@ -52,6 +61,30 @@ public class DonController {
 
 		if(!projetFound.isPresent())
 			return "projet_not_found";
+	
+	@Autowired
+	private ProjetService projetService;
+	
+	@GetMapping("/faireUnDon/projet")
+	public String faireUnDon(@RequestParam long id, Model model) {		
+		DonMonetaire donMonetaire = new DonMonetaire();
+		DonMateriel donMateriel = new DonMateriel();
+		DonTemps donTemps = new DonTemps();
+		
+		ParticipationProjet participationProjet = new ParticipationProjet();
+		//a changer avvec le service:
+		Optional<Projet> projetFound = donMonetaireService.getProjet(id);
+		
+		if(!projetFound.isPresent())
+			return "projet_not_found";
+		participationProjet.setProjet(projetFound.get());
+		//TODO check boolean don materiel et temps
+		
+		model.addAttribute("donMonetaire", donMonetaire);
+		model.addAttribute("donMateriel", donMateriel);
+		model.addAttribute("donTemps", donTemps);
+		
+		model.addAttribute("partProjet", participationProjet);
 		
 		donForm.getParticipationProjet().setProjet(projetFound.get());
 		model.addAttribute("donForm", donForm); 
@@ -66,6 +99,15 @@ public class DonController {
 		return statutDon.equals(StatutDon.APPROUVE)
 				? DEFAULT_REDIRECTION
 						: EN_ATTENTE_REDIRECTION;
+
+	public String sauvegarderDonMonetaire(
+			@ModelAttribute("donMonetaire") DonMonetaire don, 
+			@ModelAttribute("partProjet") ParticipationProjet pp) {
+		StatutDon statutDon = donMonetaireService.enregistrerDansLaBase(don, pp);
+		return statutDon.equals(StatutDon.APPROUVE)
+				? DEFAULT_REDIRECTION
+				: "don_en_attente";
+		
 	}
 
 	@PostMapping("/sauvegarderDonMateriel")
