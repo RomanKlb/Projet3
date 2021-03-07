@@ -3,6 +3,8 @@ package fr.isika.cdi07.projet3demo.controller;
 import java.util.Optional;
 import java.util.logging.Logger;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,21 +17,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import fr.isika.cdi07.projet3demo.model.Projet;
 import fr.isika.cdi07.projet3demo.model.StatutDon;
+import fr.isika.cdi07.projet3demo.model.Utilisateur;
 import fr.isika.cdi07.projet3demo.modelform.DonForm;
 
-import fr.isika.cdi07.projet3demo.dao.ProjetRepository;
-import fr.isika.cdi07.projet3demo.model.DonMateriel;
-import fr.isika.cdi07.projet3demo.model.DonMonetaire;
-import fr.isika.cdi07.projet3demo.model.DonTemps;
-import fr.isika.cdi07.projet3demo.model.ParticipationProjet;
-import fr.isika.cdi07.projet3demo.model.Projet;
-import fr.isika.cdi07.projet3demo.model.StatutDon;
-
-import fr.isika.cdi07.projet3demo.modelform.DonForm;
 import fr.isika.cdi07.projet3demo.services.DonMaterielService;
 import fr.isika.cdi07.projet3demo.services.DonMonetaireService;
 import fr.isika.cdi07.projet3demo.services.DonTempsService;
 import fr.isika.cdi07.projet3demo.services.ProjetService;
+import fr.isika.cdi07.projet3demo.services.UtilisateurService;
 
 @Controller
 @RequestMapping("/don")
@@ -40,6 +35,9 @@ public class DonController {
 	private static final String EN_ATTENTE_REDIRECTION = "don_en_attente";
 	private static final Logger logger = Logger.getLogger(DonController.class.getSimpleName());
 
+	@Autowired
+	private UtilisateurService utilisateurService;
+	
 	@Autowired 
 	private DonMonetaireService donMonetaireService;
 
@@ -53,31 +51,23 @@ public class DonController {
 	private ProjetService projetService;
 
 	@GetMapping("/faireUnDon/projet")
-	public String faireUnDon(@RequestParam long id, Model model) {	
+	public String faireUnDon(@RequestParam long id, Model model, HttpSession session) {	
+		String userEmail = (String)session.getAttribute("emailUtilisateurConnecte");
+		if (userEmail == null) {
+			return "redirect:/showConnexionForm";
+		}
+		
+		Utilisateur user = utilisateurService.chercherUtilisateurParEmail(userEmail);
+		if (user == null) {
+			return "ErrorSite";
+		}
+		
 		DonForm donForm = new DonForm();
 		Optional<Projet> projetFound = projetService.getProjetById(id);
-
 		if(!projetFound.isPresent())
-			return "projet_not_found";
-	
-	@Autowired
-	private ProjetService projetService;
-
-	@GetMapping("/faireUnDon/projet")
-	public String faireUnDon(@RequestParam long id, Model model) {	
-		DonForm donForm = new DonForm();
-		//*****************************************************************
-		//A changer avec le service lorsque la methode renverra un optional
-		//*****************************************************************
-		Optional<Projet> projetFound = donMonetaireService.getProjet(id);
-
-		if(!projetFound.isPresent())
-			return "projet_not_found";
-		
+			return "projet_not_found";		
 		donForm.getParticipationProjet().setProjet(projetFound.get());
-		model.addAttribute("donForm", donForm); 
-	
-		donForm.getParticipationProjet().setProjet(projetFound.get());
+		donForm.setUtilisateur(user);
 		model.addAttribute("donForm", donForm); 
 
 		return "faire_un_don";
@@ -86,8 +76,9 @@ public class DonController {
 	@PostMapping("/sauvegarderDonMonetaire")
 	public String sauvegarderDonMonetaire(@ModelAttribute("donForm") DonForm donForm) {
 		donForm.getParticipationProjet().setAnonyme(donForm.isAnonyme());
+		Utilisateur user = utilisateurService.chercherUtilisateurParEmail(donForm.getUtilisateur().getEmail());
 		StatutDon statutDon = donMonetaireService
-				.enregistrerDansLaBase(donForm.getDonMonetaire(), donForm.getParticipationProjet());
+				.enregistrerDansLaBase(donForm.getDonMonetaire(), donForm.getParticipationProjet(), user);
 		return statutDon.equals(StatutDon.APPROUVE)
 				? DEFAULT_REDIRECTION
 						: EN_ATTENTE_REDIRECTION;
@@ -96,8 +87,9 @@ public class DonController {
 	@PostMapping("/sauvegarderDonMateriel")
 	public String sauvegarderDonMateriel(@ModelAttribute("donForm") DonForm donForm) {
 		donForm.getParticipationProjet().setAnonyme(donForm.isAnonyme());
+		Utilisateur user = utilisateurService.chercherUtilisateurParEmail(donForm.getUtilisateur().getEmail());
 		StatutDon statutDon = donMaterielService
-				.enregistrerDansLaBase(donForm.getDonMateriel(), donForm.getParticipationProjet());
+				.enregistrerDansLaBase(donForm.getDonMateriel(), donForm.getParticipationProjet(), user);
 		return statutDon.equals(StatutDon.APPROUVE)
 				? DEFAULT_REDIRECTION
 						: EN_ATTENTE_REDIRECTION;
@@ -106,8 +98,9 @@ public class DonController {
 	@PostMapping("/sauvegarderDonTemps")
 	public String sauvegarderDonTemps(@ModelAttribute("donForm") DonForm donForm) {
 		donForm.getParticipationProjet().setAnonyme(donForm.isAnonyme());
+		Utilisateur user = utilisateurService.chercherUtilisateurParEmail(donForm.getUtilisateur().getEmail());
 		StatutDon statutDon = donTempsService
-				.enregistrerDansLaBase(donForm.getDonTemps(), donForm.getParticipationProjet());
+				.enregistrerDansLaBase(donForm.getDonTemps(), donForm.getParticipationProjet(), user);
 		return statutDon.equals(StatutDon.APPROUVE)
 				? DEFAULT_REDIRECTION
 						: EN_ATTENTE_REDIRECTION;

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import fr.isika.cdi07.projet3demo.model.Commentaire;
 import fr.isika.cdi07.projet3demo.model.Projet;
+import fr.isika.cdi07.projet3demo.model.Role;
 
 @Service
 public interface ICommentaireService {
@@ -15,4 +16,6 @@ public interface ICommentaireService {
 	Commentaire saveCommentaire(Commentaire commentaire);
 	void deleteCommentaireById(long id);
 	List<Commentaire> getCommentairesList(Projet projet);
+	boolean hasRoleToComment(Projet projet, String userEmail);
+	Optional<Role> getRoleNonLambda(String userEmail);
 }
