@@ -30,7 +30,6 @@ public class Facture {
 	@OneToOne
 	private ParticipationProjet participationProjet;
 
-
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
@@ -43,45 +42,52 @@ public class Facture {
 		builder.append("]");
 		return builder.toString();
 	}
-
-
-	public String getLibelle() {
-		return libelle;
-	}
-
-
-	public void setLibelle(String libelle) {
+	
+	public Facture withLibelle(String libelle) {
 		this.libelle = libelle;
+		return this;
 	}
-
-
-	public Date getDate() {
-		return date;
-	}
-
-
-	public void setDate(Date date) {
+	
+	public Facture withDate(Date date) {
 		this.date = date;
+		return this;
 	}
-
-
-	public ParticipationProjet getParticipationProjet() {
-		return participationProjet;
+	
+	public Facture withParticipationProjet(ParticipationProjet pp) {
+		this.participationProjet = pp;
+		return this;
 	}
-
-
-	public void setParticipationProjet(ParticipationProjet participationProjet) {
-		this.participationProjet = participationProjet;
-	}
-
 
 	public Long getIdFacture() {
 		return idFacture;
 	}
 
+	public void setIdFacture(Long idFacture) {
+		this.idFacture = idFacture;
+	}
 
+	public String getLibelle() {
+		return libelle;
+	}
 
-	
-	
-	
+	public void setLibelle(String libelle) {
+		this.libelle = libelle;
+	}
+
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
+	public ParticipationProjet getParticipationProjet() {
+		return participationProjet;
+	}
+
+	public void setParticipationProjet(ParticipationProjet participationProjet) {
+		this.participationProjet = participationProjet;
+	}
+
 }
