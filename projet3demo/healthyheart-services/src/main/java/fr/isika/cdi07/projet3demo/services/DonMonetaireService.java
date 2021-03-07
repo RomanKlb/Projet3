@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import fr.isika.cdi07.projet3demo.dao.DonMonetaireRepository;
+import fr.isika.cdi07.projet3demo.dao.FactureRepository;
 import fr.isika.cdi07.projet3demo.dao.ParticipationProjetRepository;
 import fr.isika.cdi07.projet3demo.dao.ProjetRepository;
 import fr.isika.cdi07.projet3demo.model.DonMonetaire;
@@ -26,15 +27,16 @@ public class DonMonetaireService implements IDonService<DonMonetaire>{
 	@Autowired
 	private ParticipationProjetRepository participationProjetRepo;
 	
-	//a enlever
+	@Autowired
+	private FactureRepository factureRepo;
+	
+	//service ou repo?
 	@Autowired
 	private ProjetRepository projetRepo;
 	
-	public Projet getProjet(long id) {
-		Optional<Projet> optional = projetRepo.findById(id);
-		if(optional.isPresent())
-			return optional.get();
-		throw new RuntimeException("Projet not found");
+	//NB : surement mettre en type optional pour avoir possibilite de vue dans le controller
+	public Optional<Projet> getProjet(long id) {
+		return projetRepo.findById(id);
 	}
 
 	@Override
@@ -48,13 +50,36 @@ public class DonMonetaireService implements IDonService<DonMonetaire>{
 	}
 	
 	@Override
-	public void enregistrerDansLaBase(DonMonetaire don, ParticipationProjet participationProjet) {
+	public StatutDon enregistrerDansLaBase(DonMonetaire don, ParticipationProjet participationProjet) {
 		participationProjet.withDate(Date.valueOf(LocalDate.now()))
 							.withTypeParticipation(TypeParticipation.MONETAIRE)
-							.withIsAnonyme(false)
-							.withStatutDon(StatutDon.APPROUVE);
-		participationProjetRepo.save(participationProjet);
-		
+							.withIsAnonyme(false); //normalement dans le POST du controller
+		checkAndSaveIfSeuilReached(don, participationProjet);
+		return participationProjet.getStatutDon();
+	}
+
+	private void checkAndSaveIfSeuilReached(DonMonetaire don, ParticipationProjet participationProjet) {
+		if(don.getMontant() > 2000) {
+			participationProjet.withStatutDon(StatutDon.EN_ATTENTE);
+			participationProjetRepo.save(participationProjet);
+			
+			saveDonInDB(don, participationProjet);
+		}else {
+			participationProjet.withStatutDon(StatutDon.APPROUVE);							
+			participationProjetRepo.save(participationProjet);
+			
+			//TODO : facture a generer
+			
+			Optional<Projet> projetToDonate = projetRepo.findById(participationProjet.getProjet().getIdProjet());
+			double newMontantCollecte = projetToDonate.get().getMontantCollecte() + don.getMontant();
+			projetToDonate.get().setMontantCollecte(newMontantCollecte);
+			projetRepo.save(projetToDonate.get());
+			
+			saveDonInDB(don, participationProjet);
+		}
+	}
+
+	private void saveDonInDB(DonMonetaire don, ParticipationProjet participationProjet) {
 		don.withDate(Date.valueOf(LocalDate.now()))
 			.withParticipationProjet(participationProjet);
 		donMonetaireRepo.save(don);

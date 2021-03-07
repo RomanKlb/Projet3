@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import fr.isika.cdi07.projet3demo.dao.DonTempsRepository;
 import fr.isika.cdi07.projet3demo.dao.ParticipationProjetRepository;
+import fr.isika.cdi07.projet3demo.dao.ProjetRepository;
 import fr.isika.cdi07.projet3demo.model.DonTemps;
 import fr.isika.cdi07.projet3demo.model.ParticipationProjet;
 import fr.isika.cdi07.projet3demo.model.StatutDon;
@@ -35,16 +36,34 @@ public class DonTempsService implements IDonService<DonTemps>{
 	}
 
 	@Override
-	public void enregistrerDansLaBase(DonTemps don, ParticipationProjet participationProjet) {
+	public StatutDon enregistrerDansLaBase(DonTemps don, ParticipationProjet participationProjet) {
 		participationProjet.withDate(Date.valueOf(LocalDate.now()))
 							.withTypeParticipation(TypeParticipation.TEMPS)
-							.withIsAnonyme(false)
-							.withStatutDon(StatutDon.APPROUVE);
-		participationProjetRepo.save(participationProjet);
-		
+							.withIsAnonyme(false);
+		checkAndSaveIfSeuilReached(don, participationProjet);
+		return participationProjet.getStatutDon();
+	}
+	
+	private void checkAndSaveIfSeuilReached(DonTemps don, ParticipationProjet participationProjet) {
+		if(don.getNbHeures() > 100) {
+			participationProjet.withStatutDon(StatutDon.EN_ATTENTE);
+			participationProjetRepo.save(participationProjet);
+			
+			saveDonInDB(don, participationProjet);
+		}else {
+			participationProjet.withStatutDon(StatutDon.APPROUVE);							
+			participationProjetRepo.save(participationProjet);
+			
+			//TODO : facture a generer
+			
+			saveDonInDB(don, participationProjet);
+		}
+	}
+
+	private void saveDonInDB(DonTemps don, ParticipationProjet participationProjet) {
 		don.withDate(Date.valueOf(LocalDate.now()))
 			.withParticipationProjet(participationProjet);
-		donTempsRepo.save(don);		
+		donTempsRepo.save(don);
 	}
 
 	@Override
