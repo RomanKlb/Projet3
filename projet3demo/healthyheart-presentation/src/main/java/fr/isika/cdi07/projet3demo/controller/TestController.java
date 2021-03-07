@@ -33,8 +33,6 @@ public class TestController {
 	
 	@PostMapping("/sauvegarderDon")
 	public String sauvegarderDon(@ModelAttribute("donAAjouterOuModifier") DonMonetaire don) {
-		System.out.println("id don dans POST :" + don.getIdDon());
-		System.out.println("montant dans POST :" + don.getMontant());
 		//donService.enregistrerDansLaBase(don);
 		return "redirect:/afficherListeDesDon";
 	}
