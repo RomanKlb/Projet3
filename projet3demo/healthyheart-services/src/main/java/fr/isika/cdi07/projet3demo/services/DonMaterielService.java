@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import fr.isika.cdi07.projet3demo.dao.DonMaterielRepository;
 import fr.isika.cdi07.projet3demo.dao.ParticipationProjetRepository;
 import fr.isika.cdi07.projet3demo.model.DonMateriel;
+import fr.isika.cdi07.projet3demo.model.DonTemps;
 import fr.isika.cdi07.projet3demo.model.ParticipationProjet;
 import fr.isika.cdi07.projet3demo.model.StatutDon;
 import fr.isika.cdi07.projet3demo.model.TypeParticipation;
@@ -34,17 +35,35 @@ public class DonMaterielService implements  IDonService<DonMateriel>{
 	}
 
 	@Override
-	public void enregistrerDansLaBase(DonMateriel don, ParticipationProjet participationProjet) {
+	public StatutDon enregistrerDansLaBase(DonMateriel don, ParticipationProjet participationProjet) {
 		participationProjet.withDate(Date.valueOf(LocalDate.now()))
 							.withTypeParticipation(TypeParticipation.MATERIEL)
-							.withIsAnonyme(false)
-							.withStatutDon(StatutDon.APPROUVE);
-		participationProjetRepo.save(participationProjet);
-		
+							.withIsAnonyme(false);
+		checkAndSaveIfSeuilReached(don, participationProjet);
+		return participationProjet.getStatutDon();
+	}
+	
+	private void checkAndSaveIfSeuilReached(DonMateriel don, ParticipationProjet participationProjet) {
+		double totalMateriel = don.getMontant() * don.getQuantite();
+		if(totalMateriel > 10000) {
+			participationProjet.withStatutDon(StatutDon.EN_ATTENTE);
+			participationProjetRepo.save(participationProjet);
+			
+			saveDonInDB(don, participationProjet);
+		}else {
+			participationProjet.withStatutDon(StatutDon.APPROUVE);							
+			participationProjetRepo.save(participationProjet);
+			
+			//TODO : facture a generer
+			
+			saveDonInDB(don, participationProjet);
+		}
+	}
+
+	private void saveDonInDB(DonMateriel don, ParticipationProjet participationProjet) {
 		don.withDate(Date.valueOf(LocalDate.now()))
 			.withParticipationProjet(participationProjet);
 		donMaterielRepo.save(don);
-		
 	}
 
 	@Override

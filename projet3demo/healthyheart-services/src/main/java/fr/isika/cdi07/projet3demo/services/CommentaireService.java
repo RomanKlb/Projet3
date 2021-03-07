@@ -20,16 +20,13 @@ public class CommentaireService implements ICommentaireService{
 	private CommentaireRepository commentaireRepo;
 	
 	@Override
-	public Commentaire getCommentaireById(long id) {
-		Optional<Commentaire> optional = commentaireRepo.findById(id);
-		if(optional.isPresent()) 
-			return optional.get();
-		throw new RuntimeException("Don not found");		
+	public Optional<Commentaire> getCommentaireById(long id) {
+		return commentaireRepo.findById(id);	
 	}
 
 	@Override
-	public void saveCommentaire(Commentaire commentaire) {
-		commentaireRepo.save(commentaire);
+	public Commentaire saveCommentaire(Commentaire commentaire) {
+		return commentaireRepo.save(commentaire);
 	}
 
 	@Override
