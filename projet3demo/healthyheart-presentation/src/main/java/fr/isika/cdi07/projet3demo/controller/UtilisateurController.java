@@ -89,7 +89,7 @@ public class UtilisateurController {
 		if(optionalUtilisateur.isPresent()) {
 			session.setAttribute(EMAIL_UTILISATEUR_CONNECTE, optionalUtilisateur.get().getEmail());
 			session.setAttribute("prenomUtilisateur", optionalUtilisateur.get().getPrenom());
-			return "index";
+			return REDIRECT + "utilisateurConnecte";
 		}	
 		return REDIRECT + "showConnexionForm";
 

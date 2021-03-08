@@ -41,4 +41,5 @@ public class UtilisateurService {
 	public boolean isUtilisateurConnecte(String email){
 		return utilisateurRepo.existsById(email);
 	}
+
 }
