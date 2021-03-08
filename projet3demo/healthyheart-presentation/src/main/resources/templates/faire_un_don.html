@@ -5,7 +5,7 @@
 <title>Ajouter don</title>
 </head>
 <body>
-<div th:replace="../static/layout :: header"></div>
+	<div th:replace="../static/layout :: header"></div>
 	<h2>Ajouter don (bouton anonyme a ajouter)</h2>
 	<hr>
 	<div class="form-check">
@@ -16,7 +16,8 @@
 	<div class="form-check">
 		<input class="form-check-input" type="radio" name="flexRadioDefault"
 			id="flexRadioDefault2" checked> <label
-			class="form-check-label" for="flexRadioDefault2"> Don Materiel </label>
+			class="form-check-label" for="flexRadioDefault2"> Don
+			Materiel </label>
 	</div>
 	<div class="form-check">
 		<input class="form-check-input" type="radio" name="flexRadioDefault"
@@ -24,51 +25,55 @@
 			class="form-check-label" for="flexRadioDefault3"> Don Temps </label>
 	</div>
 	<hr>
-	
-					<!-- don monetaire form -->
-					<h5>Don Monetaire form</h5>
+
+	<!-- don monetaire form -->
+	<h5>Don Monetaire form</h5>
 	<form action="#" th:action="@{/don/sauvegarderDonMonetaire}"
-		 method="POST">
-		<input type="hidden" th:field="*{partProjet.Projet.idProjet}" />
-		<label>Montant: </label> <input type="text" th:field="*{donMonetaire.montant}" />
+		method="POST">
+		<div>
+			<h4>Anonyme</h4>
+		</div>
+		<div>
+			<div class="form-check form-switch">
+				<input type="checkbox" th:field="*{donForm.anonyme}" class="form-check-input">
+				<label >Don anonyme</label>
+			</div>
+		</div>
+		<input type="hidden" th:field="*{partProjet.Projet.idProjet}" /> 
+		<label>Montant:</label> 
+		<input type="text" th:field="*{donMonetaire.montant}" /> 
 		<br> 
-		<input type="submit" value="Ajouter" class="btn btn-primary" />
+		<input type="submit" value="Ajouter" class="btn btn-primary" /> 
 		<br> 
 		<input type="reset" value="Reset fields" class="btn btn-light" />
 	</form>
 
 	<hr>
-					<!-- don materiel form -->
-					<h5>Don Materiel form</h5>
+	<!-- don materiel form -->
+	<h5>Don Materiel form</h5>
 	<form action="#" th:action="@{/don/sauvegarderDonMateriel}"
 		th:object="${donMateriel}" method="POST">
-		<label>Libelle: </label> 
-		<input type="text" th:field="*{libelle}" />
-		<label>Montant: </label> 
-		<input type="text" th:field="*{montant}" />
-		<label>Quantite: </label> 
-		<input type="text" th:field="*{quantite}" />
-		<br> 
-		<input type="submit" value="Ajouter" class="btn btn-primary" /> 
-		<br> 
-		<input type="reset" value="Reset fields" class="btn btn-light" />
+		<label>Libelle: </label> <input type="text" th:field="*{libelle}" />
+		<label>Montant: </label> <input type="text" th:field="*{montant}" />
+		<label>Quantite: </label> <input type="text" th:field="*{quantite}" />
+		<br> <input type="submit" value="Ajouter" class="btn btn-primary" />
+		<br> <input type="reset" value="Reset fields"
+			class="btn btn-light" />
 	</form>
-	
+
 	<hr>
-					<!-- don temps form -->
-					<h5>Don Temps form</h5>
+	<!-- don temps form -->
+	<h5>Don Temps form</h5>
 	<form action="#" th:action="@{/don/sauvegarderDonTemps}"
 		th:object="${donTemps}" method="POST">
-		<label>Nombre d'heures : </label> 
-		<input type="text" th:field="*{nbHeures}" />
-		<br> 
-		<input type="submit" value="Ajouter" class="btn btn-primary" /> 
-		<br> 
-		<input type="reset" value="Reset fields" class="btn btn-light" />
-	</form>	
-	
-	
+		<label>Nombre d'heures : </label> <input type="text"
+			th:field="*{nbHeures}" /> <br> <input type="submit"
+			value="Ajouter" class="btn btn-primary" /> <br> <input
+			type="reset" value="Reset fields" class="btn btn-light" />
+	</form>
+
+
 	<a th:href="@{/afficherListeDesDon}">Back to List</a>
 	<br>
-<div th:replace="../static/layout :: footer"></div>
+	<div th:replace="../static/layout :: footer"></div>
 </body>
