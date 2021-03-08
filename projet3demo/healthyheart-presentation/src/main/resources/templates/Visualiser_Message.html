@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Detail d'un message</title>
+</head>
+<body>
+		<h2>Détails sur message </h2>
+	<hr>
+		<label>Titre: </label>
+		<input type="text" disabled th:field="*{message.titre}"/>
+		</br>
+		<label>Emetteur : </label>
+		<input type="text" disabled th:field="*{message.emetteur.email}"/>
+		</br>
+					
+		<div th:each="recpt:${lstMessagesRecu}">
+		<label>Destinataire :</label> <label th:text="${recpt.utilisateur.email}"/> (
+		<label th:text="${recpt.utilisateur.prenom}"/> <label th:text="${recpt.utilisateur.nom}"/>
+		<label>)</label>
+		</div>
+		<br/>
+		<label>Date/Heure: </label>
+		<input type="text" disabled th:field="*{message.date}"/>
+		</br>
+		<label>Contenu message : </label><br/>
+		<textarea rows="5" cols="33" disabled th:field="*{message.contenu}"/>
+		</br>
+		
+	<a th:href="@{/afficherListeMessages}">retour à la liste</a>
+
+</body>
+</html>
