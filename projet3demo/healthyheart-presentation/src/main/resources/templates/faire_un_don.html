@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="fr">
 <head>
-<meta charset="UTF-8">
+<th:block th:replace="../static/layout :: headerfiles"></th:block>
 <title>Ajouter don</title>
-<link rel="stylesheet" href="../static/lib/bootstrap.min.css">
-<script src="../static/lib/bootstrap.min.js"></script>
 </head>
 <body>
+<div th:replace="../static/layout :: header"></div>
 	<h2>Ajouter don (bouton anonyme a ajouter)</h2>
 	<hr>
 	<div class="form-check">
@@ -33,9 +32,9 @@
 		<input type="hidden" th:field="*{partProjet.Projet.idProjet}" />
 		<label>Montant: </label> <input type="text" th:field="*{donMonetaire.montant}" />
 		<br> 
-		<input type="submit" value="Ajouter" /> 
+		<input type="submit" value="Ajouter" class="btn btn-primary" />
 		<br> 
-		<input type="reset" value="Reset fields">
+		<input type="reset" value="Reset fields" class="btn btn-light" />
 	</form>
 
 	<hr>
@@ -50,9 +49,9 @@
 		<label>Quantite: </label> 
 		<input type="text" th:field="*{quantite}" />
 		<br> 
-		<input type="submit" value="Ajouter" /> 
+		<input type="submit" value="Ajouter" class="btn btn-primary" /> 
 		<br> 
-		<input type="reset" value="Reset fields">
+		<input type="reset" value="Reset fields" class="btn btn-light" />
 	</form>
 	
 	<hr>
@@ -63,12 +62,13 @@
 		<label>Nombre d'heures : </label> 
 		<input type="text" th:field="*{nbHeures}" />
 		<br> 
-		<input type="submit" value="Ajouter" /> 
+		<input type="submit" value="Ajouter" class="btn btn-primary" /> 
 		<br> 
-		<input type="reset" value="Reset fields">
+		<input type="reset" value="Reset fields" class="btn btn-light" />
 	</form>	
 	
 	
 	<a th:href="@{/afficherListeDesDon}">Back to List</a>
-
+	<br>
+<div th:replace="../static/layout :: footer"></div>
 </body>
