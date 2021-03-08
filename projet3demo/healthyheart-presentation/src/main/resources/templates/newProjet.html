@@ -19,20 +19,19 @@
 			placeholder="Longue Description"></textarea>
 
 		<input type="text" th:field="*{projet.montantAttendu}"
-			placeholder="Montant attendu">
-
-		<input type="date" 
-			th:field="*{projet.dateFin}" >
+			placeholder="Montant attendu"> <input type="date"
+			th:field="*{projet.dateFin}">
 
 		<div>combo type</div>
-		<select th:id="typeProjetIdComboBox" th:field=*{typeProjet.idTypeProjet}>
+		<select th:id="typeProjetIdComboBox"
+			th:field=*{typeProjet.idTypeProjet}>
 			<option value="0">Selection TypeProjet</option>
 			<option th:each="tp : ${listTypeProjet}"
 				th:value="${tp.idTypeProjet}" th:text="${tp.libelle}"></option>
-		</select> 
-		<br />
+		</select> <br />
 		<div>combo territoire</div>
-		<select th:id="territoireIdComboBox" th:field=*{territoire.idTerritoire}>
+		<select th:id="territoireIdComboBox"
+			th:field=*{territoire.idTerritoire}>
 			<option value="0">Selection Territoire</option>
 			<option th:each="t : ${listTerritoire}" th:value="${t.idTerritoire}"
 				th:text="${t.libelle}"></option>

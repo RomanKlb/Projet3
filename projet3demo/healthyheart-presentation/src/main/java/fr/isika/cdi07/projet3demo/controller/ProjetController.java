@@ -73,7 +73,6 @@ public class ProjetController {
 	@PostMapping("/saveProjet")
 	public String saveProjet(@ModelAttribute("projet") Projet projet, @ModelAttribute("typeProjet") TypeProjet typeProjet, 
 			@ModelAttribute("territoire") Territoire territoire) {
-		//save projet to database
 		LOGGER.info("Selected data : idTypeProjet : " + typeProjet.getIdTypeProjet() + " idTerritoire " + territoire.getIdTerritoire());
 
 		if(typeProjet.getIdTypeProjet().equals(0L) || territoire.getIdTerritoire().equals(0L)) {
@@ -98,13 +97,15 @@ public class ProjetController {
 	public String showUpdateProjetForm(@PathVariable (value = "id") Long id, Model model) {
 		
 		// get Projet from the service
-		Projet projet = projetService.getProjetById(id);
+		Optional<Projet> optProjet = projetService.getProjetById(id);
+		if(!optProjet.isPresent())
+			return "noFoundProjet";
 		Optional<Categorie> categorie = categorieService.getCategorieById(id);
 		Optional<Territoire> territoire = territoireService.getTerritoireById(id);
 		Optional<TypeProjet> typeProjet = typeProjetService.getTerritoireById(id);		
 		
 		// set Projet as a model attribute to pre-populate the form
-		model.addAttribute("projet", projet);
+		model.addAttribute("projet", optProjet);
 		model.addAttribute("categorie", categorie);
 		model.addAttribute("typeProjet", typeProjet);
 		model.addAttribute("territoire", territoire);
