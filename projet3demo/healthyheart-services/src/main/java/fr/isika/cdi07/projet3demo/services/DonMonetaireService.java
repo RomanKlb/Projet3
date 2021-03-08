@@ -52,8 +52,7 @@ public class DonMonetaireService implements IDonService<DonMonetaire>{
 	@Override
 	public StatutDon enregistrerDansLaBase(DonMonetaire don, ParticipationProjet participationProjet) {
 		participationProjet.withDate(Date.valueOf(LocalDate.now()))
-							.withTypeParticipation(TypeParticipation.MONETAIRE)
-							.withIsAnonyme(false); //normalement dans le POST du controller
+							.withTypeParticipation(TypeParticipation.MONETAIRE);//normalement dans le POST du controller
 		checkAndSaveIfSeuilReached(don, participationProjet);
 		return participationProjet.getStatutDon();
 	}
