@@ -67,6 +67,10 @@ public class ParticipationProjet {
 		return isAnonyme;
 	}
 
+	public void setIdParticipation(Long idParticipation) {
+		this.idParticipation = idParticipation;
+	}
+
 	public void setAnonyme(boolean isAnonyme) {
 		this.isAnonyme = isAnonyme;
 	}

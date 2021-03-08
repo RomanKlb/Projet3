@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="fr">
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+<th:block th:replace="../static/layout :: headerfiles"></th:block>
+<title>Index</title>
 </head>
 <body>
+	<div th:replace="../static/layout :: header"></div>
 	<h1>HOME Starter</h1>
-
+	
+	<button class="btn btn-primary">Bouton bootstrap</button>
 	<div>
 		<a th:href="@{/ShowAllProjetList}">All Projet List</a>
 	</div>
@@ -25,5 +27,9 @@
 	<div>
 		<a th:href="@{/showAllUsers}">Afficher tous les utilisateurs</a>
 	</div>
+	<div>
+		<a th:href="@{/ShowNewUtilisateur}">Add Utilisateur</a>
+	</div>
+	<div th:replace="../static/layout :: footer"></div>
 </body>
 </html>
