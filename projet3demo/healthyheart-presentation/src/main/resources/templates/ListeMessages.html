@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Liste des messages</title>
+</head>
+<body>
+	<a th:href="@{/ajouterMessage}">Ajouter Message</a>
+	<fieldset>
+		<legend>Liste des messages</legend>
+		<div>
+			<label>Total :</label>
+			<p th:text="${count}"></p>
+		</div>
+		<table>
+			<tr>
+				<th>id</th>
+				<th>titre</th>
+				<th>date</th>
+				<th>Emetteur</th>
+				<th>Actions</th>
+			</tr>
+			<tr th:each="msg:${messagesList}">
+				<td><p th:text="${msg.idMessage}"></p></td>
+				<td><p th:text="${msg.titre}"></p></td>
+				<td><p th:text="${msg.date}"></p></td>
+				<td><p th:text="${msg.emetteur.email}"></p></td>
+				<td>
+					<a th:href="@{/VisualierMessage/{id}(id=${msg.idMessage})}">visualiser</a>
+				</td>
+			</tr>
+		
+		</table>
+
+	</fieldset>
+
+</body>
+</html>
