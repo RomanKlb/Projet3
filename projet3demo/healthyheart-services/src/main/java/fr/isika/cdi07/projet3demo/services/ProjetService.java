@@ -49,15 +49,8 @@ public class ProjetService {
 		return projetsPublies;
 	}
 
-	public Projet getProjetById(long id) {
-		Optional<Projet> optionalP = projetRepo.findById(id);
-		Projet projet = null;
-		if(optionalP.isPresent()) {
-			projet = optionalP.get();
-		} else {
-			throw new RuntimeException(" Projet not found for id : " + id);
-		}
-		return projet;
+	public Optional<Projet> getProjetById(long id) {
+		return projetRepo.findById(id);
 	}
 
 //	public Projet UpdateProjet(Long id, String titre, String descriptionCourte, String longueDescription, Double montantAttendu,
