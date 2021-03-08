@@ -1,5 +1,9 @@
 package fr.isika.cdi07.projet3demo.controller;
 
+import java.util.Optional;
+
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,9 +18,13 @@ import fr.isika.cdi07.projet3demo.services.UtilisateurService;
 @Controller
 public class UtilisateurController {
 
+	private static final String REDIRECT = "redirect:/";
+
+	private static final String EMAIL_UTILISATEUR_CONNECTE = "emailUtilisateurConnecte";
+	
 	@Autowired
 	private UtilisateurService utilisateurService;
-	
+
 	//Créer Nouvel Utilisateur
 	@GetMapping("/CreerNouvelUtilsateur")
 	public String creerNouvelUtilisateur(Model model) {
@@ -35,64 +43,54 @@ public class UtilisateurController {
 	//Pour modifier Un utilisateur 
 	@GetMapping("/showUsersForUpdate/{email}")
 	public String afficherLesUtilisateurPourModification(@PathVariable (value ="email") String email, Model model) {		
-		Utilisateur utilisateur = utilisateurService.chercherOptionalUtilisateurParEmail(email);
-		model.addAttribute("utilisateur", utilisateur);
+		Optional<Utilisateur> utilisateur = utilisateurService.chercherOptionalUtilisateurParEmail(email);
+		if(utilisateur.isPresent()) {
+			model.addAttribute("utilisateur", utilisateur.get());
+		}
 		return "update_utilisateur";	
 	}
-	
+
 	//Afficher Tous les utilisateurs
 	@GetMapping("/showAllUsers")
 	public String afficherTousUtilisateurs(Model model) {
 		model.addAttribute("listeUtilisateurs", utilisateurService.retournerTousLesUtilisateur());
 		return "listeUtilisateurs";
 	}
+
+	//login success
+	@GetMapping("/utilisateurConnecte")
+	public String utilisateurConnecte(Model model, HttpSession session) {
+		model.addAttribute(EMAIL_UTILISATEUR_CONNECTE, session.getAttribute(EMAIL_UTILISATEUR_CONNECTE));
+		String message = "Bonjour, ";
+		model.addAttribute("message", message);
+		model.addAttribute("prenomUtilisateur", session.getAttribute("prenomUtilisateur"));
+		
+		return "login_success";
+	}
 	
-	@GetMapping("/ConnecterUtilsateur")
+	//show connexion Form
+	@GetMapping("/showConnexionForm")
 	public String saisirInformationUtilisateur(Model model) {
-		Utilisateur utilisateur = new Utilisateur();
-		model.addAttribute("utilisateur", utilisateur);
+		LoginForm loginForm = new LoginForm();
+		model.addAttribute("loginForm", loginForm);
 		return "seConnecter";
 	}
-	
-	//Essayer de connecter un utilisateur
-	@GetMapping("/ConnecterUtilsateur/{email}")
-	public String connecterUtilisateur(@PathVariable (value ="email") String email, Model model) {
-		Utilisateur utilisateur = utilisateurService.chercherOptionalUtilisateurParEmail(email);
-		model.addAttribute("utilisateur", utilisateur);
-		return "utilisateurConnecte";
-	}
-	
-	//@PostMapping("/SeConnecter")
-	//public String connecterUtilisateur(@ModelAttribute("utilisateur") Utilisateur utilisateur) {
-		//Utilisateur utilisateurToUse = null;
-		//Utilisateur utilisateurToUse = utilisateurService.connecterUtilisateur(email, mdp);
-		//utilisateurToUse.getEmail().equals(email);
-		//utilisateurService.connecterUtilisateur(utilisateur.getEmail(), utilisateur.getMdp());
-			
-		//return "utilisateurConnecte";
-	//}	
 
-	@GetMapping("/ShowAllUtilisateur")
-	public String showAllUtilisateur(Model model) {
-		model.addAttribute("listUtilisateur", utilisateurService.afficherAllUtilisateur());
-		return "listUtilisateur";
+	//Connexion utilisateur
+	@PostMapping("/connecterUtilisateur")
+	public String connecterUtilisateur(@ModelAttribute("loginForm") LoginForm loginForm, HttpSession session) {
+		// TODO valider le contenu
+		Optional<Utilisateur> optionalUtilisateur = utilisateurService.chercherOptionalUtilisateurParEmail(loginForm.getEmail());
+		if(optionalUtilisateur.isPresent()) {
+			session.setAttribute(EMAIL_UTILISATEUR_CONNECTE, optionalUtilisateur.get().getEmail());
+			session.setAttribute("prenomUtilisateur", optionalUtilisateur.get().getPrenom());
+			return REDIRECT + "utilisateurConnecte";
+		}	
+		return REDIRECT + "showConnexionForm";
+
 	}
-	
-	@GetMapping("/ShowNewUtilisateur")
-	public String showNewUtilisateur(Model model) {
-				
-		//create model attribute to bind form data
-		Utilisateur utilisateur = new Utilisateur();
-		model.addAttribute("utilisateur", utilisateur);
-		return "newUtilisateur";
-	}
-	
-	@PostMapping("/saveUtilisateur")
-	public String saveUtilisateur(@ModelAttribute("utilisateur") Utilisateur utilisateur) {
-		//save projet to database
-		utilisateurService.ajouterUtilisateur(utilisateur);
-		utilisateurService.ajoutUtilisateur(utilisateur);
-		return "listUtilisateur";
-	}
+
+
+
 
 }
