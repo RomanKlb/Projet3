@@ -12,6 +12,7 @@ public class DonForm {
 	private DonMateriel donMateriel;
 	private ParticipationProjet participationProjet;
 	private boolean anonyme;
+<<<<<<< HEAD
 	
 	public DonForm() {
 		this.donMonetaire = new DonMonetaire();
@@ -19,6 +20,8 @@ public class DonForm {
 		this.donMateriel = new DonMateriel();
 		this.participationProjet = new ParticipationProjet();
 	}
+=======
+>>>>>>> 8f093b5... TODO layout
 
 	public DonMonetaire getDonMonetaire() {
 		return donMonetaire;

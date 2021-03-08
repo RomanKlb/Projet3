@@ -25,6 +25,7 @@ import fr.isika.cdi07.projet3demo.model.ParticipationProjet;
 import fr.isika.cdi07.projet3demo.model.Projet;
 import fr.isika.cdi07.projet3demo.model.StatutDon;
 
+import fr.isika.cdi07.projet3demo.modelform.DonForm;
 import fr.isika.cdi07.projet3demo.services.DonMaterielService;
 import fr.isika.cdi07.projet3demo.services.DonMonetaireService;
 import fr.isika.cdi07.projet3demo.services.DonTempsService;
@@ -70,8 +71,9 @@ public class DonController {
 		DonMonetaire donMonetaire = new DonMonetaire();
 		DonMateriel donMateriel = new DonMateriel();
 		DonTemps donTemps = new DonTemps();
-		
 		ParticipationProjet participationProjet = new ParticipationProjet();
+		
+		DonForm donForm = new DonForm();
 		//a changer avvec le service:
 		Optional<Projet> projetFound = donMonetaireService.getProjet(id);
 		
@@ -85,6 +87,7 @@ public class DonController {
 		model.addAttribute("donTemps", donTemps);
 		
 		model.addAttribute("partProjet", participationProjet);
+		model.addAttribute("donForm", donForm); 
 		
 		donForm.getParticipationProjet().setProjet(projetFound.get());
 		model.addAttribute("donForm", donForm); 
@@ -102,7 +105,10 @@ public class DonController {
 
 	public String sauvegarderDonMonetaire(
 			@ModelAttribute("donMonetaire") DonMonetaire don, 
-			@ModelAttribute("partProjet") ParticipationProjet pp) {
+			@ModelAttribute("partProjet") ParticipationProjet pp,
+			@ModelAttribute("donForm") DonForm donForm) {
+		System.out.println("participation projet anonyme = " + donForm.isAnonyme());
+		pp.setAnonyme(donForm.isAnonyme());
 		StatutDon statutDon = donMonetaireService.enregistrerDansLaBase(don, pp);
 		return statutDon.equals(StatutDon.APPROUVE)
 				? DEFAULT_REDIRECTION
