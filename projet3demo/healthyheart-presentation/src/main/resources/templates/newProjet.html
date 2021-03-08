@@ -22,14 +22,6 @@
 			<input type="hidden" th:field="*{monForm.porteurProjet.role}">
 			<!-- hidden  -->
 			<input type="hidden" th:field="*{monForm.porteurProjet}">
-
-	<!-- 	<div>combo type porteur projet</div>
-		<select th:id="typeProjetIdComboBox"
-			th:field=*{typeProjet.idTypeProjet}>
-			<option value="0">Selection TypeProjet</option>
-			<option th:each="tp : ${listTypeProjet}"
-				th:value="${tp.idTypeProjet}" th:text="${tp.libelle}"></option>
-		</select> <br />  -->
 		
 		<hr/>
 		
@@ -44,8 +36,9 @@
 			placeholder="Longue Description"></textarea>
 
 		<input type="text" th:field="*{monForm.projet.montantAttendu}"
-			placeholder="Montant attendu"> <input type="date"
-			th:field="*{monForm.projet.dateFin}">
+			placeholder="Montant attendu" /> 
+		
+		<input type="date" th:field="*{monForm.projet.dateFin}" />
 
 		<div>combo type</div>
 		<select th:id="typeProjetIdComboBox"

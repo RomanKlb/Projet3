@@ -20,7 +20,6 @@ import fr.isika.cdi07.projet3demo.model.PorteurProjet;
 import fr.isika.cdi07.projet3demo.model.Projet;
 import fr.isika.cdi07.projet3demo.model.Role;
 import fr.isika.cdi07.projet3demo.model.Territoire;
-import fr.isika.cdi07.projet3demo.model.TypePorteur;
 import fr.isika.cdi07.projet3demo.model.TypeProjet;
 import fr.isika.cdi07.projet3demo.model.TypeRole;
 import fr.isika.cdi07.projet3demo.model.Utilisateur;
@@ -119,9 +118,9 @@ public class ProjetController {
 
 	//WRITE IN DB PROJECT WITH COMPONENT (CATEGORIE, TERRITOIRE, TYPEPROJET, PP, PORTEFEUILLE, ROLE)
 	@PostMapping("/saveProjet")
+
 	public String saveProjet(@ModelAttribute("monForm") ProjetForm monForm, @ModelAttribute("typeProjet") TypeProjet typeProjet, 
 			@ModelAttribute("territoire") Territoire territoire, HttpSession session) {
-
 		LOGGER.info("Selected data : idTypeProjet : " + typeProjet.getIdTypeProjet() + " idTerritoire " + territoire.getIdTerritoire());
 
 		if(typeProjet.getIdTypeProjet().equals(0L) || territoire.getIdTerritoire().equals(0L)) {

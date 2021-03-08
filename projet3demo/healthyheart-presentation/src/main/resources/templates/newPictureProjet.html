@@ -8,31 +8,39 @@
 <body>
 	<h1>Importer des images du projet dans la db</h1>
 
-	<form action="#" th:action="@{/uploadPicture}" method="POST"
-		enctype="application/x-www-form-urlencoded">
+	<form action="#" th:action="@{/NewUploadPicture}" method="POST"
+		enctype="multipart/form-data">
 
 		<!-- Add hidden form field to handle update -->
-		<input type="hidden" th:field="*{projet.idProjet}" />
+		<input type="hidden" th:field="*{docform.projet}" />
+		<input type="hidden" th:field="*{docform.document.projet}" />
 
 		<div>combo Libelle image</div>
-		<select th:id="ImageComboBox" th:field=*{document.libelle}>
+		<select th:id="ImageComboBox" th:field=*{docform.libelImage}>
 			<option value="0">Selection image Projet</option>
-			<option th:each="i : ${listLibelleImage}" th:value="${i}"
-				th:text="${i}"></option>
+			<option value="1">Image Principale</option>
+			<option value="2">Seconde Image</option>
+			<option value="3">Troisieme Image</option>
 		</select>
 
 		<br /> <input th:type="file"
-			accept="image/jpg, image/jpeg, image/png"
-			th:field="*{document.fichier}" placeholder="Selection de l'image">
+			accept="image/jpg, image/jpeg"
+			th:field="*{docform.image}" placeholder="Selection de l'image">
 
 		<br />
-		<button type="submit">Save picture Projet</button>
+		<button type="submit">Enregister l'image</button>
+		
+		<br/><span th:text="${msgerr}"/>	<br/>
 
 	</form>
-
-	<div th:each="doc : ${listeDocumentsDuProjet}">
-	<!-- 	<label th:text="${doc.idDocument}"></label> -->
-		<img th:src="@{'data:image/png;base64,'+${doc}}" />
+	
+	<div th:each="img:${listImageProjet}">
+	<form action="#" th:action="@{/DelUploadPicture/{id}(id=${img.idDocument})}" method="POST">
+		<hr/>
+		<label>Libelle :</label> <label th:text="${img.libelle}"/><br/>
+		<img th:src="@{/viewImage/{id}(id=${img.idDocument})}" alt="Image_projet" style=max-width:100%;height:auto;>
+		<br/><button type="submit">Supprimer l'image</button>
+	</form>	
 	</div>
 
 
