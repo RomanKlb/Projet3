@@ -22,8 +22,8 @@ public class UtilisateurService {
 		return utilisateurRepo.save(utilisateur);
 	}
 
-	public Utilisateur chercherUtilisateurParEmailEtMdp(String email, String mdp) {
-		return utilisateurRepo.findUtilisateurByEmailAndMdp(email, mdp);
+	public Optional<Utilisateur> chercherUtilisateurParEmailEtMdp(String email, String mdp) {
+		return Optional.ofNullable(utilisateurRepo.findUtilisateurByEmailAndMdp(email, mdp));
 	}
 	
 	public List<Utilisateur> retournerTousLesUtilisateur(){
