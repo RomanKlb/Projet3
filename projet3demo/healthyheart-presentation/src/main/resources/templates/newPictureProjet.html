@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="fr">
 <head>
 <meta charset="UTF-8">
+
 <title>Importer les images pour le projet</title>
 </head>
 <body>
@@ -20,8 +21,6 @@
 				th:text="${i}"></option>
 		</select>
 
-		<!-- 	<input type="text" th:field="*{document.libelle}"
-			placeholder="libellé de l'image">  -->
 		<br /> <input th:type="file"
 			accept="image/jpg, image/jpeg, image/png"
 			th:field="*{document.fichier}" placeholder="Selection de l'image">

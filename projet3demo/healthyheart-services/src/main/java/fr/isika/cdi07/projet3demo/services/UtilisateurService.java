@@ -34,25 +34,11 @@ public class UtilisateurService {
 		return utilisateurRepo.findUtilisateurByEmail(email);
 	}
 	
-	public Utilisateur chercherOptionalUtilisateurParEmail(String email) {
-		Optional<Utilisateur> optionalUtilisateur = Optional.of(utilisateurRepo.findUtilisateurByEmail(email));
-		Utilisateur utilisateur = null;
-		if(optionalUtilisateur.isPresent()) {
-			utilisateur = optionalUtilisateur.get();
-		}else {
-			throw new RuntimeException("L'utilisateur n'a pas été trouvé");
-		}
-		return utilisateur;
+	public Optional<Utilisateur> chercherOptionalUtilisateurParEmail(String email) {
+		return Optional.ofNullable(utilisateurRepo.findUtilisateurByEmail(email));
 	}
 	
-	public Utilisateur ajoutUtilisateur(Utilisateur utilisateur) {
-		utilisateur.setDateMaj(Date.from(Instant.now()));
-
-		return utilisateurRepo.save(utilisateur);
+	public boolean isUtilisateurConnecte(String email){
+		return utilisateurRepo.existsById(email);
 	}
-
-	public List<Utilisateur> afficherAllUtilisateur() {
-		return utilisateurRepo.findAll();
-	}
-
 }

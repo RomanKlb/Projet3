@@ -1,5 +1,6 @@
 package fr.isika.cdi07.projet3demo.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -32,7 +33,7 @@ public class Adresse {
 	@Column(nullable = false)
 	private String libelle;
 	
-	@ManyToOne
+	@ManyToOne(cascade = {CascadeType.ALL})
 	@JoinColumn(name="email")
 	private Utilisateur utilisateur;
 	

@@ -65,6 +65,8 @@ public class DocumentController {
 	public String savePicture(@ModelAttribute("projet") Projet projet,
 			@ModelAttribute("document") Document document) {
 		LOGGER.info("Set idProjet in document : " + projet.getIdProjet());
+		
+		
 		Optional<TypeLibelleDoc> opt = documentService.findbyProjetAndLibelle(projet, document.getLibelle());
 		if(opt.isPresent())
 			return "redirect:/showNewPictureForm/" + projet.getIdProjet();
