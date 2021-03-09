@@ -66,17 +66,9 @@ public class DonController {
 	@GetMapping("/faireUnDon/projet")
 	public String faireUnDon(@RequestParam long id, Model model) {	
 		DonForm donForm = new DonForm();
-		//*****************************************************************
-		//A changer avec le service lorsque la methode renverra un optional
-		//*****************************************************************
-		Optional<Projet> projetFound = donMonetaireService.getProjet(id);
-
+		Optional<Projet> projetFound = projetService.getProjetById(id);
 		if(!projetFound.isPresent())
-			return "projet_not_found";
-		
-		donForm.getParticipationProjet().setProjet(projetFound.get());
-		model.addAttribute("donForm", donForm); 
-	
+			return "projet_not_found";		
 		donForm.getParticipationProjet().setProjet(projetFound.get());
 		model.addAttribute("donForm", donForm); 
 
