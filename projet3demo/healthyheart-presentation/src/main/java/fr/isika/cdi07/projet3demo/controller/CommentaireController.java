@@ -1,5 +1,7 @@
 package fr.isika.cdi07.projet3demo.controller;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,8 +28,10 @@ public class CommentaireController {
 	@GetMapping("/afficherListeCommentaires/projet")
 	public String afficherListeCommentaires(@RequestParam long id, Model model) {
 		CommentaireForm commentaireForm = new CommentaireForm(id);
-		Projet projet = projetService.getProjetById(id);
-		model.addAttribute("listeComm", commentaireService.getCommentairesList(projet));
+		Optional<Projet> projet = projetService.getProjetById(id);
+		if(!projet.isPresent())
+			return "noFoundProjet";
+		model.addAttribute("listeComm", commentaireService.getCommentairesList(projet.get()));
 		model.addAttribute("commentaireForm", commentaireForm);
 		return "liste_commentaires";
 	}
@@ -36,11 +40,11 @@ public class CommentaireController {
 	public String ajouterCommentaire(
 			@ModelAttribute("commentaireForm") CommentaireForm commentaireForm,
 			Model model) {
-		Projet projet = projetService.getProjetById(commentaireForm.getIdProjet());
+		Optional<Projet> projet = projetService.getProjetById(commentaireForm.getIdProjet());
 		Commentaire newCommentaire = new Commentaire()
 				.withLibelle(commentaireForm.getLibelle())
 				.withMessage(commentaireForm.getMessage())
-				.withProjet(projet);
+				.withProjet(projet.get());
 		commentaireService.saveCommentaire(newCommentaire);
 		return "redirect:/afficherListeCommentaires/projet?id=" + commentaireForm.getIdProjet();
 	}
