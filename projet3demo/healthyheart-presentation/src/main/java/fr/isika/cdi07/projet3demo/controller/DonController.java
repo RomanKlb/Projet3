@@ -65,32 +65,24 @@ public class DonController {
 	
 	@Autowired
 	private ProjetService projetService;
-	
+
 	@GetMapping("/faireUnDon/projet")
-	public String faireUnDon(@RequestParam long id, Model model) {		
-		DonMonetaire donMonetaire = new DonMonetaire();
-		DonMateriel donMateriel = new DonMateriel();
-		DonTemps donTemps = new DonTemps();
-		ParticipationProjet participationProjet = new ParticipationProjet();
-		
+	public String faireUnDon(@RequestParam long id, Model model) {	
 		DonForm donForm = new DonForm();
-		//a changer avvec le service:
+		//*****************************************************************
+		//A changer avec le service lorsque la methode renverra un optional
+		//*****************************************************************
 		Optional<Projet> projetFound = donMonetaireService.getProjet(id);
-		
+
 		if(!projetFound.isPresent())
 			return "projet_not_found";
-		participationProjet.setProjet(projetFound.get());
-		//TODO check boolean don materiel et temps
-		
-		model.addAttribute("donMonetaire", donMonetaire);
-		model.addAttribute("donMateriel", donMateriel);
-		model.addAttribute("donTemps", donTemps);
-		
-		model.addAttribute("partProjet", participationProjet);
-		model.addAttribute("donForm", donForm); 
 		
 		donForm.getParticipationProjet().setProjet(projetFound.get());
 		model.addAttribute("donForm", donForm); 
+	
+		donForm.getParticipationProjet().setProjet(projetFound.get());
+		model.addAttribute("donForm", donForm); 
+
 		return "faire_un_don";
 	}
 
@@ -102,18 +94,6 @@ public class DonController {
 		return statutDon.equals(StatutDon.APPROUVE)
 				? DEFAULT_REDIRECTION
 						: EN_ATTENTE_REDIRECTION;
-
-	public String sauvegarderDonMonetaire(
-			@ModelAttribute("donMonetaire") DonMonetaire don, 
-			@ModelAttribute("partProjet") ParticipationProjet pp,
-			@ModelAttribute("donForm") DonForm donForm) {
-		System.out.println("participation projet anonyme = " + donForm.isAnonyme());
-		pp.setAnonyme(donForm.isAnonyme());
-		StatutDon statutDon = donMonetaireService.enregistrerDansLaBase(don, pp);
-		return statutDon.equals(StatutDon.APPROUVE)
-				? DEFAULT_REDIRECTION
-				: "don_en_attente";
-		
 	}
 
 	@PostMapping("/sauvegarderDonMateriel")
