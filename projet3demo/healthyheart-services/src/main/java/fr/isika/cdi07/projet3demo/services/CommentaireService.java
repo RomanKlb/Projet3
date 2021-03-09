@@ -1,5 +1,7 @@
 package fr.isika.cdi07.projet3demo.services;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -26,6 +28,7 @@ public class CommentaireService implements ICommentaireService{
 
 	@Override
 	public Commentaire saveCommentaire(Commentaire commentaire) {
+		commentaire.setDate(Date.valueOf(LocalDate.now()));
 		return commentaireRepo.save(commentaire);
 	}
 

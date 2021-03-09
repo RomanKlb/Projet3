@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+<head>
+<th:block th:replace="../static/layout :: headerfiles"></th:block>
+<title>Liste des commentaires</title>
+</head>
+<body>
+	<div th:replace="../static/layout :: header"></div>
+	<form action="#" th:action="@{/ajouterCommentaire}" th:object="${commentaireForm}" method="POST">
+		<fieldset>
+			<legend>Ajouter commentaire</legend>
+			<input type="hidden" th:field="*{idProjet}" />
+			<label>Titre</label>
+			<input type="text" th:field="*{libelle}" /> 
+			<label>Message</label>
+			<input type="text" th:field="*{message}" /> 
+			<br> 
+			<div>
+				<input type="submit" value="Ajouter" class="btn btn-primary" /> 
+				<input type="reset" value="Reset fields" class="btn btn-light" />	
+			</div>		
+		</fieldset>
+	</form>
+	<h3>Liste Commentaires</h3>
+	<table border="1">
+		<tr>
+			<th>id commentaire</th>
+			<th>titre</th>
+			<th>message</th>
+			<th>date heure</th>
+		</tr>		
+		<tr th:each="comm:${listeComm}">
+			<td><p th:text="${comm.idCommentaire}"></p></td>
+			<td><p th:text="${comm.libelle}"></p></td>
+			<td><p th:text="${comm.message}"></p></td>
+			<td><p th:text="${comm.date}"></p></td>
+		</tr>
+	</table>
+	<div th:replace="../static/layout :: footer"></div>
+</body>
+</html>

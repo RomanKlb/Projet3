@@ -12,6 +12,13 @@ public class DonForm {
 	private DonMateriel donMateriel;
 	private ParticipationProjet participationProjet;
 	private boolean anonyme;
+	
+	public DonForm() {
+		this.donMonetaire = new DonMonetaire();
+		this.donTemps = new DonTemps();
+		this.donMateriel = new DonMateriel();
+		this.participationProjet = new ParticipationProjet();
+	}
 
 	public DonMonetaire getDonMonetaire() {
 		return donMonetaire;
