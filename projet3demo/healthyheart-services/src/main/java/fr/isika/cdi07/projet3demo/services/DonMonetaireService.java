@@ -97,6 +97,16 @@ public class DonMonetaireService implements IDonService<DonMonetaire>{
 		donMonetaireRepo.deleteById(id);
 	}
 
+	@Override
+	public void modifierStatutDon(long idParticipation, StatutDon statutDon) {
+		Optional<ParticipationProjet> optional = participationProjetRepo.findById(idParticipation);
+		if(optional.isPresent()) {
+			optional.get().setStatutDon(statutDon);	
+			participationProjetRepo.save(optional.get());
+		}
+			
+	}
+
 	
 
 	

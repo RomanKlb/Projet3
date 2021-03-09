@@ -57,6 +57,26 @@ public class Commentaire {
 		builder.append("]");
 		return builder.toString();
 	}
+	
+	public Commentaire withLibelle(String libelle) {
+		this.libelle = libelle;
+		return this;
+	}
+	
+	public Commentaire withMessage(String message) {
+		this.message = message;
+		return this;
+	}
+	
+	public Commentaire withProjet(Projet projet) {
+		this.projet = projet;
+		return this;
+	}
+	
+	public Commentaire withRole(Role role) {
+		this.role = role;
+		return this;
+	}
 
 	public String getLibelle() {
 		return libelle;
