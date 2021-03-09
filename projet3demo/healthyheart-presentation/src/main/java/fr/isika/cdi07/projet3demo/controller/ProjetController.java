@@ -1,7 +1,10 @@
 package fr.isika.cdi07.projet3demo.controller;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
+
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,6 +18,7 @@ import fr.isika.cdi07.projet3demo.model.Categorie;
 import fr.isika.cdi07.projet3demo.model.Projet;
 import fr.isika.cdi07.projet3demo.model.Territoire;
 import fr.isika.cdi07.projet3demo.model.TypeProjet;
+import fr.isika.cdi07.projet3demo.model.Utilisateur;
 import fr.isika.cdi07.projet3demo.services.CategorieService;
 import fr.isika.cdi07.projet3demo.services.ProjetService;
 import fr.isika.cdi07.projet3demo.services.TerritoireService;
@@ -79,7 +83,7 @@ public class ProjetController {
 		if(typeProjet.getIdTypeProjet().equals(0L) || territoire.getIdTerritoire().equals(0L)) {
 			return "redirect:/ShowNewProjetForm";
 		}
-		
+
 		Categorie categorieToUse = null;
 		Optional<Categorie> categorie = categorieService.getCategorieByTerritoireAndType(territoire, typeProjet);
 		if(categorie.isPresent()) {
@@ -92,17 +96,17 @@ public class ProjetController {
 		projetService.ajoutProjet(projet);
 		return "redirect:/ShowAllProjetList";
 	}
-	
+
 	//Update
 	@GetMapping("/showUpdateForm/{id}")
 	public String showUpdateProjetForm(@PathVariable (value = "id") Long id, Model model) {
-		
+
 		// get Projet from the service
 		Projet projet = projetService.getProjetById(id);
 		Optional<Categorie> categorie = categorieService.getCategorieById(id);
 		Optional<Territoire> territoire = territoireService.getTerritoireById(id);
 		Optional<TypeProjet> typeProjet = typeProjetService.getTerritoireById(id);		
-		
+
 		// set Projet as a model attribute to pre-populate the form
 		model.addAttribute("projet", projet);
 		model.addAttribute("categorie", categorie);
@@ -110,10 +114,27 @@ public class ProjetController {
 		model.addAttribute("territoire", territoire);
 		model.addAttribute("listTerritoire", territoireService.afficherAllTerritoire());
 		model.addAttribute("listTypeProjet", typeProjetService.afficherAllTypeProjet());
-		
+
 		return "updateProjet";
-		}
+	}
+
+	@GetMapping("/showSearchBox")
+	public String saisirRechercheProjetParTitre(Model model) {
+		RechercheParTitreForm rechercheParTitreForm = new RechercheParTitreForm();
+		model.addAttribute("rechercheParTitreForm", rechercheParTitreForm);
+		return "recherche_titre";
+	}
 	
+	@PostMapping("/rechercherProjetParTitre")
+	public String rechercherProjetParTitre(@ModelAttribute("rechercheParTitreForm") RechercheParTitreForm rechercheParTitreForm, Model model) {
+		List<Projet> listeProjets = projetService.rechercherProjetParTitre(rechercheParTitreForm.getTitre());
+		if(!listeProjets.isEmpty()) {
+			model.addAttribute("listeProjetTrouveParTitre", listeProjets);		
+			return "listeProjets_recherche";
+		}
+		return "redirect:/showSearchBox";
+	}
+
 	
 }
 

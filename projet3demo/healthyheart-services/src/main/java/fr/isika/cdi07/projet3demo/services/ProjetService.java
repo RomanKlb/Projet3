@@ -59,6 +59,19 @@ public class ProjetService {
 		}
 		return projet;
 	}
+	
+	public List<Projet> rechercherProjetParTitre(String titre){
+		return projetRepo.findProjectsByTitre(titre);
+	}
+//	public List<Projet> rechercherProjetParTitre(String titre) {
+//		List<Projet> TousLesProjets = projetRepo.findAll();
+//		List<Projet> ProjetsParTitre = new ArrayList<Projet>();
+//		for(Projet proj : TousLesProjets) {
+//			if(proj.getTitre().equals(titre));
+//			ProjetsParTitre.add(proj);
+//		}
+//		return ProjetsParTitre;
+//	}
 
 //	public Projet UpdateProjet(Long id, String titre, String descriptionCourte, String longueDescription, Double montantAttendu,
 //			Boolean donMateriel, Boolean donTemps, Categorie categorie) {
