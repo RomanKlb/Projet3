@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import fr.isika.cdi07.projet3demo.model.Utilisateur;
 import fr.isika.cdi07.projet3demo.services.UtilisateurService;
@@ -24,6 +25,9 @@ public class UtilisateurController {
 	
 	@Autowired
 	private UtilisateurService utilisateurService;
+	
+	@Autowired
+	private AdresseController adresseController;
 
 	//Créer Nouvel Utilisateur
 	@GetMapping("/CreerNouvelUtilsateur")
@@ -35,9 +39,10 @@ public class UtilisateurController {
 
 	//Enregistrer un utilisateur
 	@PostMapping("/enregistrerUtilisateur")
-	public String enregistrerNouvelUtilisateur(@ModelAttribute("utilisateur") Utilisateur utilisateur) {
+	public String enregistrerNouvelUtilisateur(@ModelAttribute("utilisateur") Utilisateur utilisateur, Model model) {
 		utilisateurService.ajouterUtilisateur(utilisateur);
-		return "index";
+		
+		return adresseController.showNewProjetForm(model, utilisateur);
 	}
 
 	//Pour modifier Un utilisateur 

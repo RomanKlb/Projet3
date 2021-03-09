@@ -22,6 +22,7 @@
 				<th>Don matériel</th>
 				<th>Don temps</th>
 				<th>Portefeuille</th>
+				<th>Nom PorteurProjet</th>
 				<th>Catégorie</th>
 				<th>Action</th>
 				<th>Action</th>
@@ -40,7 +41,8 @@
 				<td th:text="${projet.statutDuProjet}"></td>
 				<td th:text="${projet.donMateriel}"></td>
 				<td th:text="${projet.donTemps}"></td>
-				<td th:text="${projet.portefeuilleprojet}"></td>
+				<td th:text="${projet.portefeuilleprojet.libelle}"></td>
+				<td th:text="${projet.portefeuilleprojet.porteurprojet.role.utilisateur.email}"></td>
 				<td th:text="${projet.categorie}"></td>
 				<td><a th:href="@{/showNewPictureForm/{id}(id=${projet.idProjet})}">Add Image</a></td>
 				<td><a th:href="@{/showUpdateForm/{id}(id=${projet.idProjet})}">Update</a></td>

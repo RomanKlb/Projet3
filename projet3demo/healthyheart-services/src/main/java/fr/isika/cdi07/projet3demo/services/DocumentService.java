@@ -8,6 +8,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import fr.isika.cdi07.projet3demo.dao.DocumentRepository;
 import fr.isika.cdi07.projet3demo.model.Document;

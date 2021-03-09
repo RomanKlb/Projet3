@@ -37,5 +37,9 @@ public class UtilisateurService {
 	public Optional<Utilisateur> chercherOptionalUtilisateurParEmail(String email) {
 		return Optional.ofNullable(utilisateurRepo.findUtilisateurByEmail(email));
 	}
-	
+
+	public boolean isUtilisateurConnecte(String email){
+		return utilisateurRepo.existsById(email);
+	}
+
 }
