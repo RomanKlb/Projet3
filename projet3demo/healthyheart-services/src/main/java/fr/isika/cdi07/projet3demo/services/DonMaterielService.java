@@ -42,7 +42,6 @@ public class DonMaterielService implements  IDonService<DonMateriel>{
 							.withTypeParticipation(TypeParticipation.MATERIEL);
 		checkAndSaveIfSeuilReached(don, participationProjet);
 		//roleService.saveRole(TypeRole.DONATEUR, utilisateur);
-		checkAndSaveIfSeuilReached(don, participationProjet);
 		return participationProjet.getStatutDon();
 	}
 	
