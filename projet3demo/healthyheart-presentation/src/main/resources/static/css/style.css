@@ -1,4 +1,7 @@
-.btn-primary{
-	color:red;
-	background-color: black;
+label{ 
+	margin-right: 15px; 
+}
+
+.formu{
+	display:none;
 }

@@ -21,23 +21,18 @@ public class Role {
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false, name="type_role")
 	private TypeRole typeRole;
-
 	
 	@ManyToOne
 	private Utilisateur utilisateur;
 
-	
-
 	public Role() {
 	}
-
 
 	public Role(TypeRole typeRole, Utilisateur utilisateur) {
 		super();
 		this.typeRole = typeRole;
 		this.utilisateur = utilisateur;
 	}
-
 
 	public TypeRole getTypeRole() {
 		return typeRole;

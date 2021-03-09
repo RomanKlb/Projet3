@@ -15,6 +15,7 @@ import fr.isika.cdi07.projet3demo.model.DonTemps;
 import fr.isika.cdi07.projet3demo.model.ParticipationProjet;
 import fr.isika.cdi07.projet3demo.model.StatutDon;
 import fr.isika.cdi07.projet3demo.model.TypeParticipation;
+import fr.isika.cdi07.projet3demo.model.TypeRole;
 
 @Service
 public class DonMaterielService implements  IDonService<DonMateriel>{
@@ -24,6 +25,7 @@ public class DonMaterielService implements  IDonService<DonMateriel>{
 	
 	@Autowired
 	private ParticipationProjetRepository participationProjetRepo;
+	
 	@Override
 	public List<DonMateriel> afficherDons() {
 		return donMaterielRepo.findAll();
@@ -37,9 +39,9 @@ public class DonMaterielService implements  IDonService<DonMateriel>{
 	@Override
 	public StatutDon enregistrerDansLaBase(DonMateriel don, ParticipationProjet participationProjet) {
 		participationProjet.withDate(Date.valueOf(LocalDate.now()))
-							.withTypeParticipation(TypeParticipation.MATERIEL)
-							.withIsAnonyme(false);
+							.withTypeParticipation(TypeParticipation.MATERIEL);
 		checkAndSaveIfSeuilReached(don, participationProjet);
+		//roleService.saveRole(TypeRole.DONATEUR, utilisateur);
 		return participationProjet.getStatutDon();
 	}
 	
@@ -77,6 +79,16 @@ public class DonMaterielService implements  IDonService<DonMateriel>{
 	@Override
 	public void supprimerDonById(long id) {
 		donMaterielRepo.deleteById(id);
+		
+	}
+
+	@Override
+	public void modifierStatutDon(long idParticipation, StatutDon statutDon) {
+		Optional<ParticipationProjet> optional = participationProjetRepo.findById(idParticipation);
+		if(optional.isPresent()) {
+			optional.get().setStatutDon(statutDon);	
+			participationProjetRepo.save(optional.get());
+		}
 		
 	}
 

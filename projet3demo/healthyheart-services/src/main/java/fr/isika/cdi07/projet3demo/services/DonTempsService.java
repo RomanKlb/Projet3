@@ -38,8 +38,7 @@ public class DonTempsService implements IDonService<DonTemps>{
 	@Override
 	public StatutDon enregistrerDansLaBase(DonTemps don, ParticipationProjet participationProjet) {
 		participationProjet.withDate(Date.valueOf(LocalDate.now()))
-							.withTypeParticipation(TypeParticipation.TEMPS)
-							.withIsAnonyme(false);
+							.withTypeParticipation(TypeParticipation.TEMPS);
 		checkAndSaveIfSeuilReached(don, participationProjet);
 		return participationProjet.getStatutDon();
 	}
@@ -77,6 +76,16 @@ public class DonTempsService implements IDonService<DonTemps>{
 	@Override
 	public void supprimerDonById(long id) {
 		donTempsRepo.deleteById(id);
+		
+	}
+
+	@Override
+	public void modifierStatutDon(long idParticipation, StatutDon statutDon) {
+		Optional<ParticipationProjet> optional = participationProjetRepo.findById(idParticipation);
+		if(optional.isPresent()) {
+			optional.get().setStatutDon(statutDon);	
+			participationProjetRepo.save(optional.get());
+		}
 		
 	}
 
