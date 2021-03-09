@@ -1,6 +1,5 @@
 package fr.isika.cdi07.projet3demo.controller;
 
-
 import fr.isika.cdi07.projet3demo.model.Categorie;
 import fr.isika.cdi07.projet3demo.model.PorteurProjet;
 import fr.isika.cdi07.projet3demo.model.Projet;
@@ -24,19 +23,21 @@ public class ProjetForm {
 	public void setRole(Role role) {
 		this.role = role;
 	}
+
 	public Projet getProjet() {
 		return projet;
 	}
 	public void setProjet(Projet projet) {
 		this.projet = projet;
 	}
-	
+
 	public PorteurProjet getPorteurProjet() {
 		return porteurProjet;
 	}
 	public void setPorteurProjet(PorteurProjet porteurProjet) {
 		this.porteurProjet = porteurProjet;
 	}
+
 	public Categorie getCategorie() {
 		return categorie;
 	}
@@ -73,8 +74,5 @@ public class ProjetForm {
 		builder.append("]");
 		return builder.toString();
 	}
-	
-	
-	
 	
 }

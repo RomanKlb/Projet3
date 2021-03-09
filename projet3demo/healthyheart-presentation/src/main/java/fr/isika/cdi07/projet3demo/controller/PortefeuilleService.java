@@ -1,6 +1,7 @@
 package fr.isika.cdi07.projet3demo.controller;
 
 import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -10,9 +11,7 @@ import org.springframework.stereotype.Service;
 import fr.isika.cdi07.projet3demo.dao.PortefeuilleProjetRepository;
 import fr.isika.cdi07.projet3demo.model.PortefeuilleProjet;
 import fr.isika.cdi07.projet3demo.model.PorteurProjet;
-import fr.isika.cdi07.projet3demo.model.Projet;
 import fr.isika.cdi07.projet3demo.model.Role;
-import fr.isika.cdi07.projet3demo.model.TypePorteur;
 
 @Service
 public class PortefeuilleService {
@@ -56,6 +55,4 @@ public class PortefeuilleService {
 		return portefeuilleRepo.findById(id);
 	}
 
-	
-	
 }
