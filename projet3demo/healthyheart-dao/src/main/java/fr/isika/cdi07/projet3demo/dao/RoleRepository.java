@@ -11,4 +11,6 @@ import fr.isika.cdi07.projet3demo.model.Utilisateur;
 public interface RoleRepository extends JpaRepository<Role, Long>{
 
 	Optional<Role> findByTypeRoleAndUtilisateur(TypeRole typeRole, Utilisateur utilisateur);
+
 }
+
