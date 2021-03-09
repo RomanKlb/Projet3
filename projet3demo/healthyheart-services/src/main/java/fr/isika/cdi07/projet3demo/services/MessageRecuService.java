@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import fr.isika.cdi07.projet3demo.dao.MessageRecuRepository;
 import fr.isika.cdi07.projet3demo.model.MessageRecu;
+import fr.isika.cdi07.projet3demo.model.Utilisateur;
 
 @Service
 public class MessageRecuService {
@@ -35,6 +36,14 @@ public class MessageRecuService {
 		List<MessageRecu> LstMessages = messageRecuRepo.findAll();
 		List<MessageRecu> LstMessagesSel = new ArrayList<MessageRecu>();
 		LstMessages.stream().filter(p-> p.getMessageInterne().getIdMessage() == idMsg).
+				forEach(p -> LstMessagesSel.add(p));
+		return LstMessagesSel;
+	}
+
+	public List<MessageRecu> afficherUserMessages(Utilisateur utilisateur) {
+		List<MessageRecu> LstMessages = messageRecuRepo.findAll();
+		List<MessageRecu> LstMessagesSel = new ArrayList<MessageRecu>();
+		LstMessages.stream().filter(p-> p.getUtilisateur() == utilisateur).
 				forEach(p -> LstMessagesSel.add(p));
 		return LstMessagesSel;
 	}

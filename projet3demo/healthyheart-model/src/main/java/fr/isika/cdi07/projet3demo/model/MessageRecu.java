@@ -55,6 +55,9 @@ public class MessageRecu {
 		this.utilisateur = utilisateur;
 	}
 
+	public Boolean isIsRead() {
+		return isRead;
+	}
 	public Boolean getisRead() {
 		return isRead;
 	}
