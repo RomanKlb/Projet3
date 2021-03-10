@@ -10,9 +10,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import fr.isika.cdi07.projet3demo.dao.PortefeuilleProjetRepository;
 import fr.isika.cdi07.projet3demo.dao.ProjetRepository;
-import fr.isika.cdi07.projet3demo.model.PortefeuilleProjet;
 import fr.isika.cdi07.projet3demo.model.Projet;
 import fr.isika.cdi07.projet3demo.model.Role;
 import fr.isika.cdi07.projet3demo.model.StatutProjet;
@@ -24,9 +22,7 @@ public class ProjetService {
 	private ProjetRepository projetRepo;
 	
 
-	public Projet ajoutProjet(Projet projet) {
-
-	
+	public Projet ajoutProjet(Projet projet) {	
 		projet.setDateMaj(Date.from(Instant.now()));
 		projet.setMontantCollecte(Double.valueOf(0));
 		projet.setStatutDuProjet(StatutProjet.CREE);
