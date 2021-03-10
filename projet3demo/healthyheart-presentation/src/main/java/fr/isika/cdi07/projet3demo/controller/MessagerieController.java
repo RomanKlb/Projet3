@@ -239,8 +239,8 @@ public class MessagerieController {
 		if (!messageRecu.isIsRead()) {
 			messageRecu.setisRead(true);
 			messageRecu.setDateHeure(Date.from(Instant.now()));
+			messageRecuService.ajout(messageRecu);
 		}
-		messageRecuService.ajout(messageRecu);
 		return "Visualiser_User_Message";
 	}
 }

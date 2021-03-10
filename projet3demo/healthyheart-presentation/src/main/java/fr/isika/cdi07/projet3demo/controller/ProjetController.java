@@ -98,7 +98,7 @@ public class ProjetController {
 	public String showUpdateProjetForm(@PathVariable (value = "id") Long id, Model model) {
 		
 		// get Projet from the service
-		Projet projet = projetService.getProjetById(id);
+		Optional<Projet> projet = projetService.getProjetById(id);
 		Optional<Categorie> categorie = categorieService.getCategorieById(id);
 		Optional<Territoire> territoire = territoireService.getTerritoireById(id);
 		Optional<TypeProjet> typeProjet = typeProjetService.getTerritoireById(id);		

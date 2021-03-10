@@ -9,7 +9,9 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import fr.isika.cdi07.projet3demo.dao.PortefeuilleProjetRepository;
 import fr.isika.cdi07.projet3demo.dao.ProjetRepository;
+import fr.isika.cdi07.projet3demo.model.PortefeuilleProjet;
 import fr.isika.cdi07.projet3demo.model.Projet;
 import fr.isika.cdi07.projet3demo.model.StatutProjet;
 
@@ -18,6 +20,9 @@ public class ProjetService {
 
 	@Autowired
 	private ProjetRepository projetRepo;
+	
+	@Autowired
+	private PortefeuilleProjetRepository portefeuilleRepo;
 
 	public Projet ajoutProjet(Projet projet) {
 
@@ -49,16 +54,12 @@ public class ProjetService {
 		return projetsPublies;
 	}
 
-	public Projet getProjetById(long id) {
-		Optional<Projet> optionalP = projetRepo.findById(id);
-		Projet projet = null;
-		if(optionalP.isPresent()) {
-			projet = optionalP.get();
-		} else {
-			throw new RuntimeException(" Projet not found for id : " + id);
-		}
-		return projet;
+	public Optional<Projet> getProjetById(long id) {
+		return projetRepo.findById(id);
 	}
+
+		
+		
 
 //	public Projet UpdateProjet(Long id, String titre, String descriptionCourte, String longueDescription, Double montantAttendu,
 //			Boolean donMateriel, Boolean donTemps, Categorie categorie) {
