@@ -1,25 +1,20 @@
 package fr.isika.cdi07.projet3demo.controller;
 
-import java.util.Base64;
+
 import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.Instant;
-import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,11 +24,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartResolver;
-import org.springframework.web.multipart.commons.CommonsMultipartResolver;
-import org.springframework.web.servlet.ModelAndView;
 
 import fr.isika.cdi07.projet3demo.model.Document;
 import fr.isika.cdi07.projet3demo.model.Projet;
@@ -52,55 +42,6 @@ public class DocumentController {
 
 	@Autowired
 	private DocumentService documentService;
-
-	@GetMapping("/showNewPictureForm/{id}")
-	public String showNewPictureForm(@PathVariable(value = "id") Long id, Model model) {
-
-		Optional<Projet> projet = projetService.getProjetById(id);
-
-		Document document = new Document();
-		List<TypeLibelleDoc> listeDoc = documentService.afficherAllLibelleImage();
-		
-		model.addAttribute("listLibelleImage",listeDoc);
-		model.addAttribute("projet", projet);
-		model.addAttribute("document", document);
-
-		List<Document> afficherListeImageDuProjet = documentService.afficherListeImageDuProjet(projet);
-		//		MultipartFile multipart = (MultipartFile) afficherListeImageDuProjet;
-		List<String> convertedImages = afficherListeImageDuProjet
-				.stream()
-				.map(dcument -> Base64.getEncoder().encodeToString(dcument.getFichier()))
-				.collect(Collectors.toList());
-		model.addAttribute("listeDocumentsDuProjet", afficherListeImageDuProjet);
-		model.addAttribute("listeDocumentsDuProjet", convertedImages);
-
-		//		 model.addAttribute("pic",Base64.getEncoder().encodeToString());
-		//		if(!documents.isEmpty())
-		//		model.addAttribute("listImage", documentService.afficherImage());
-
-		return "newPictureProjet";
-	}
-
-	@PostMapping("/uploadPicture")
-	public String savePicture(@ModelAttribute("projet") Projet projet,
-			@ModelAttribute("document") Document document) {
-		LOGGER.info("Set idProjet in document : " + projet.getIdProjet());
-		
-		
-		Optional<TypeLibelleDoc> opt = documentService.findbyProjetAndLibelle(projet, document.getLibelle());
-		if(opt.isPresent())
-			return "redirect:/showNewPictureForm/" + projet.getIdProjet();
-		document.setProjet(projet);
-		documentService.saveImage(document);
-		return "redirect:/showNewPictureForm/" + projet.getIdProjet();
-
-		/*
-		 * SI déjà image principale alors return la meme page avec message warning 
-		 * faire les si image principale secondaire troisieme ....
-		 * faire la redirection sur la meme page le temps qu'il n'y a pas un autre bouton activé pour aller ailleurs
-		 * faire l'insertion des images insérés en base sur cette page ... avec des getmapping en plus en récup les id 
-		 * et les images déjà inséré.
-		 */
 
 	@GetMapping("/NewPictureForm/{id}")
 	public String NewPictureForm(@PathVariable(value = "id") Long id, Model model,HttpSession session) {
@@ -198,7 +139,6 @@ public class DocumentController {
 		return "redirect:/NewPictureForm/" + idProjet;
 	}
 	
-
 
 
 }
