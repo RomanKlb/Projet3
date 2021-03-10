@@ -53,9 +53,6 @@ public class DocumentController {
 	@Autowired
 	private DocumentService documentService;
 
-
-
-	
 	@GetMapping("/NewPictureForm/{id}")
 	public String NewPictureForm(@PathVariable(value = "id") Long id, Model model,HttpSession session) {
 

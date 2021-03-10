@@ -11,22 +11,22 @@
 			 method="POST">
 		<label>Titre: </label>
 		<input type="text" th:field="*{messagerieForm.message.titre}"/>
-		</br>
+		<br>
 		<label>Emetteur : </label>
 		<input type="text"  th:field="*{messagerieForm.message.emetteur.email}"/>
-		</br>
+		<br>
 		<label>Destinataire : </label>
 		<input type="text"  th:field="*{messagerieForm.listeDest}"/>
-		</br>
+		<br>
 		<label>Contenu message : </label><br/>
 		<textarea rows="5" cols="33"  th:field="*{messagerieForm.message.contenu}"/>
-		</br>
+		<br>
 				<input type="submit" value="Enregistrer"/>
-		</br>
+		<br>
 	
-	<span th:text="${msgerr}"/>	<br/>
+	<span th:text="${msgerr}"></span>	<br/>
 	<a th:href="@{/afficherListeMessages}">retour à la liste</a>
-	
+	</form>
 
 </body>
 </html>
