@@ -42,7 +42,7 @@ public class ScriptRun implements CommandLineRunner{
 	public void run(String... args) throws Exception {
 		Utilisateur monutilisateur = new Utilisateur();
 		monutilisateur.setEmail("rom@gmail.com");
-		monutilisateur.setMdp("blabla");
+		monutilisateur.setMdp("1234");
 		monutilisateur.setNom("k");
 		monutilisateur.setPrenom("r");
 		monutilisateur.setDateMaj(Date.from(Instant.now()));
@@ -67,12 +67,12 @@ public class ScriptRun implements CommandLineRunner{
 		
 		persisterEnBaseProjet.persisterPfP(monPortefeuilleProjet);
 		Territoire monTerritoire = new Territoire();
-		monTerritoire.setLibelle("monterritoire");
+		monTerritoire.setLibelle("France");
 		monTerritoire.setDate(Date.from(Instant.now()));
 		
 		persisterEnBaseProjet.persisterTerritoire(monTerritoire);
 		TypeProjet monTypeProjet = new TypeProjet();
-		monTypeProjet.setLibelle("blabla");
+		monTypeProjet.setLibelle("Aide aux personnes agées");
 		monTypeProjet.setDate(Date.from(Instant.now()));
 		
 		persisterEnBaseProjet.persisterTypeProjet(monTypeProjet);
@@ -82,7 +82,7 @@ public class ScriptRun implements CommandLineRunner{
 		
 		persisterEnBaseProjet.persisterCategorie(maCategorie);
 		Projet monProjet = new Projet();
-		monProjet.setTitre("test");
+		monProjet.setTitre("titre projet");
 		monProjet.setCategorie(maCategorie);;
 		monProjet.setDateFin(new Date());
 		monProjet.setDateMaj(Date.from(Instant.now()));
@@ -96,7 +96,7 @@ public class ScriptRun implements CommandLineRunner{
 		monProjet.setStatutDuProjet(StatutProjet.CREE);
 		persisterEnBaseProjet.persisterProjet(monProjet);
 		Projet monProjet2 = new Projet();
-		monProjet2.setTitre("test2");
+		monProjet2.setTitre("titre");
 		monProjet2.setCategorie(maCategorie);;
 		monProjet2.setDateFin(new Date());
 		monProjet2.setDateMaj(Date.from(Instant.now()));
@@ -111,7 +111,7 @@ public class ScriptRun implements CommandLineRunner{
 		persisterEnBaseProjet.persisterProjet(monProjet2);
 		
 		Projet monProjet3 = new Projet();
-		monProjet3.setTitre("test3");
+		monProjet3.setTitre("titre 3");
 		monProjet3.setCategorie(maCategorie);;
 		monProjet3.setDateFin(new Date());
 		monProjet3.setDateMaj(Date.from(Instant.now()));

@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,6 +14,8 @@ import org.springframework.stereotype.Service;
 import fr.isika.cdi07.projet3demo.dao.ProjetRepository;
 import fr.isika.cdi07.projet3demo.model.Projet;
 import fr.isika.cdi07.projet3demo.model.StatutProjet;
+import fr.isika.cdi07.projet3demo.model.Territoire;
+import fr.isika.cdi07.projet3demo.model.TypeProjet;
 
 @Service
 public class ProjetService {
@@ -60,18 +64,35 @@ public class ProjetService {
 		return projet;
 	}
 	
+	
 	public List<Projet> rechercherProjetParTitre(String titre){
-		return projetRepo.findProjectsByTitre(titre);
+		return projetRepo.findAll().stream()
+							.filter(p -> p.getTitre().contains(titre))
+							.collect(Collectors.toList());
 	}
-//	public List<Projet> rechercherProjetParTitre(String titre) {
-//		List<Projet> TousLesProjets = projetRepo.findAll();
-//		List<Projet> ProjetsParTitre = new ArrayList<Projet>();
-//		for(Projet proj : TousLesProjets) {
-//			if(proj.getTitre().equals(titre));
-//			ProjetsParTitre.add(proj);
-//		}
-//		return ProjetsParTitre;
-//	}
+	
+	public List<Projet> rechercherProjetParCriteres(String titre, Long idTypeProjet, Long idTerritoire){
+		List<Projet> liste = rechercherProjetParTitre(titre);
+		if(idTypeProjet == 0 && idTerritoire == 0) {
+			return liste;
+		} else if (idTypeProjet == 0) {
+			return liste.stream()
+					.filter(p -> p.getCategorie().getTerritoire().getIdTerritoire().equals(idTerritoire))
+					.collect(Collectors.toList());
+		} else if (idTerritoire == 0) {
+			return liste.stream()
+					.filter(p -> p.getCategorie().getTypeProjet().getIdTypeProjet().equals(idTypeProjet))
+					.collect(Collectors.toList());
+		} else {
+			return liste.stream()
+					.filter(p -> p.getCategorie().getTypeProjet().getIdTypeProjet().equals(idTypeProjet)
+					&& p.getCategorie().getTerritoire().getIdTerritoire().equals(idTerritoire))
+					.collect(Collectors.toList());
+		}
+	
+	}
+
+
 
 //	public Projet UpdateProjet(Long id, String titre, String descriptionCourte, String longueDescription, Double montantAttendu,
 //			Boolean donMateriel, Boolean donTemps, Categorie categorie) {

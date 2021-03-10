@@ -117,16 +117,18 @@ public class ProjetController {
 
 		return "updateProjet";
 	}
-
+	
+	//Form pour une recherche simple
 	@GetMapping("/showSearchBox")
 	public String saisirRechercheProjetParTitre(Model model) {
 		RechercheParTitreForm rechercheParTitreForm = new RechercheParTitreForm();
 		model.addAttribute("rechercheParTitreForm", rechercheParTitreForm);
 		return "recherche_titre";
 	}
-	
+	//Recherche par titre
 	@PostMapping("/rechercherProjetParTitre")
-	public String rechercherProjetParTitre(@ModelAttribute("rechercheParTitreForm") RechercheParTitreForm rechercheParTitreForm, Model model) {
+	public String rechercherProjetParTitre(@ModelAttribute("rechercheParTitreForm") RechercheParTitreForm rechercheParTitreForm, 
+			Model model) {
 		List<Projet> listeProjets = projetService.rechercherProjetParTitre(rechercheParTitreForm.getTitre());
 		if(!listeProjets.isEmpty()) {
 			model.addAttribute("listeProjetTrouveParTitre", listeProjets);		
@@ -134,7 +136,32 @@ public class ProjetController {
 		}
 		return "redirect:/showSearchBox";
 	}
-
+ 
+	//Form pour une recherche multicritères 
+	@GetMapping("/showSearchBoxMulticriteres")
+	public String saisirRechercheProjetMulticriteres(Model model) {
+		RechercheMulticriteresForm rechercheMultiForm = new RechercheMulticriteresForm();
+		
+		model.addAttribute("listTerritoire", territoireService.afficherAllTerritoire());
+		System.out.println("Liste territoire : " + territoireService.afficherAllTerritoire());
+		model.addAttribute("listTypeProjet", typeProjetService.afficherAllTypeProjet());
+		model.addAttribute("rechercheMultiForm", rechercheMultiForm);
+		return "recherche_multicriteres";
+	}
+	
+	//Recherche multicritères
+	@PostMapping("/rechercherProjetMulticriteres")
+	public String rechercherProjetMulticriteres(@ModelAttribute("rechercheMultiForm") RechercheMulticriteresForm rechercheMultiForm, 
+			Model model) {
+		List<Projet> listeProjetsmulti = projetService.rechercherProjetParCriteres(rechercheMultiForm.getTitre(), 
+				rechercheMultiForm.getTypeProjet().getIdTypeProjet(), rechercheMultiForm.getTerritoire().getIdTerritoire());
+		System.out.println(listeProjetsmulti.size());
+		if(!listeProjetsmulti.isEmpty()) {
+			model.addAttribute("listeProjetsRechercheMulticriteres", listeProjetsmulti);
+			return "listeProjets_rechercheMulti";
+		}
+		return "redirect:/showSearchBoxMulticriteres";
+	}
 	
 }
 
