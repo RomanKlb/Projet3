@@ -59,5 +59,5 @@ public class CommentaireController {
 		commentaireService.saveCommentaire(newCommentaire);
 		return "redirect:/afficherListeCommentaires/projet?id=" + commentaireForm.getIdProjet();
 	}
-
+	
 }
