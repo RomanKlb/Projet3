@@ -20,6 +20,7 @@ import fr.isika.cdi07.projet3demo.model.PorteurProjet;
 import fr.isika.cdi07.projet3demo.model.Projet;
 import fr.isika.cdi07.projet3demo.model.Role;
 import fr.isika.cdi07.projet3demo.model.Territoire;
+import fr.isika.cdi07.projet3demo.model.TypePorteur;
 import fr.isika.cdi07.projet3demo.model.TypeProjet;
 import fr.isika.cdi07.projet3demo.model.TypeRole;
 import fr.isika.cdi07.projet3demo.model.Utilisateur;

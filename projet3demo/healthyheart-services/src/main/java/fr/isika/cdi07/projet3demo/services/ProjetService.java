@@ -53,13 +53,13 @@ public class ProjetService {
 
 	public Optional<Projet> getProjetById(long id) {
 		return projetRepo.findById(id);
-
 	}
 	
 	public Projet getProjetByIdNoOptional(long id) {
 		return projetRepo.findByIdProjet(id);
 	}
 	
+
 		
 	public List<Projet> getListProjet(Role role) {
 		List<Projet> allProjet = projetRepo.findAll();
