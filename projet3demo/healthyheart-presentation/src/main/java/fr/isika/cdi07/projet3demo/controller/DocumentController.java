@@ -2,24 +2,19 @@ package fr.isika.cdi07.projet3demo.controller;
 
 
 import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.Instant;
-import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,11 +24,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartResolver;
-import org.springframework.web.multipart.commons.CommonsMultipartResolver;
-import org.springframework.web.servlet.ModelAndView;
 
 import fr.isika.cdi07.projet3demo.model.Document;
 import fr.isika.cdi07.projet3demo.model.Projet;
@@ -59,7 +49,6 @@ public class DocumentController {
 	@GetMapping("/NewPictureForm/{id}")
 	public String NewPictureForm(@PathVariable(value = "id") Long id, Model model,HttpSession session) {
 
-		// LOGGER.info("Projet id en entrée : " + id);
 		Optional<Projet> projet = projetService.getProjetById(id);
 		Optional<Object> errorMsg = Optional.ofNullable(session.getAttribute("ErrorNewPicture"));
 		String msgerr = "";
@@ -67,7 +56,6 @@ public class DocumentController {
 			msgerr = errorMsg.get().toString();
 			session.removeAttribute("ErrorNewPicture");
 		}
-		// LOGGER.info("Projet en entrée : " + projet.get());
 
 		DocumentForm documentForm = new DocumentForm();
 		Document document = new Document();
@@ -90,10 +78,6 @@ public class DocumentController {
 	@PostMapping("/NewUploadPicture")
 	public String newSavePicture(@ModelAttribute("docform") DocumentForm documentForm,HttpSession session) throws IOException {
 		Projet monProjet = documentForm.getProjet();
-		LOGGER.info("Set idProjet sur NewSave in document : " + monProjet.getIdProjet() + 
-				" /" + documentForm.getDocument() + " / " + documentForm.getImage().getOriginalFilename() +
-				"/ size : " + documentForm.getImage().getSize()); 
-		
 		
 		TypeLibelleDoc libelDoc = null;
 		
@@ -128,7 +112,7 @@ public class DocumentController {
 			e.printStackTrace();
 		}
 		documentService.saveImage(documentForm.getDocument());
-		LOGGER.info("Document créé : " + documentForm.getDocument());
+		// LOGGER.info("Document créé : " + documentForm.getDocument());
 		return "redirect:/NewPictureForm/" + monProjet.getIdProjet();
 	}
 	
@@ -151,7 +135,5 @@ public class DocumentController {
 		documentService.DeleteDocument(monDocument);
 		return "redirect:/NewPictureForm/" + idProjet;
 	}
-	
-
 
 }

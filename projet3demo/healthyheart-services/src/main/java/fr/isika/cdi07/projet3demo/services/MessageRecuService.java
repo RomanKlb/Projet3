@@ -43,7 +43,7 @@ public class MessageRecuService {
 	public List<MessageRecu> afficherUserMessages(Utilisateur utilisateur) {
 		List<MessageRecu> LstMessages = messageRecuRepo.findAll();
 		List<MessageRecu> LstMessagesSel = new ArrayList<MessageRecu>();
-		LstMessages.stream().filter(p-> p.getUtilisateur() == utilisateur).
+		LstMessages.stream().filter(p-> p.getUtilisateur().equals(utilisateur)).
 				forEach(p -> LstMessagesSel.add(p));
 		return LstMessagesSel;
 	}
