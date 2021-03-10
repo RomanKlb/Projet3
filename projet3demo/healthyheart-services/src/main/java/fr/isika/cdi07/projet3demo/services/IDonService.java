@@ -5,12 +5,13 @@ import java.util.List;
 import fr.isika.cdi07.projet3demo.model.Don;
 import fr.isika.cdi07.projet3demo.model.ParticipationProjet;
 import fr.isika.cdi07.projet3demo.model.StatutDon;
+import fr.isika.cdi07.projet3demo.model.Utilisateur;
 
 public interface IDonService<T extends Don> {
 
 	List<T> afficherDons();
 	Long compterDons();
-	StatutDon enregistrerDansLaBase(T don, ParticipationProjet participationProjet);
+	StatutDon enregistrerDansLaBase(T don, ParticipationProjet participationProjet, Utilisateur user);
 	T obtenirDonById(long id);
 	void supprimerDonById(long id);
 	void modifierStatutDon(long idParticipation, StatutDon statutDon);

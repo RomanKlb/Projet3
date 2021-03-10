@@ -32,6 +32,7 @@
 		<h5>Don Monetaire form</h5>
 		<form action="#" th:action="@{/don/sauvegarderDonMonetaire}" 
 				method="POST" th:object="${donForm}">
+			<input type="hidden" th:field="*{utilisateur.email}" />
 			<input type="hidden" th:field="*{participationProjet.projet.idProjet}" />
 			<div>
 				<div class="form-check form-switch">
@@ -53,6 +54,7 @@
 		<h5>Don Materiel form</h5>
 		<form action="#" th:action="@{/don/sauvegarderDonMateriel}" class="materiel formu"
 				th:object="${donForm}" method="POST">
+			<input type="hidden" th:field="*{utilisateur.email}" />
 			<input type="hidden" th:field="*{participationProjet.projet.idProjet}" />
 			<div>
 				<div class="form-check form-switch">
@@ -78,6 +80,7 @@
 		<h5>Don Temps form</h5>
 		<form action="#" th:action="@{/don/sauvegarderDonTemps}" class="temps formu"
 				th:object="${donForm}" method="POST">
+			<input type="hidden" th:field="*{utilisateur.email}" />
 			<input type="hidden" th:field="*{participationProjet.projet.idProjet}" />
 			<div>
 				<div class="form-check form-switch">

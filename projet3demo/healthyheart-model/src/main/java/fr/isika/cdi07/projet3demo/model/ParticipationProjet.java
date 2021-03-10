@@ -159,5 +159,10 @@ public class ParticipationProjet {
 		return this;
 	}
 	
+	public ParticipationProjet withRole(Role role) {
+		this.role = role;
+		return this;
+	}
+	
 	
 }
