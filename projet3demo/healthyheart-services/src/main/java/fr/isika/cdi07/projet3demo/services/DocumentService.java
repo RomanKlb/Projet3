@@ -65,9 +65,9 @@ public class DocumentService {
 		
 	}
 	
+	public void DeleteDocument(Document document) {
+		documentRepo.delete(document);
+	}
 	
-
-	
-
 
 }

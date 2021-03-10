@@ -86,12 +86,14 @@ public class UtilisateurController {
 	public String connecterUtilisateur(@ModelAttribute("loginForm") LoginForm loginForm, HttpSession session) {
 		// TODO valider le contenu
 		Optional<Utilisateur> optionalUtilisateur = utilisateurService.chercherUtilisateurParEmailEtMdp(loginForm.getEmail(), loginForm.getPassword());
+
 		if(optionalUtilisateur.isPresent()) {
 			session.setAttribute(EMAIL_UTILISATEUR_CONNECTE, optionalUtilisateur.get().getEmail());
 			session.setAttribute("prenomUtilisateur", optionalUtilisateur.get().getPrenom());
 			return REDIRECT + "utilisateurConnecte";
+
 		}
-		return "login_NOT_success";
+		return REDIRECT + "showConnexionForm";
 
 	}
 

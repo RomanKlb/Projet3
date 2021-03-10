@@ -152,7 +152,6 @@ public class ProjetController {
 	//Update
 	@GetMapping("/showUpdateForm/{id}")
 	public String showUpdateProjetForm(@PathVariable (value = "id") Long id, Model model) {
-
 		// get Projet from the service
 		Optional<Projet> optProjet = projetService.getProjetById(id);
 		if(!optProjet.isPresent())

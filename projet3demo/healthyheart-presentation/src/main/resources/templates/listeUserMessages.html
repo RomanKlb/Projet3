@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Liste des messages</title>
+</head>
+<body>
+	<a th:href="@{/ajouterUserMessage}">Ajouter Message</a>
+	<fieldset>
+		<legend>Boite de Récéption Utilisateur</legend>
+		<div>
+			<label>Total :</label>
+			<p th:text="${count}"></p>
+		</div>
+		<table>
+			<tr>
+				<th>titre</th>
+				<th>date</th>
+				<th>Emetteur</th>
+				<th>Lu</th>
+				<th>Actions</th>
+			</tr>
+			<tr th:each="msg:${messagesList}">
+				<td><p th:text="${msg.messageInterne.titre}"></p></td>
+				<td><p th:text="${#calendars.format(msg.messageInterne.date,'dd/MM/yyyy à H:mm::ss')}"></p></td>
+				<td><p th:text="${msg.messageInterne.emetteur.email}"></p></td>
+				<td><p th:text="${msg.isRead}? 'Oui' : 'Non'"></p></td>
+				<td>
+					<a th:href="@{/VisualierUserMessage/{id}(id=${msg.idMessageRecu})}">visualiser</a>
+				</td>
+			</tr>
+		
+		</table>
+
+	</fieldset>
+
+</body>
+</html>
