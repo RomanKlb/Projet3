@@ -1,10 +1,57 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
 <head>
-<meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<meta charset="UTF-8">
+<title>Afficher Projet selectionné</title>
 </head>
 <body>
+	<h1>Afficher Projet Selectionné</h1>
 
+	<form>
+		
+		
+		
+		<label th:text="${projet.titre}"> </label>
+
+
+
+		<hr />
+		<!-- 	
+			//contener 2/3 1/3
+		<img th:src=""/>
+	 -->
+
+
+		<label 
+			th:text="${projet.portefeuilleprojet.porteurprojet.libelle}"></label>
+		<label 
+			th:text="${projet.portefeuilleprojet.porteurprojet.role.utilisateur.nom}"></label>
+		<label 
+			th:text="${projet.portefeuilleprojet.porteurprojet.role.utilisateur.prenom}"></label>
+		<label 
+			th:text="${projet.portefeuilleprojet.porteurprojet.role.utilisateur.email}"></label>
+			
+		<label th:text="${projet.dateFin}"></label>
+		
+		<hr />
+		
+		<textarea rows="5" cols="15" disabled="disabled"
+			th:field="${projet.descriptionCourte}"></textarea>
+		<textarea rows="5" cols="30" disabled="disabled"
+			th:field="${projet.descriptionLongue}"></textarea>
+
+		<hr />
+
+
+		<label th:text="${projet.montantCollecte}"></label>
+		<label th:text="${projet.montantAttendu}"></label>
+
+		<hr />
+
+		<!-- 
+		//contener 1/2 1/2 ou 1 1 <img th:src="" /> <img th:src="" /> -->
+		
+		<a th:href="@{/ShowAllProjetList}">Retour liste projet</a>
+	</form>
 </body>
 </html>

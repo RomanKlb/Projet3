@@ -305,9 +305,54 @@ public class ProjetController {
 	}
 
 
-
+	///////FIN GIT MASTER //////////
 
 	//show One Projet
+
+	@GetMapping("/showProjet/{id}")
+	public String showProjet(@PathVariable (value = "id") Long id, Model model) {
+
+//		PresentationProjetForm form = new PresentationProjetForm();
+
+		Projet projet = projetService.getProjetByIdNoOptional(id);
+//		form.setProjet(projet);
+		
+//		PortefeuilleProjet portefeuilleProjet = projet.getPortefeuilleprojet();
+//		form.setPorteFeuille(portefeuilleProjet);
+//		
+//		PorteurProjet porteurProjet = projet.getPortefeuilleprojet().getPorteurprojet();
+//		form.setPorteurProjet(porteurProjet);
+//		
+//		Role role = projet.getPortefeuilleprojet().getPorteurprojet().getRole();
+//		form.setRole(role);
+//		
+//		Utilisateur utilisateur = projet.getPortefeuilleprojet().getPorteurprojet().getRole().getUtilisateur();
+//		form.setUtilisateur(utilisateur);
+//		
+//		Categorie categorie = projet.getCategorie();
+//		form.setCategorie(categorie);
+//		
+//		Territoire territoire = projet.getCategorie().getTerritoire();
+//		form.setTerritoire(territoire);
+//		
+//		TypeProjet typeProjet = projet.getCategorie().getTypeProjet();
+//		form.setTypeProjet(typeProjet);
+		
+		
+
+		// document recup
+		// form set doc
+
+		model.addAttribute("projet", projet);
+//		model.addAttribute("typeProjet", typeProjet);
+//		model.addAttribute("territoire", territoire);
+//		model.addAttribute("porteFeuille", portefeuilleProjet);
+//		model.addAttribute("porteurProjet", porteurProjet);
+//		model.addAttribute("role", role);
+//		model.addAttribute("utilisateur", utilisateur);
+
+		return "vueProjet";
+	}
 
 
 

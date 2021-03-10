@@ -42,6 +42,11 @@ public class PortefeuilleProjet {
 	public Long getIdPorteFeuille() {
 		return idPorteFeuille;
 	}
+	
+
+	public void setIdPorteFeuille(Long idPorteFeuille) {
+		this.idPorteFeuille = idPorteFeuille;
+	}
 
 	@Override
 	public String toString() {
