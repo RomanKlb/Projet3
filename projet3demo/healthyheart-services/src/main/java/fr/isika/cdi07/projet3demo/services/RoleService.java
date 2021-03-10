@@ -29,8 +29,22 @@ public class RoleService {
 		Role newRole = new Role();
 		newRole.setTypeRole(typeRole);
 		newRole.setUtilisateur(user);
+		
 
 		return roleRepo.save(newRole);
 	}
+	
+	public Optional<Role> testIsPorteurProjet(Utilisateur user) {
+		List<Role> listeRolePorteurProjet = roleRepo.findAllByTypeRole(TypeRole.PORTEURPROJET);
+		return listeRolePorteurProjet.stream()
+				.filter(r -> r.getUtilisateur()
+				.equals(user)).findFirst();
+			
+	}
 
+	
+	
+	
+	
+	
 }

@@ -67,6 +67,10 @@ public class PorteurProjet {
 	}
 
 
+	public void setIdPorteurProjet(Long idPorteurProjet) {
+		this.idPorteurProjet = idPorteurProjet;
+	}
+
 	public Long getIdPorteurProjet() {
 		return idPorteurProjet;
 	}

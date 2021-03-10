@@ -7,44 +7,44 @@
 <body>
 	<h1>modifier un projet dans la db</h1>
 
-	<form action="#" th:action="@{/saveProjet}" method="POST">
+	<form action="#" th:action="@{/updateProjet}" method="POST">
 
 		<!-- Add hidden form field to handle update -->
-		<input type="hidden" th:field="*{projet.idProjet}" /> 
+		<input type="hidden" th:field="*{monForm.projet}" /> 
 		
 		<input type="text"
-			th:field="*{projet.titre}">
+			th:field="*{monForm.projet.titre}">
 
-		<textarea type="text" th:field="*{projet.descriptionCourte}"></textarea>
+		<textarea type="text" th:field="*{monForm.projet.descriptionCourte}"></textarea>
 
-		<textarea type="text" th:field="*{projet.descriptionLongue}"></textarea>
+		<textarea type="text" th:field="*{monForm.projet.descriptionLongue}"></textarea>
 
-		<input type="text" th:field="*{projet.montantAttendu}">
+		<input type="text" th:field="*{monForm.projet.montantAttendu}">
 
 		<input type="date" 
-			th:field="*{projet.dateFin}" >
+			th:field="*{monForm.projet.dateFin}" >
 
 		<div>combo type</div>
 		<select th:id="typeProjetIdComboBox"
-			th:field=*{typeProjet.idTypeProjet}>
+			th:field=*{monForm.typeProjet.idTypeProjet}>
 			<option value="0">Selection TypeProjet</option>
 			<option th:each="tp : ${listTypeProjet}"
 				th:value="${tp.idTypeProjet}" th:text="${tp.libelle}"></option>
 		</select> <br />
 		<div>combo territoire</div>
 		<select th:id="territoireIdComboBox"
-			th:field=*{territoire.idTerritoire}>
+			th:field=*{monForm.territoire.idTerritoire}>
 			<option value="0">Selection Territoire</option>
 			<option th:each="t : ${listTerritoire}" th:value="${t.idTerritoire}"
 				th:text="${t.libelle}"></option>
 		</select>
 		<div>
 			<br /> <label>Don matériel? :</label> <input type="checkbox"
-				th:field="*{projet.donMateriel}">
+				th:field="*{monForm.projet.donMateriel}">
 		</div>
 		<div>
 			<label>Don de temps? :</label> <input type="checkbox"
-				th:field="*{projet.donTemps}">
+				th:field="*{monForm.projet.donTemps}">
 		</div>
 
 		<button type="submit">Update Projet</button>
