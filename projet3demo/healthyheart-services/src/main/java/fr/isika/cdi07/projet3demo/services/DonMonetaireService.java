@@ -70,13 +70,17 @@ public class DonMonetaireService implements IDonService<DonMonetaire>{
 								.withRole(addRoleDonateurToUser(user));
 			participationProjetRepo.save(participationProjet);
 			
-			Optional<Projet> projetToDonate = projetRepo.findById(participationProjet.getProjet().getIdProjet());
-			double newMontantCollecte = projetToDonate.get().getMontantCollecte() + don.getMontant();
-			projetToDonate.get().setMontantCollecte(newMontantCollecte);
-			projetRepo.save(projetToDonate.get());
+			addMontantDansCollecteProjet(don, participationProjet);
 			
 			saveDonInDB(don, participationProjet);
 		}
+	}
+
+	private void addMontantDansCollecteProjet(DonMonetaire don, ParticipationProjet participationProjet) {
+		Optional<Projet> projetToDonate = projetRepo.findById(participationProjet.getProjet().getIdProjet());
+		double newMontantCollecte = projetToDonate.get().getMontantCollecte() + don.getMontant();
+		projetToDonate.get().setMontantCollecte(newMontantCollecte);
+		projetRepo.save(projetToDonate.get());
 	}
 
 	private void saveDonInDB(DonMonetaire don, ParticipationProjet participationProjet) {
@@ -108,6 +112,9 @@ public class DonMonetaireService implements IDonService<DonMonetaire>{
 		if(optional.isPresent()) {
 			optional.get().setStatutDon(statutDon);	
 			participationProjetRepo.save(optional.get());
+			//TODO switch statutdon
+			//si APPROUVE >>> ajout du role DONATEUR + ajout du montant dans projet
+			//si REJETE >>> ne rien faire
 		}
 			
 	}
