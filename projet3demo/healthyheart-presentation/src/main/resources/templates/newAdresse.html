@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Création Adresse</title>
+</head>
+<body>
+
+	<fieldset>
+		<legend>création adresse </legend>
+		<form action="#" th:action="@{/enregistrerAdresse}" method="POST">
+
+
+			<!-- Add hidden form field to handle update -->
+			<input type="hidden" th:field="*{utilisateur.email}" />
+
+
+
+			<div>
+				<label>CE QUE TU VEUX :</label> <input type="text"
+					th:field="*{adresse.libelle}" placeholder="nom ce que tu veux">
+			</div>
+			<div>
+				<label>numéro et rue :</label> <input type="text" th:field="*{adresse.rue}"
+					placeholder="numéro et rue">
+			</div>
+			<div>
+				<label>code postal :</label> <input type="text"
+					th:field="*{adresse.codePostal}" placeholder="code postal">
+			</div>
+			<div>
+				<label>ville :</label> <input type="text" th:field="*{adresse.ville}"
+					placeholder="ville">
+			</div>
+			<div>
+				<label>pays :</label> <input type="text" th:field="*{adresse.pays}"
+					placeholder="pays">
+			</div>
+
+			<button type="submit">Suivant</button>
+		</form>
+	</fieldset>
+
+</body>
+</html>

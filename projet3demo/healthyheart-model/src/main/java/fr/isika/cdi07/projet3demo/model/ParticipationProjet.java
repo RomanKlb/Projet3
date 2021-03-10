@@ -67,6 +67,10 @@ public class ParticipationProjet {
 		return isAnonyme;
 	}
 
+	public void setIdParticipation(Long idParticipation) {
+		this.idParticipation = idParticipation;
+	}
+
 	public void setAnonyme(boolean isAnonyme) {
 		this.isAnonyme = isAnonyme;
 	}
@@ -152,6 +156,11 @@ public class ParticipationProjet {
 	
 	public ParticipationProjet withFacture(Facture facture) {
 		this.facture = facture;
+		return this;
+	}
+	
+	public ParticipationProjet withRole(Role role) {
+		this.role = role;
 		return this;
 	}
 	

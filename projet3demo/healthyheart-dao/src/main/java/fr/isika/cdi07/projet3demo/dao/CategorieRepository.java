@@ -8,4 +8,6 @@ import fr.isika.cdi07.projet3demo.model.TypeProjet;
 
 public interface CategorieRepository extends JpaRepository<Categorie, Long>{
 
+	Categorie findByIdCategorie(Long id);
+
 }

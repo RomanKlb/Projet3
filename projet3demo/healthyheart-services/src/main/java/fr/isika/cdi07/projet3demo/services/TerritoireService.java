@@ -30,4 +30,8 @@ public class TerritoireService {
 	public Optional<Territoire> getTerritoireById(Long id) {
 		return territoireRepo.findById(id);
 	}
+
+	public Territoire getTerritoireByIdNoOptional(Long id) {
+		return territoireRepo.findByIdTerritoire(id);
+	}
 }

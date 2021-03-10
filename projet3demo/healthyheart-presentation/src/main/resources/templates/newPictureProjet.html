@@ -2,33 +2,48 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="fr">
 <head>
 <meta charset="UTF-8">
+
 <title>Importer les images pour le projet</title>
 </head>
 <body>
 	<h1>Importer des images du projet dans la db</h1>
 
-	<form action="#" th:action="@{/uploadPicture}" 
-	method="POST" enctype="application/x-www-form-urlencoded">
+	<form action="#" th:action="@{/NewUploadPicture}" method="POST"
+		enctype="multipart/form-data">
 
 		<!-- Add hidden form field to handle update -->
-		<input type="hidden" th:field="*{projet.idProjet}" />
+		<input type="hidden" th:field="*{docform.projet}" />
+		<input type="hidden" th:field="*{docform.document.projet}" />
 
-		<!-- 	<div>combo type</div>
-		<select th:id="ImageComboBox" th:field=*{}>
+		<div>combo Libelle image</div>
+		<select th:id="ImageComboBox" th:field=*{docform.libelImage}>
 			<option value="0">Selection image Projet</option>
-			<option th:value="${TypeLibelleDoc.IMAGE_PRINCIPALE}">Image Principale</option>
-			<option th:value="${TypeLibelleDoc.IMAGE_SECONDE}">Image Second</option>
-			<option th:value="${TypeLibelleDoc.IMAGE_TROISIEME}">Image Troisième</option>
-		</select>  -->
+			<option value="1">Image Principale</option>
+			<option value="2">Seconde Image</option>
+			<option value="3">Troisieme Image</option>
+		</select>
 
-	<!-- 	<input type="text" th:field="*{document.libelle}"
-			placeholder="libellé de l'image">  -->
-			<br />
-			 <input th:type="file"
-			th:field="*{document.fichier}" placeholder="Selection de l'image">
+		<br /> <input th:type="file"
+			accept="image/jpg, image/jpeg"
+			th:field="*{docform.image}" placeholder="Selection de l'image">
 
-		<button type="submit">Save picture Projet</button>
+		<br />
+		<button type="submit">Enregister l'image</button>
+		
+		<br/><span th:text="${msgerr}"/>	<br/>
+
 	</form>
+	
+	<div th:each="img:${listImageProjet}">
+	<form action="#" th:action="@{/DelUploadPicture/{id}(id=${img.idDocument})}" method="POST">
+		<hr/>
+		<label>Libelle :</label> <label th:text="${img.libelle}"/><br/>
+		<img th:src="@{/viewImage/{id}(id=${img.idDocument})}" alt="Image_projet" style=max-width:100%;height:auto;>
+		<br/><button type="submit">Supprimer l'image</button>
+	</form>	
+	</div>
+
+
 
 </body>
 </html>

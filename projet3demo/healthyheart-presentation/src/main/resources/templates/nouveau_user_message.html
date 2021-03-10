@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Créationd'un message</title>
+</head>
+<body>
+		<h2>Création d'un message </h2>
+	<hr>
+	<form action="#" th:action="@{/sauvegarderUserMessage}" 
+			 method="POST">
+		<label>Titre: </label>
+		<input type="text" th:field="*{messagerieForm.message.titre}"/>
+		<br>
+		<input type="hidden"  th:field="*{messagerieForm.message.emetteur}"/>
+		<br>
+		<label>Destinataire : </label>
+		<input type="text"  th:field="*{messagerieForm.listeDest}"/>
+		<br>
+		<label>Contenu message : </label><br/>
+		<textarea rows="5" cols="33"  th:field="*{messagerieForm.message.contenu}"/>
+		<br>
+				<input type="submit" value="Enregistrer"/>
+		<br>
+	
+	<span th:text="${msgerr}"/></span>	<br/>
+	<a th:href="@{/afficherListeUserMessages}">retour à la liste</a>
+	</form>
+
+</body>
+</html>

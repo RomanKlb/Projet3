@@ -1,19 +1,26 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+<th:block th:fragment="headerfiles">
+	<meta charset="UTF-8">
+	<link th:rel="stylesheet" th:href="@{/lib/bootstrap.min.css}" />
+	<script th:src="@{/lib/bootstrap.min.js}"></script>
+	<script th:src="@{/lib/jquery-3.6.0.min.js}"></script>
+	<link th:rel="stylesheet" th:href="@{/css/style.css}" />
+</th:block>
 </head>
 
 <body>
 
 	<div th:fragment="header">
-		<a th:href="@{/ShowAllProjetList}">All Projet List</a>
+		<a th:href="@{/ShowAllProjetList}">Header</a>
+		<h1>ICI C EST LE HEADER</h1>
 	</div>
-	
+
 	<div th:fragment="footer">
 		<div>
-		<a th:href="@{/ShowAllProjetList}">All Projet List</a>
+			<a th:href="@{/ShowAllProjetList}">Footer</a>
+			<h1>ICI C EST LE FOOTER</h1>
 		</div>
 	</div>
 

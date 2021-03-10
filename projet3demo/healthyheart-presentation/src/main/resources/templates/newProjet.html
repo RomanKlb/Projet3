@@ -9,41 +9,59 @@
 
 	<form action="#" th:action="@{/saveProjet}" method="POST">
 
-		<input type="text" th:field="*{projet.titre}"
+
+		<input type="text" th:field="*{monForm.porteurProjet.libelle}"
+			placeholder="libelle Structure"> 
+			
+			<input type="text"
+			th:field="*{monForm.porteurProjet.iban}" placeholder="Iban Structure">
+			
+			<!-- hidden  -->
+			<input type="hidden" th:field="*{monForm.porteurProjet.typePorteur}">
+			<!-- hidden  -->
+			<input type="hidden" th:field="*{monForm.porteurProjet.role}">
+			<!-- hidden  -->
+			<input type="hidden" th:field="*{monForm.porteurProjet}">
+		
+		<hr/>
+		
+		
+		<input type="text" th:field="*{monForm.projet.titre}"
 			placeholder="Titre du Projet">
 
-		<textarea type="text" th:field="*{projet.descriptionCourte}"
+		<textarea type="text" th:field="*{monForm.projet.descriptionCourte}"
 			placeholder="Courte Description"></textarea>
 
-		<textarea type="text" th:field="*{projet.descriptionLongue}"
+		<textarea type="text" th:field="*{monForm.projet.descriptionLongue}"
 			placeholder="Longue Description"></textarea>
 
-		<input type="text" th:field="*{projet.montantAttendu}"
-			placeholder="Montant attendu">
-
-		<input type="date" 
-			th:field="*{projet.dateFin}" >
+		<input type="text" th:field="*{monForm.projet.montantAttendu}" placeholder="Montant attendu" /> 
+		
+		<input type="date" th:field="*{monForm.projet.dateFin}" />
+			placeholder="Montant attendu"> <input type="date"
+			th:field="*{monForm.projet.dateFin}">
 
 		<div>combo type</div>
-		<select th:id="typeProjetIdComboBox" th:field=*{typeProjet.idTypeProjet}>
+		<select th:id="typeProjetIdComboBox"
+			th:field=*{typeProjet.idTypeProjet}>
 			<option value="0">Selection TypeProjet</option>
 			<option th:each="tp : ${listTypeProjet}"
 				th:value="${tp.idTypeProjet}" th:text="${tp.libelle}"></option>
-		</select> 
-		<br />
+		</select> <br />
 		<div>combo territoire</div>
-		<select th:id="territoireIdComboBox" th:field=*{territoire.idTerritoire}>
+		<select th:id="territoireIdComboBox"
+			th:field=*{territoire.idTerritoire}>
 			<option value="0">Selection Territoire</option>
 			<option th:each="t : ${listTerritoire}" th:value="${t.idTerritoire}"
 				th:text="${t.libelle}"></option>
 		</select>
 		<div>
 			<br /> <label>Don matériel? :</label> <input type="checkbox"
-				th:field="*{projet.donMateriel}">
+				th:field="*{monForm.projet.donMateriel}">
 		</div>
 		<div>
 			<label>Don de temps? :</label> <input type="checkbox"
-				th:field="*{projet.donTemps}">
+				th:field="*{monForm.projet.donTemps}">
 		</div>
 
 		<button type="submit">Save Projet</button>

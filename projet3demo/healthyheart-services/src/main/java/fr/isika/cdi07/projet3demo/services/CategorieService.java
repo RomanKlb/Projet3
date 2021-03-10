@@ -42,4 +42,8 @@ public class CategorieService {
 	public Optional<Categorie> getCategorieById(Long id) {
 		return categorieRepo.findById(id);
 	}
+
+	public Categorie getCategorieByIdNoOptional(Long id) {
+		return categorieRepo.findByIdCategorie(id);
+	}
 }

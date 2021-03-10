@@ -36,7 +36,7 @@ public class TypeProjetService {
 	}
 
 
-	public Optional<TypeProjet> getTerritoireById(Long id) {
-		return typeProjetRepo.findById(id);
+	public TypeProjet getTypeProjetByIdNoOptional(Long id) {
+		return typeProjetRepo.findByIdTypeProjet(id);
 	}
 }
