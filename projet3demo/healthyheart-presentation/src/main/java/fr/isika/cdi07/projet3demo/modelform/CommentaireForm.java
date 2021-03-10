@@ -1,10 +1,14 @@
 package fr.isika.cdi07.projet3demo.modelform;
 
+import fr.isika.cdi07.projet3demo.model.Role;
+
 public class CommentaireForm {
 	
 	private Long idProjet;	
+	private Role role;
 	private String libelle;	
 	private String message;
+	private boolean allowedToComment;
 	
 	
 	public CommentaireForm() {
@@ -22,6 +26,14 @@ public class CommentaireForm {
 		this.idProjet = idProjet;
 	}
 
+	public Role getRole() {
+		return role;
+	}
+
+	public void setRole(Role role) {
+		this.role = role;
+	}
+
 	public String getLibelle() {
 		return libelle;
 	}
@@ -37,7 +49,16 @@ public class CommentaireForm {
 	public void setMessage(String message) {
 		this.message = message;
 	}
-	
-	
+
+	public boolean isAllowedToComment() {
+		return allowedToComment;
+	}
+
+	public void setAllowedToComment(boolean allowedToComment) {
+		this.allowedToComment = allowedToComment;
+	}
+
+
+
 
 }
