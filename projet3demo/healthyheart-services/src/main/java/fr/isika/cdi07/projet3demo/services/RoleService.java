@@ -41,6 +41,14 @@ public class RoleService {
 				.equals(user)).findFirst();
 			
 	}
+	
+	public Optional<Role> testIsAdmin(Utilisateur user) {
+		List<Role> listeRoleAdmin = roleRepo.findAllByTypeRole(TypeRole.ADMINISTRATEUR);
+		return listeRoleAdmin.stream()
+				.filter(r -> r.getUtilisateur()
+						.equals(user)).findFirst();
+		
+	}
 
 
 	

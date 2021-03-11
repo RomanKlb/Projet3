@@ -9,13 +9,25 @@
 
 	<form action="#" th:action="@{/updateProjet}" method="POST">
 
+		<!-- hidden  -->
+		<input type="hidden" th:field="*{monForm.porteurProjet.typePorteur}">
+		<!-- hidden  -->
+		<input type="hidden" th:field="*{monForm.porteurProjet.role}">
+		<!-- hidden  -->
+		<input type="hidden" th:field="*{monForm.utilisateur}">
 		<!-- Add hidden form field to handle update -->
-		<input type="hidden" th:field="*{monForm.projet}" /> 
+		<input type="hidden" th:field="*{monForm.projet}" />
 		<!-- Add hidden form field to handle update -->
-		<input type="hidden" th:field="*{monForm.porteurProjet}" /> 
-		
+		<input type="hidden" th:field="*{monForm.porteurProjet}" />
+		<!--  -->
+
+		<input type="text" th:field="${monForm.porteurProjet.libelle}"> 
 		<input type="text"
-			th:field="*{monForm.projet.titre}">
+			th:field="${monForm.porteurProjet.iban}">
+
+		<hr />
+
+		<input type="text" th:field="*{monForm.projet.titre}">
 
 		<textarea type="text" th:field="*{monForm.projet.descriptionCourte}"></textarea>
 
@@ -23,8 +35,7 @@
 
 		<input type="text" th:field="*{monForm.projet.montantAttendu}">
 
-		<input type="date" 
-			th:field="*{monForm.projet.dateFin}" >
+		<input type="date" th:field="*{monForm.projet.dateFin}">
 
 		<div>combo type</div>
 		<select th:id="typeProjetIdComboBox"

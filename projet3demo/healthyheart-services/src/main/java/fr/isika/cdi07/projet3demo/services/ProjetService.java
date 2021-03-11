@@ -2,9 +2,11 @@ package fr.isika.cdi07.projet3demo.services;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,9 @@ import fr.isika.cdi07.projet3demo.model.StatutProjet;
 @Service
 public class ProjetService {
 
+	private static final Logger LOGGER = Logger.getLogger(ProjetService.class.getSimpleName());
+
+	
 	@Autowired
 	private ProjetRepository projetRepo;
 	
@@ -35,6 +40,119 @@ public class ProjetService {
 	public List<Projet> afficherAllProjet() {
 
 		return projetRepo.findAll();
+	}
+	
+	
+	
+	public List<Projet> listProjetInfo(String etat) {
+		List<Projet> projets = projetRepo.findAll();
+		List<Projet> projetsSelection = new ArrayList<Projet>();
+		
+		LOGGER.info("etat demandé :" +etat);
+		
+		for(Projet monProjet : projets) {
+			if(etat.equalsIgnoreCase("create")) {
+				if(!monProjet.getStatutDuProjet().equals(StatutProjet.CREE)) {
+					continue;
+				}
+			}
+			if(etat.equalsIgnoreCase("approved")) {
+				if(!monProjet.getStatutDuProjet().equals(StatutProjet.APPROUVE)) {
+					continue;
+				}
+			}			
+			if(etat.equalsIgnoreCase("wait")) {
+				if(!monProjet.getStatutDuProjet().equals(StatutProjet.EN_ATTENTE)) {
+					continue;
+				}
+			}
+			
+			if(etat.equalsIgnoreCase("reject")) {
+				if(!monProjet.getStatutDuProjet().equals(StatutProjet.REJETE)) {
+					continue;
+				}
+			}
+			if(etat.equalsIgnoreCase("published")) {
+				if(!monProjet.getStatutDuProjet().equals(StatutProjet.PUBLIE)) {
+					continue;
+				}
+			}
+			if(etat.equalsIgnoreCase("completed")) {
+				if(!monProjet.getStatutDuProjet().equals(StatutProjet.TERMINE)) {
+					continue;
+				}
+			}
+			if (etat.equalsIgnoreCase("actif")) {
+				if(monProjet.getStatutDuProjet().equals(StatutProjet.SUPPRIME)) {
+					continue;
+				}
+			}
+			if(etat.equalsIgnoreCase("deleted")) {
+				if(!monProjet.getStatutDuProjet().equals(StatutProjet.SUPPRIME)) {
+					continue;
+				}
+			}
+			
+			projetsSelection.add(monProjet);
+		}
+		
+		return projetsSelection;
+	}
+	
+	
+	public List<Projet> listProjetInfoForUser(String etat, Role role) {
+		List<Projet> projets = getListProjet(role);
+		List<Projet> projetsSelection = new ArrayList<Projet>();
+		
+		LOGGER.info("etat demandé :" +etat);
+		
+		for(Projet monProjet : projets) {
+			if(etat.equalsIgnoreCase("create")) {
+				if(!monProjet.getStatutDuProjet().equals(StatutProjet.CREE)) {
+					continue;
+				}
+			}
+			if(etat.equalsIgnoreCase("approved")) {
+				if(!monProjet.getStatutDuProjet().equals(StatutProjet.APPROUVE)) {
+					continue;
+				}
+			}			
+			if(etat.equalsIgnoreCase("wait")) {
+				if(!monProjet.getStatutDuProjet().equals(StatutProjet.EN_ATTENTE)) {
+					continue;
+				}
+			}
+			
+			if(etat.equalsIgnoreCase("reject")) {
+				if(!monProjet.getStatutDuProjet().equals(StatutProjet.REJETE)) {
+					continue;
+				}
+			}
+			if(etat.equalsIgnoreCase("published")) {
+				if(!monProjet.getStatutDuProjet().equals(StatutProjet.PUBLIE)) {
+					continue;
+				}
+			}
+			if(etat.equalsIgnoreCase("completed")) {
+				if(!monProjet.getStatutDuProjet().equals(StatutProjet.TERMINE)) {
+					continue;
+				}
+			}
+			if (etat.equalsIgnoreCase("actif")) {
+				if(monProjet.getStatutDuProjet().equals(StatutProjet.SUPPRIME)) {
+					continue;
+				}
+			}
+			if(etat.equalsIgnoreCase("deleted")) {
+				if(!monProjet.getStatutDuProjet().equals(StatutProjet.SUPPRIME)) {
+					continue;
+				}
+			}
+			
+			projetsSelection.add(monProjet);
+		}
+		
+		return projetsSelection;
 	}
 
 	public List<Projet> afficherProjetPublie() {

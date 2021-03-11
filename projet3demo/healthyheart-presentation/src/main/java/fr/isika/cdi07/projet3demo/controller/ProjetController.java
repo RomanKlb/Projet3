@@ -23,6 +23,7 @@ import fr.isika.cdi07.projet3demo.model.Territoire;
 import fr.isika.cdi07.projet3demo.model.TypeProjet;
 import fr.isika.cdi07.projet3demo.model.TypeRole;
 import fr.isika.cdi07.projet3demo.model.Utilisateur;
+import fr.isika.cdi07.projet3demo.modelform.ListProjetForm;
 import fr.isika.cdi07.projet3demo.modelform.ProjetForm;
 import fr.isika.cdi07.projet3demo.services.CategorieService;
 import fr.isika.cdi07.projet3demo.services.PortefeuilleService;
@@ -66,10 +67,55 @@ public class ProjetController {
 
 	//SHOW ALL PROJECT
 	@GetMapping("/ShowAllProjetList")
-	public String showAllProjetList(Model model) {
-		model.addAttribute("listProjet", projetService.afficherAllProjet());
+	public String showAllProjetList(Model model, HttpSession session) {
+		String userEmail = (String)session.getAttribute("emailUtilisateurConnecte");
+		if (userEmail == null) {
+			return "redirect:/showConnexionForm";
+		}
+
+		Utilisateur user = utilisateurService.chercherUtilisateurParEmail(userEmail);
+		if (user == null) {
+			return "ErrorSite";
+		}
+		// Role >>>> ADMIN?
+		Optional<Role> role = roleService.testIsAdmin(user);
+		if(!role.isPresent())
+			return "noFoundListProjet";
+
+		ListProjetForm lpf = new ListProjetForm();
+		lpf.setCritere("all");
+		lpf.setProjets(projetService.afficherAllProjet());
+
+		model.addAttribute("listCritere", lpf);
+
 		return "listProjet";
 	}
+
+	@PostMapping("/selectionProjet")
+	public String selectionProjet(@ModelAttribute("listCritere") ListProjetForm lpf, Model model) {
+
+		List<Projet> listeProjets = projetService.listProjetInfo(lpf.getCritere());
+		LOGGER.info("taille liste" + listeProjets.size());
+
+		ListProjetForm monLpf = new ListProjetForm();
+
+
+		if(!listeProjets.isEmpty()) {
+			monLpf.setProjets(listeProjets);
+			monLpf.setCritere(lpf.getCritere());
+			model.addAttribute("listCritere", monLpf );		
+			return "listProjet";
+		}
+		return "redirect:/ShowAllProjetList";
+	}
+
+	@GetMapping("/selectionProjet")
+	public String redirectListProjet() {
+
+
+		return "redirect:/ShowAllProjetList";
+	}
+
 	//SHOW PROJECT WITH STATUS "PUBLIE"
 	@GetMapping("/ShowProjetListPublie")
 	public String showProjetListPublie(Model model) {
@@ -182,9 +228,9 @@ public class ProjetController {
 
 		monForm.setTerritoire(territoire);
 		monForm.setTypeProjet(typeProjet);
-		
+
 		model.addAttribute("monForm", monForm);
-	
+
 		model.addAttribute("listTerritoire", territoireService.afficherAllTerritoire());
 		model.addAttribute("listTypeProjet", typeProjetService.afficherAllTypeProjet());
 
@@ -210,11 +256,13 @@ public class ProjetController {
 			categorieToUse = categorieService.ajoutCategorie(withTypeProjet);
 		}
 		monForm.getProjet().setCategorie(categorieToUse);
+		
 		LOGGER.info("PORTEURprojet POSTTTT : " + monForm.getPorteurProjet());
 		PorteurProjet monPorteur = porteurProjetService.ajoutPorteur(monForm.getPorteurProjet());
 
 		LOGGER.info("PORTEFEUILLE ************************* POSTTTT : "+monPorteur);
-
+		
+		
 		PortefeuilleProjet portefeuille = portefeuilleService.isPresent(monPorteur, "defaut");
 		PortefeuilleProjet addPortefeuille =  portefeuilleService.ajoutPortefeuille(portefeuille);
 
@@ -318,45 +366,10 @@ public class ProjetController {
 	@GetMapping("/showProjet/{id}")
 	public String showProjet(@PathVariable (value = "id") Long id, Model model) {
 
-		//		PresentationProjetForm form = new PresentationProjetForm();
-
+	
 		Projet projet = projetService.getProjetByIdNoOptional(id);
-		//		form.setProjet(projet);
-
-		//		PortefeuilleProjet portefeuilleProjet = projet.getPortefeuilleprojet();
-		//		form.setPorteFeuille(portefeuilleProjet);
-		//		
-		//		PorteurProjet porteurProjet = projet.getPortefeuilleprojet().getPorteurprojet();
-		//		form.setPorteurProjet(porteurProjet);
-		//		
-		//		Role role = projet.getPortefeuilleprojet().getPorteurprojet().getRole();
-		//		form.setRole(role);
-		//		
-		//		Utilisateur utilisateur = projet.getPortefeuilleprojet().getPorteurprojet().getRole().getUtilisateur();
-		//		form.setUtilisateur(utilisateur);
-		//		
-		//		Categorie categorie = projet.getCategorie();
-		//		form.setCategorie(categorie);
-		//		
-		//		Territoire territoire = projet.getCategorie().getTerritoire();
-		//		form.setTerritoire(territoire);
-		//		
-		//		TypeProjet typeProjet = projet.getCategorie().getTypeProjet();
-		//		form.setTypeProjet(typeProjet);
-
-
-
-		// document recup
-		// form set doc
-
 		model.addAttribute("projet", projet);
-		//		model.addAttribute("typeProjet", typeProjet);
-		//		model.addAttribute("territoire", territoire);
-		//		model.addAttribute("porteFeuille", portefeuilleProjet);
-		//		model.addAttribute("porteurProjet", porteurProjet);
-		//		model.addAttribute("role", role);
-		//		model.addAttribute("utilisateur", utilisateur);
-
+		
 		return "vueProjet";
 	}
 

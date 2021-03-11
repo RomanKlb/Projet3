@@ -2,53 +2,82 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="fr">
 <head>
 <meta charset="UTF-8">
+<th:block th:replace="../static/layout :: headerfiles"></th:block>
 <title>List des Projets</title>
 </head>
 <body>
+	<div th:replace="../static/layout :: header"></div>
+	
+	<div class="container">
+		<a th:href="@{/ShowNewProjetForm}">Add Projet</a>
 
-	<a th:href="@{/ShowNewProjetForm}">Add Projet</a>
+		<div>combo Statut Projet</div>
+		<form action="#" th:action="@{/selectionProjet}" method="POST">
 
-	<table>
-		<thead>
-			<tr>
-				<th>Titre</th>
-				<th>Description Courte</th>
-				<th>Description Longue</th>
-				<th>Montant Attendu</th>
-				<th>Montant Collecté</th>
-				<th>Date maj</th>
-				<th>Date fin</th>
-				<th>StatutProjet</th>
-				<th>Don matériel</th>
-				<th>Don temps</th>
-				<th>Portefeuille</th>
-				<th>Nom PorteurProjet</th>
-				<th>Catégorie</th>
-				<th>Action</th>
-				<th>Action</th>
-			</tr>
+			<select th:id="ComboBoxSelectId" th:field="*{listCritere.critere}">
+				<option value="all">Tous</option>
+				<option value="actif">Actif</option>
+				<option value="create">Créé</option>
+				<option value="wait">En Attente</option>
+				<option value="approved">Approuvé</option>
+				<option value="reject">Rejeté</option>
+				<option value="published">Publié</option>
+				<option value="completed">Terminé</option>
+				<option value="deleted">Supprimé</option>
+			</select>
+		</form>
 
-		</thead>
-		<tbody>
-			<tr th:each="projet : ${listProjet}">
-				<td th:text="${projet.titre}"></td>
-				<td th:text="${projet.descriptionCourte}"></td>
-				<td th:text="${projet.descriptionLongue}"></td>
-				<td th:text="${projet.montantAttendu}"></td>
-				<td th:text="${projet.montantCollecte}"></td>
-				<td	th:text="${#calendars.format(projet.dateMaj,'dd MMM yyyy HH:mm')}"></td>
-				<td th:text="${projet.dateFin}"></td>
-				<td th:text="${projet.statutDuProjet}"></td>
-				<td th:text="${projet.donMateriel}"></td>
-				<td th:text="${projet.donTemps}"></td>
-				<td th:text="${projet.portefeuilleprojet.libelle}"></td>
-				<td	th:text="${projet.portefeuilleprojet.porteurprojet.role.utilisateur.email}"></td>
-				<td th:text="${projet.categorie}"></td>
-				<td><a
-					th:href="@{/showNewPictureForm/{id}(id=${projet.idProjet})}">Add Image</a></td>
-				<td><a th:href="@{/showUpdateForm/{id}(id=${projet.idProjet})}">Update</a></td>
-			</tr>
-		</tbody>
-	</table>
+
+		<table class="table">
+			<thead class="thead-light">
+				<tr>
+					<th>Titre</th>
+					<th>Montant Attendu</th>
+					<th>Montant Collecté</th>
+					<th>Date maj</th>
+					<th>Date fin</th>
+					<th>StatutProjet</th>
+					<th>Don matériel</th>
+					<th>Don temps</th>
+					<th>Portefeuille</th>
+					<th>Nom PorteurProjet</th>
+					<th>Type Porteur</th>
+					<th>Territoire</th>
+					<!-- 	<th>Action</th>-->
+				<th>Action</th> 
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="projet: ${listCritere.projets}">
+					<td th:text="${projet.titre}"></td>
+					<td th:text="${projet.montantAttendu}"></td>
+					<td th:text="${projet.montantCollecte}"></td>
+					<td
+						th:text="${#calendars.format(projet.dateMaj,'dd MM yyyy HH:mm')}"></td>
+					<td th:text="${projet.dateFin}"></td>
+					<td th:text="${projet.statutDuProjet}"></td>
+					<td th:text="${projet.donMateriel}?'Oui':'Non'"></td>
+					<td th:text="${projet.donTemps}?'Oui':'Non'"></td>
+					<td th:text="${projet.portefeuilleprojet.libelle}"></td>
+					<td
+						th:text="${projet.portefeuilleprojet.porteurprojet.role.utilisateur.email}"></td>
+					<td th:text="${projet.categorie.typeProjet.libelle}"></td>
+					<td th:text="${projet.categorie.territoire.libelle}"></td>
+					<!-- 	<td><a
+					th:href="@{/showNewPictureForm/{id}(id=${projet.idProjet})}">Add
+						Image</a></td> -->
+				<td><a th:href="@{/showUpdateForm/{id}(id=${projet.idProjet})}">Update</a></td> 
+				</tr>
+
+			</tbody>
+		</table>
+	</div>
+	<div th:replace="../static/layout :: footer"></div>
+	
+	<script>
+        $("#ComboBoxSelectId").change(function () {
+            $("form").submit()
+        })
+    </script>
 </body>
 </html>

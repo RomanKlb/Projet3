@@ -1,54 +1,66 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="fr">
 <head>
-<meta charset="ISO-8859-1">
+<meta charset="UTF-8">
+<th:block th:replace="../static/layout :: headerfiles"></th:block>
 <title>Liste Projet By User</title>
 </head>
 <body>
-	<fieldset>
-		<legend>List Projet By User</legend>
+	<div th:replace="../static/layout :: header"></div>
+
+	<div class="container">
+		<fieldset>
+			<legend>List Projet By User</legend>
 
 
-		<span th:text="${message}"></span> <label
-			th:text="${prenomUtilisateur}"></label> <span th:text="${message2}"></span>
+			<span th:text="${message}"></span> <label
+				th:text="${prenomUtilisateur}"></label> 
 
-		<table>
-			<thead>
-				<tr>
-					<th>Photo Principale</th>
-					<th>Titre</th>
-					<th>Description Courte</th>
-					<th>Description Longue</th>
-					<th>Montant Attendu</th>
-					<th>Montant Collecté</th>
-					<th>Date maj</th>
-					<th>Date fin</th>
-					<th>StatutProjet</th>
-					<th>Don matériel</th>
-					<th>Don temps</th>
-					<th>Portefeuille</th>
-					<th>Nom PorteurProjet</th>
-				</tr>
 
-			</thead>
-			<tbody>
-				<tr th:each="projet : ${listProjetByPP}">
-					<td></td>
-					<td th:text="${projet.titre}"></td>
-					<td th:text="${projet.descriptionCourte}"></td>
-					<td th:text="${projet.descriptionLongue}"></td>
-					<td th:text="${projet.montantAttendu}"></td>
-					<td th:text="${projet.montantCollecte}"></td>
-					<td th:text="${#calendars.format(projet.dateMaj,'dd MMM yyyy HH:mm')}"></td>
-					<td th:text="${projet.dateFin}"></td>
-					<td th:text="${projet.statutDuProjet}"></td>
-					<td th:text="${projet.donMateriel}"></td>
-					<td th:text="${projet.donTemps}"></td>
-					<td th:text="${projet.portefeuilleprojet.libelle}"></td>
-					<td th:text="${projet.portefeuilleprojet.porteurprojet.role.utilisateur.email}"></td>
-				</tr>
-			</tbody>
-		</table>
-	</fieldset>
+
+			<table>
+				<thead>
+					<tr>
+						<th>Photo Principale</th>
+						<th>Titre</th>
+						<th>Description Courte</th>
+						<th>Description Longue</th>
+						<th>Montant Attendu</th>
+						<th>Montant CollectÃ©</th>
+						<th>Date maj</th>
+						<th>Date fin</th>
+						<th>StatutProjet</th>
+						<th>Don matÃ©riel</th>
+						<th>Don temps</th>
+						<th>Portefeuille</th>
+						<th>Nom PorteurProjet</th>
+					</tr>
+
+				</thead>
+				<tbody>
+					<tr th:each="projet : ${listProjetByPP}">
+						<td></td>
+						<td th:text="${projet.titre}"></td>
+						<td th:text="${projet.descriptionCourte}"></td>
+						<td th:text="${projet.descriptionLongue}"></td>
+						<td th:text="${projet.montantAttendu}"></td>
+						<td th:text="${projet.montantCollecte}"></td>
+						<td
+							th:text="${#calendars.format(projet.dateMaj,'dd MMM yyyy HH:mm')}"></td>
+						<td th:text="${projet.dateFin}"></td>
+						<td th:text="${projet.statutDuProjet}"></td>
+						<td th:text="${projet.donMateriel}"></td>
+						<td th:text="${projet.donTemps}"></td>
+						<td th:text="${projet.portefeuilleprojet.libelle}"></td>
+						<td
+							th:text="${projet.portefeuilleprojet.porteurprojet.role.utilisateur.email}"></td>
+					</tr>
+				</tbody>
+			</table>
+		</fieldset>
+	</div>
+	<div th:replace="../static/layout :: footer"></div>
+
+	
 </body>
 </html>
