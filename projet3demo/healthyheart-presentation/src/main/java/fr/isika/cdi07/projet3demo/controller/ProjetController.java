@@ -25,6 +25,7 @@ import fr.isika.cdi07.projet3demo.model.TypeProjet;
 import fr.isika.cdi07.projet3demo.model.TypeRole;
 import fr.isika.cdi07.projet3demo.model.Utilisateur;
 import fr.isika.cdi07.projet3demo.services.CategorieService;
+import fr.isika.cdi07.projet3demo.services.PortefeuilleService;
 import fr.isika.cdi07.projet3demo.services.PorteurProjetService;
 import fr.isika.cdi07.projet3demo.services.ProjetService;
 import fr.isika.cdi07.projet3demo.services.RoleService;
@@ -90,13 +91,14 @@ public class ProjetController {
 			return "ErrorSite";
 		}
 
-		Role roleOfUser = roleService.hasRole(user, TypeRole.PORTEURPROJET);
+
 
 		Projet projet = new Projet();
 		ProjetForm monForm = new ProjetForm();
+		//		Optional<Role> role = roleService.testIsPorteurProjet(user);
 
+		Role roleOfUser = roleService.hasRole(user, TypeRole.PORTEURPROJET);
 		PorteurProjet porteurProjet = porteurProjetService.isPresent(roleOfUser);
-		monForm.setPorteurProjet(porteurProjet);
 
 		monForm.setRole(roleOfUser);
 		monForm.setPorteurProjet(porteurProjet);
@@ -144,7 +146,6 @@ public class ProjetController {
 		PortefeuilleProjet addPortefeuille =  portefeuilleService.ajoutPortefeuille(portefeuille);
 
 		monForm.getProjet().setPortefeuilleprojet(addPortefeuille);
-
 		projetService.ajoutProjet(monForm.getProjet());
 
 		return "redirect:/ShowAllProjetList";
@@ -171,6 +172,7 @@ public class ProjetController {
 
 		PorteurProjet porteurProjet = porteurProjetService.isPresent(roleOfUser);
 
+		LOGGER.info("*************PORTEUR PROJET : " + porteurProjet);
 		monForm.setRole(roleOfUser);
 		monForm.setPorteurProjet(porteurProjet);
 		monForm.setProjet(projet);
@@ -178,9 +180,11 @@ public class ProjetController {
 		Territoire territoire = projet.getCategorie().getTerritoire();
 		TypeProjet typeProjet = projet.getCategorie().getTypeProjet();
 
+		monForm.setTerritoire(territoire);
+		monForm.setTypeProjet(typeProjet);
+		
 		model.addAttribute("monForm", monForm);
-		model.addAttribute("typeProjet", typeProjet);
-		model.addAttribute("territoire", territoire);
+	
 		model.addAttribute("listTerritoire", territoireService.afficherAllTerritoire());
 		model.addAttribute("listTypeProjet", typeProjetService.afficherAllTypeProjet());
 
@@ -206,10 +210,12 @@ public class ProjetController {
 			categorieToUse = categorieService.ajoutCategorie(withTypeProjet);
 		}
 		monForm.getProjet().setCategorie(categorieToUse);
-
+		LOGGER.info("PORTEURprojet POSTTTT : " + monForm.getPorteurProjet());
 		PorteurProjet monPorteur = porteurProjetService.ajoutPorteur(monForm.getPorteurProjet());
 
-		PortefeuilleProjet portefeuille = portefeuilleService.isPresent(monPorteur, "Defaut");
+		LOGGER.info("PORTEFEUILLE ************************* POSTTTT : "+monPorteur);
+
+		PortefeuilleProjet portefeuille = portefeuilleService.isPresent(monPorteur, "defaut");
 		PortefeuilleProjet addPortefeuille =  portefeuilleService.ajoutPortefeuille(portefeuille);
 
 		monForm.getProjet().setPortefeuilleprojet(addPortefeuille);
@@ -312,44 +318,44 @@ public class ProjetController {
 	@GetMapping("/showProjet/{id}")
 	public String showProjet(@PathVariable (value = "id") Long id, Model model) {
 
-//		PresentationProjetForm form = new PresentationProjetForm();
+		//		PresentationProjetForm form = new PresentationProjetForm();
 
 		Projet projet = projetService.getProjetByIdNoOptional(id);
-//		form.setProjet(projet);
-		
-//		PortefeuilleProjet portefeuilleProjet = projet.getPortefeuilleprojet();
-//		form.setPorteFeuille(portefeuilleProjet);
-//		
-//		PorteurProjet porteurProjet = projet.getPortefeuilleprojet().getPorteurprojet();
-//		form.setPorteurProjet(porteurProjet);
-//		
-//		Role role = projet.getPortefeuilleprojet().getPorteurprojet().getRole();
-//		form.setRole(role);
-//		
-//		Utilisateur utilisateur = projet.getPortefeuilleprojet().getPorteurprojet().getRole().getUtilisateur();
-//		form.setUtilisateur(utilisateur);
-//		
-//		Categorie categorie = projet.getCategorie();
-//		form.setCategorie(categorie);
-//		
-//		Territoire territoire = projet.getCategorie().getTerritoire();
-//		form.setTerritoire(territoire);
-//		
-//		TypeProjet typeProjet = projet.getCategorie().getTypeProjet();
-//		form.setTypeProjet(typeProjet);
-		
-		
+		//		form.setProjet(projet);
+
+		//		PortefeuilleProjet portefeuilleProjet = projet.getPortefeuilleprojet();
+		//		form.setPorteFeuille(portefeuilleProjet);
+		//		
+		//		PorteurProjet porteurProjet = projet.getPortefeuilleprojet().getPorteurprojet();
+		//		form.setPorteurProjet(porteurProjet);
+		//		
+		//		Role role = projet.getPortefeuilleprojet().getPorteurprojet().getRole();
+		//		form.setRole(role);
+		//		
+		//		Utilisateur utilisateur = projet.getPortefeuilleprojet().getPorteurprojet().getRole().getUtilisateur();
+		//		form.setUtilisateur(utilisateur);
+		//		
+		//		Categorie categorie = projet.getCategorie();
+		//		form.setCategorie(categorie);
+		//		
+		//		Territoire territoire = projet.getCategorie().getTerritoire();
+		//		form.setTerritoire(territoire);
+		//		
+		//		TypeProjet typeProjet = projet.getCategorie().getTypeProjet();
+		//		form.setTypeProjet(typeProjet);
+
+
 
 		// document recup
 		// form set doc
 
 		model.addAttribute("projet", projet);
-//		model.addAttribute("typeProjet", typeProjet);
-//		model.addAttribute("territoire", territoire);
-//		model.addAttribute("porteFeuille", portefeuilleProjet);
-//		model.addAttribute("porteurProjet", porteurProjet);
-//		model.addAttribute("role", role);
-//		model.addAttribute("utilisateur", utilisateur);
+		//		model.addAttribute("typeProjet", typeProjet);
+		//		model.addAttribute("territoire", territoire);
+		//		model.addAttribute("porteFeuille", portefeuilleProjet);
+		//		model.addAttribute("porteurProjet", porteurProjet);
+		//		model.addAttribute("role", role);
+		//		model.addAttribute("utilisateur", utilisateur);
 
 		return "vueProjet";
 	}

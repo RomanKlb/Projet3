@@ -7,6 +7,7 @@ import fr.isika.cdi07.projet3demo.model.Projet;
 import fr.isika.cdi07.projet3demo.model.Role;
 import fr.isika.cdi07.projet3demo.model.Territoire;
 import fr.isika.cdi07.projet3demo.model.TypeProjet;
+import fr.isika.cdi07.projet3demo.model.Utilisateur;
 
 public class ProjetForm {
 
@@ -16,6 +17,7 @@ public class ProjetForm {
 	private Territoire territoire;
 	private TypeProjet typeProjet;
 	private Role role;
+	private Utilisateur utilisateur;
 	
 	
 	public Role getRole() {
@@ -54,6 +56,13 @@ public class ProjetForm {
 	}
 	public void setTypeProjet(TypeProjet typeProjet) {
 		this.typeProjet = typeProjet;
+	}
+	
+	public Utilisateur getUtilisateur() {
+		return utilisateur;
+	}
+	public void setUtilisateur(Utilisateur utilisateur) {
+		this.utilisateur = utilisateur;
 	}
 	@Override
 	public String toString() {
