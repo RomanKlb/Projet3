@@ -10,10 +10,8 @@ import org.springframework.stereotype.Service;
 
 import fr.isika.cdi07.projet3demo.dao.DonTempsRepository;
 import fr.isika.cdi07.projet3demo.dao.ParticipationProjetRepository;
-import fr.isika.cdi07.projet3demo.dao.ProjetRepository;
 import fr.isika.cdi07.projet3demo.model.DonTemps;
 import fr.isika.cdi07.projet3demo.model.ParticipationProjet;
-import fr.isika.cdi07.projet3demo.model.Role;
 import fr.isika.cdi07.projet3demo.model.StatutDon;
 import fr.isika.cdi07.projet3demo.model.TypeParticipation;
 import fr.isika.cdi07.projet3demo.model.TypeRole;
@@ -48,6 +46,17 @@ public class DonTempsService implements IDonService<DonTemps>{
 		checkAndSaveIfSeuilReached(don, participationProjet, user);
 		return participationProjet.getStatutDon();
 	}
+
+	@Override
+	public Optional<DonTemps> obtenirDonById(long id) {
+		return donTempsRepo.findById(id);		
+	}
+
+	@Override
+	public void supprimerDonById(long id) {
+		donTempsRepo.deleteById(id);
+		
+	}
 	
 	private void checkAndSaveIfSeuilReached(DonTemps don, ParticipationProjet participationProjet, Utilisateur user) {
 		if(don.getNbHeures() > 100) {
@@ -57,7 +66,7 @@ public class DonTempsService implements IDonService<DonTemps>{
 			saveDonInDB(don, participationProjet);
 		}else {
 			participationProjet.withStatutDon(StatutDon.APPROUVE)
-						.withRole(addRoleDonateurToUser(user));
+						.withRole(roleService.hasRole(user, TypeRole.DONATEUR));
 			participationProjetRepo.save(participationProjet);
 			saveDonInDB(don, participationProjet);
 		}
@@ -67,34 +76,6 @@ public class DonTempsService implements IDonService<DonTemps>{
 		don.withDate(Date.valueOf(LocalDate.now()))
 			.withParticipationProjet(participationProjet);
 		donTempsRepo.save(don);
-	}
-	
-	private Role addRoleDonateurToUser(Utilisateur user) {
-		return roleService.hasRole(user, TypeRole.DONATEUR);
-	}
-
-	@Override
-	public DonTemps obtenirDonById(long id) {
-		Optional<DonTemps> optional = donTempsRepo.findById(id);
-		if(optional.isPresent())
-			return optional.get();
-		throw new RuntimeException("Don not found");
-	}
-
-	@Override
-	public void supprimerDonById(long id) {
-		donTempsRepo.deleteById(id);
-		
-	}
-
-	@Override
-	public void modifierStatutDon(long idParticipation, StatutDon statutDon) {
-		Optional<ParticipationProjet> optional = participationProjetRepo.findById(idParticipation);
-		if(optional.isPresent()) {
-			optional.get().setStatutDon(statutDon);	
-			participationProjetRepo.save(optional.get());
-		}
-		
 	}
 
 }

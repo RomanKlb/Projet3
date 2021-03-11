@@ -16,6 +16,8 @@ public class CommentaireForm {
 
 	public CommentaireForm(Long idProjet) {
 		this.idProjet = idProjet;
+		this.allowedToComment = false;
+		this.libelle = "default";
 	}
 
 	public Long getIdProjet() {
@@ -57,8 +59,6 @@ public class CommentaireForm {
 	public void setAllowedToComment(boolean allowedToComment) {
 		this.allowedToComment = allowedToComment;
 	}
-
-
 
 
 }

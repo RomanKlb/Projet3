@@ -1,6 +1,7 @@
 package fr.isika.cdi07.projet3demo.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import fr.isika.cdi07.projet3demo.model.Don;
 import fr.isika.cdi07.projet3demo.model.ParticipationProjet;
@@ -12,7 +13,6 @@ public interface IDonService<T extends Don> {
 	List<T> afficherDons();
 	Long compterDons();
 	StatutDon enregistrerDansLaBase(T don, ParticipationProjet participationProjet, Utilisateur user);
-	T obtenirDonById(long id);
+	Optional<T> obtenirDonById(long id);
 	void supprimerDonById(long id);
-	void modifierStatutDon(long idParticipation, StatutDon statutDon);
 }

@@ -6,69 +6,48 @@
 </head>
 <body>
 	<div th:replace="../static/layout :: header"></div>
-	<div th:if="${commentaireForm.allowedToComment}">
-		<form action="#" th:action="@{/ajouterCommentaire}"
-			th:object="${commentaireForm}" method="POST">
-			<fieldset>
-				<legend>Ajouter commentaire</legend>
-				<input type="hidden" th:field="*{idProjet}" /> <input type="hidden"
-					th:field="*{role}" /> <label>Titre</label> <input type="text"
-					th:field="*{libelle}" /> <label>Message</label> <input type="text"
-					th:field="*{message}" /> <br>
-				<div>
-					<input type="submit" value="Ajouter" class="btn btn-primary" /> <input
-						type="reset" value="Reset fields" class="btn btn-light" />
-				</div>
-			</fieldset>
-		</form>
-	</div>
-	<div th:unless="${commentaireForm.allowedToComment}"></div>
-
-	<h3>Liste Commentaires</h3>
+	<hr />
 	<div class="container">
+		<div th:if="${commentaireForm.allowedToComment}" class="col-md-8 post-comments">
+			<form action="#" th:action="@{/ajouterCommentaire}"
+				th:object="${commentaireForm}" method="POST">
+				<input type="hidden" th:field="*{idProjet}" /> 
+				<input type="hidden" th:field="*{role}" />
+				<input type="hidden" th:field="*{libelle}" />
+				<div class="form-group">
+					<label for="comment">Votre commentaire</label>
+					<textarea th:field="*{message}"
+						placeholder="Votre message ici" class="form-control" rows="3">
+					 </textarea>
+					 <br/>
+					<input type="submit" value="Envoyer" class="btn btn-primary" />
+				</div>
+			</form>
+		</div>
+		<div th:unless="${commentaireForm.allowedToComment}"></div>
 		<div class="row">
 			<div class="col-md-8">
 				<div class="page-header">
-					<h1>
-						<small class="pull-right">45 comments</small>
-					</h1>
+					<h4 th:text="${listeComm.size} + ' commentaires'"></h4>
 				</div>
-				<div class="comments-list">
+				<div class="comments-list" th:each="comm:${listeComm}">
 					<div class="media">
 						<p class="pull-right">
-							<small>5 days ago</small>
+							<small
+								th:text="${#calendars.format(comm.date,'dd MMM yyyy HH:mm')}"></small>
 						</p>
-						<a class="media-left" href="#">
-						</a>
+						<a class="media-left" href="#"> </a>
 						<div class="media-body">
-							<h4 class="media-heading user_name">Baltej Singh</h4>
-							Wow! this is really great.
-
-							<p>
+							<h4 class="media-heading user_name"
+								th:text="${comm.role.utilisateur.prenom} + ' ' + ${comm.role.utilisateur.nom}"></h4>
+							<p th:text="${comm.message}">
 								<small><a href="">Like</a> - <a href="">Share</a></small>
-							</p>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	<table border="1">
-		<tr>
-			<th>id commentaire</th>
-			<th>username</th>
-			<th>titre</th>
-			<th>message</th>
-			<th>date heure</th>
-		</tr>
-		<tr th:each="comm:${listeComm}">
-			<td><p th:text="${comm.idCommentaire}"></p></td>
-			<td><p th:text="${comm.role.utilisateur.prenom}"></p></td>
-			<td><p th:text="${comm.libelle}"></p></td>
-			<td><p th:text="${comm.message}"></p></td>
-			<td><p th:text="${comm.date}"></p></td>
-		</tr>
-	</table>
 	<div th:replace="../static/layout :: footer"></div>
 </body>
 </html>

@@ -31,8 +31,8 @@ import fr.isika.cdi07.projet3demo.services.UtilisateurService;
 @Validated
 public class DonController {
 
-	private static final String DEFAULT_REDIRECTION = "redirect:../afficherListeDesDon";
-	private static final String EN_ATTENTE_REDIRECTION = "don_en_attente";
+	private static final String DEFAULT_REDIRECTION = "redirect:/don/afficherListeDesDons";
+	private static final String EN_ATTENTE_REDIRECTION = "/don/don_en_attente";
 	private static final Logger logger = Logger.getLogger(DonController.class.getSimpleName());
 
 	@Autowired
@@ -49,6 +49,13 @@ public class DonController {
 
 	@Autowired
 	private ProjetService projetService;
+	
+	@GetMapping("/afficherListeDesDons")
+	public String afficherListeDesDons(Model model) {
+		model.addAttribute("count", donMonetaireService.compterDons());
+		model.addAttribute("donMonetaireList", donMonetaireService.afficherDons());
+		return "/don/liste_dons";
+	}
 
 	@GetMapping("/faireUnDon/projet")
 	public String faireUnDon(@RequestParam long id, Model model, HttpSession session) {	
@@ -70,7 +77,7 @@ public class DonController {
 		donForm.setUtilisateur(user);
 		model.addAttribute("donForm", donForm); 
 
-		return "faire_un_don";
+		return "/don/faire_un_don";
 	}
 
 	@PostMapping("/sauvegarderDonMonetaire")

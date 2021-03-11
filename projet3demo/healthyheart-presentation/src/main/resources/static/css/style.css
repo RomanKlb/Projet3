@@ -1,9 +1,21 @@
+body {
+    background-color: #eee
+}
+
 label{ 
 	margin-right: 15px; 
 }
 
+/* DEBUT >>> formulaire des differents dons */
 .formu{
 	display:none;
+}
+/* FIN >>> formulaire des differents dons */
+
+/* DEBUT >>> Commentaires List */
+.post-comments {
+  padding-bottom: 9px;
+  margin: 5px 0 5px;
 }
 
 .user_name{
@@ -13,4 +25,4 @@ label{
 .comments-list .media{
     border-bottom: 1px dotted #ccc;
 }
-
+/* FIN >>> Commentaires List */
