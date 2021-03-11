@@ -26,14 +26,13 @@ public class PorteurProjetService {
 		if(optPorteurProjet.isPresent()) {
 			LOGGER.info("*****DANS PORTEUR PROJET SERVICE MEHTODE ISPRESENT : "+optPorteurProjet);
 			return optPorteurProjet.get();
-		
 		}
 			
 		PorteurProjet newPorteurProjet = new PorteurProjet();
 		newPorteurProjet.setRole(role);
 		newPorteurProjet.setTypePorteur(TypePorteur.PRIVE);
-		return porteurProjetRepo.save(newPorteurProjet);
-		
+//		return porteurProjetRepo.save(newPorteurProjet);
+		return newPorteurProjet;
 	}
 	
 	public PorteurProjet ajoutPorteur(PorteurProjet porteurProjet) {

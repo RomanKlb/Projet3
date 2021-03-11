@@ -1,4 +1,4 @@
-package fr.isika.cdi07.projet3demo.controller;
+package fr.isika.cdi07.projet3demo.modelform;
 
 import fr.isika.cdi07.projet3demo.model.MessageInterne;
 

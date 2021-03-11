@@ -1,4 +1,5 @@
-package fr.isika.cdi07.projet3demo.controller;
+package fr.isika.cdi07.projet3demo.modelform;
+
 
 import fr.isika.cdi07.projet3demo.model.Categorie;
 import fr.isika.cdi07.projet3demo.model.PorteurProjet;
@@ -6,6 +7,7 @@ import fr.isika.cdi07.projet3demo.model.Projet;
 import fr.isika.cdi07.projet3demo.model.Role;
 import fr.isika.cdi07.projet3demo.model.Territoire;
 import fr.isika.cdi07.projet3demo.model.TypeProjet;
+import fr.isika.cdi07.projet3demo.model.Utilisateur;
 
 public class ProjetForm {
 
@@ -15,6 +17,7 @@ public class ProjetForm {
 	private Territoire territoire;
 	private TypeProjet typeProjet;
 	private Role role;
+	private Utilisateur utilisateur;
 	
 	
 	public Role getRole() {
@@ -23,21 +26,19 @@ public class ProjetForm {
 	public void setRole(Role role) {
 		this.role = role;
 	}
-
 	public Projet getProjet() {
 		return projet;
 	}
 	public void setProjet(Projet projet) {
 		this.projet = projet;
 	}
-
+	
 	public PorteurProjet getPorteurProjet() {
 		return porteurProjet;
 	}
 	public void setPorteurProjet(PorteurProjet porteurProjet) {
 		this.porteurProjet = porteurProjet;
 	}
-
 	public Categorie getCategorie() {
 		return categorie;
 	}
@@ -55,6 +56,13 @@ public class ProjetForm {
 	}
 	public void setTypeProjet(TypeProjet typeProjet) {
 		this.typeProjet = typeProjet;
+	}
+	
+	public Utilisateur getUtilisateur() {
+		return utilisateur;
+	}
+	public void setUtilisateur(Utilisateur utilisateur) {
+		this.utilisateur = utilisateur;
 	}
 	@Override
 	public String toString() {
@@ -74,5 +82,8 @@ public class ProjetForm {
 		builder.append("]");
 		return builder.toString();
 	}
+	
+	
+	
 	
 }

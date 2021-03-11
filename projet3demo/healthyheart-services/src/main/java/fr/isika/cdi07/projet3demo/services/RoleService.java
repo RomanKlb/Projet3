@@ -30,6 +30,7 @@ public class RoleService {
 		newRole.setTypeRole(typeRole);
 		newRole.setUtilisateur(user);
 		
+
 		return roleRepo.save(newRole);
 	}
 	
@@ -41,6 +42,10 @@ public class RoleService {
 			
 	}
 
-	
 
+	
+	
+	
+	
+	
 }

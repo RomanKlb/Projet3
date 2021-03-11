@@ -22,6 +22,10 @@
 			<input type="hidden" th:field="*{monForm.porteurProjet.role}">
 			<!-- hidden  -->
 			<input type="hidden" th:field="*{monForm.porteurProjet}">
+			<!-- hidden  -->
+			<input type="hidden" th:field="*{monForm.utilisateur}">
+
+	
 		
 		<hr/>
 		
@@ -35,9 +39,7 @@
 		<textarea type="text" th:field="*{monForm.projet.descriptionLongue}"
 			placeholder="Longue Description"></textarea>
 
-		<input type="text" th:field="*{monForm.projet.montantAttendu}" placeholder="Montant attendu" /> 
-		
-		<input type="date" th:field="*{monForm.projet.dateFin}" />
+		<input type="text" th:field="*{monForm.projet.montantAttendu}"
 			placeholder="Montant attendu"> <input type="date"
 			th:field="*{monForm.projet.dateFin}">
 

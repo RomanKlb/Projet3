@@ -1,9 +1,9 @@
-package fr.isika.cdi07.projet3demo.controller;
+package fr.isika.cdi07.projet3demo.services;
 
 import java.util.ArrayList;
-
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +16,9 @@ import fr.isika.cdi07.projet3demo.model.Role;
 @Service
 public class PortefeuilleService {
 
+	private static final Logger LOGGER = Logger.getLogger(PortefeuilleService.class.getSimpleName());
+
+	
 	@Autowired
 	private PortefeuilleProjetRepository portefeuilleRepo;
 
@@ -24,16 +27,21 @@ public class PortefeuilleService {
 	}
 
 	public PortefeuilleProjet isPresent(PorteurProjet porteurProjet, String libelle) {
+		LOGGER.info("porteurProjet " + porteurProjet + "libelle"+libelle);
 
 		List<PortefeuilleProjet> portefeuilles = portefeuilleRepo.findAll();
+		LOGGER.info("list portefeuille " + portefeuilles);
+
 		Optional<PortefeuilleProjet> optPortefeuille = portefeuilles.stream()
-				.filter(r -> r.getLibelle().equals(libelle) && r.getPorteurprojet().equals(porteurProjet))
+				.filter(r -> r.getLibelle().equalsIgnoreCase(libelle) && r.getPorteurprojet().equals(porteurProjet))
 				.findFirst();
+		LOGGER.info("optPortefeuillet " + optPortefeuille);
+
 		if(optPortefeuille.isPresent())
 			return optPortefeuille.get();
 
 		PortefeuilleProjet newPortefeuille = new PortefeuilleProjet();
-		newPortefeuille.setLibelle("defaut");
+		newPortefeuille.setLibelle(libelle);
 		newPortefeuille.setPorteurprojet(porteurProjet);
 
 		return newPortefeuille;
@@ -42,7 +50,6 @@ public class PortefeuilleService {
 	public List<PortefeuilleProjet> testPortefeuilleByRolePorteurProjet(Role role) {
 		List<PortefeuilleProjet> allPortefeuille = portefeuilleRepo.findAll();
 		List<PortefeuilleProjet> selectionPortefeuille = new ArrayList<PortefeuilleProjet>();
-
 		allPortefeuille.stream()
 		.filter(p -> p.getPorteurprojet().getRole().equals(role))
 		.forEach(p -> selectionPortefeuille.add(p));
@@ -55,4 +62,6 @@ public class PortefeuilleService {
 		return portefeuilleRepo.findById(id);
 	}
 
+	
+	
 }

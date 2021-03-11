@@ -29,6 +29,7 @@ import fr.isika.cdi07.projet3demo.model.Document;
 import fr.isika.cdi07.projet3demo.model.Projet;
 import fr.isika.cdi07.projet3demo.model.TypeDocument;
 import fr.isika.cdi07.projet3demo.model.TypeLibelleDoc;
+import fr.isika.cdi07.projet3demo.modelform.DocumentForm;
 import fr.isika.cdi07.projet3demo.services.DocumentService;
 import fr.isika.cdi07.projet3demo.services.ProjetService;
 

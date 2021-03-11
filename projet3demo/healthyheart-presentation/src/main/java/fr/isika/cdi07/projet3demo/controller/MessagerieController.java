@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import fr.isika.cdi07.projet3demo.model.MessageInterne;
 import fr.isika.cdi07.projet3demo.model.MessageRecu;
 import fr.isika.cdi07.projet3demo.model.Utilisateur;
+import fr.isika.cdi07.projet3demo.modelform.MessagerieForm;
 import fr.isika.cdi07.projet3demo.services.MessageRecuService;
 import fr.isika.cdi07.projet3demo.services.MessageService;
 import fr.isika.cdi07.projet3demo.services.UtilisateurService;
