@@ -1,47 +1,462 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="fr">
 <head>
-<th:block th:replace="../static/layout :: headerfiles"></th:block>
-<title>Index</title>
-</head>
-<body>
-	<div th:replace="../static/layout :: header"></div>
-	<h1>HOME Starter</h1>
-	
-	<button class="btn btn-primary">Bouton bootstrap</button>
-	<div>
-		<a th:href="@{/ShowAllProjetList}">All Projet List</a>
-	</div>
-	<div>
-		<a th:href="@{/ShowProjetListPublie}">Catalogue</a>
-	</div>
-	<div>
-		<a th:href="@{/showListProjetByUser}">List Projet By PP(user)</a>
-	</div>
-	<div>
-		<a th:href="@{/ShowNewProjetForm}">Add Projet</a>
-	</div>
-	<div>
-		<a th:href="@{/CreerNouvelUtilsateur}">Add new user</a>
-	</div>
-	<div>
-		<a th:href="@{/showConnexionForm}">Se connecter</a>
-	</div>
-	<div>
-		<a th:href="@{/showAllUsers}">Afficher tous les utilisateurs</a>
-	</div>
-	<div>
-		<a th:href="@{/showSearchBox}">Rechercher un projet par son titre</a>
-	</div>
-	<div>
-		<a th:href="@{/showSearchBoxMulticriteres}">Recherche
-			Multicritères d'un projet</a>
-	</div>
-	<div>
-		<a th:href="@{/ShowNewUtilisateur}">Add Utilisateur</a>
-	</div>
+    <!--[if IE]><meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'><![endif]-->
+    <link th:rel="icon" th:href="@{/img/ico/HeartFounding.ico}" />
+    
+    <title>Healthy Heart</title>
 
-	<div th:replace="../static/layout :: footer"></div>
+    <!-- Bootstrap Core CSS -->
+    <link th:rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+    <link th:rel="stylesheet" th:href="@{/css/animate.css}" />
+    <link th:rel="stylesheet" th:href="@{/css/plugins.css}" />
+
+    <!-- Custom CSS -->
+    <link th:rel="stylesheet" th:href="@{/css/style.css}" />
+    <!-- Custom Fonts -->
+    <link th:rel="stylesheet" th:href="@{/lib/font-awesome-4.1.0/css/font-awesome.min.css}" type="text/css"/>
+    <link th:rel="stylesheet" th:href="@{/css/pe-icons.css}" />
+</head>
+
+
+<body id="page-top" class="index">
+
+    <div class="master-wrapper">
+
+        <div class="preloader">
+            <div class="preloader-img">
+                <span class="loading-animation animate-flicker"><img src="/img/loading.GIF" /></span>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="navbar navbar-default navbar-fixed-top fadeInDown" data-wow-delay="0.5s">
+            <div class="top-bar smoothie hidden-xs">
+                <div class="container">
+                    <div class="clearfix">
+                        <ul class="list-inline social-links wow pull-left">
+                          <li>
+                            <a href="#"><i class="fa fa-twitter"></i></a>
+                          </li>
+                          <li>
+                            <a href="#"><i class="fa fa-facebook"></i></a>
+                          </li>
+                          <li>
+                            <a href="#"><i class="fa fa-linkedin"></i></a>
+                          </li>
+                        </ul>
+
+                        <div class="pull-right text-right">
+                            <ul class="list-inline">
+                                <li><div><i class="fa fa-envelope-o"></i> contact@HealthyHeart.com</div></li>
+                                <li><div class="meta-item"><i class="fa fa-mobile"></i> +33 8780 648 605</div></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header page-scroll">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navigation">
+                        <span class="sr-only"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand smoothie" href="index.html" style="margin-top : 0px;"><img th:src="@{/img/LogotitreHealtyHeart2.png}" alt="Logo" width="150" style="background-color : white "></a>
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="main-navigation">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="dropdown">
+                            <a href="#" class="" >Home</a>
+                        </li>
+						<li class="dropdown">
+                            <a href="#" class="" >Projets</a>
+                        </li>
+
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-hover="dropdown" data-toggle="dropdown">Profil <span class="pe-7s-angle-down"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="">Mon projet</a></li>
+								<li><a href="">Mes finnancements</a></li>
+                                <li><a href="">Mon comptes</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#search"><i class="pe-7s-search"></i></a></li>
+                        <li><a href="javascript:void(0);" class="side-menu-trigger hidden-xs"><i class="fa fa-bars"></i></a></li>
+                    </ul>
+                </div>
+                <!-- /.navbar-collapse -->
+            </div>
+            <!-- /.container-fluid -->
+        </nav>
+
+        <div id="search-wrapper">
+            <button type="button" class="close">×</button>
+            <div class="vertical-center text-center">
+                <form>
+                    <input type="search" value="" placeholder="Entrer les termes de recherches" />
+                    <button type="submit" class="btn btn-primary btn-white">Rechercher</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Header -->
+        <header id="headerwrap" class="backstretched fullheight no-overlay">
+            <div class="container vertical-center">
+                <div class="intro-text vertical-center text-center smoothie">
+                    <div class="intro-heading wow fadeIn text-center heading-font" data-wow-delay="0.2s">Healthy Heart</div>
+                    <div class="intro-sub-heading wow fadeIn text-center secondary-font" data-wow-delay="0.7s">Save lifes with <span class="rotate">Money, Times ,Ressources</span></div>
+                </div>
+            </div>
+        </header>
+
+<section>
+            <div class="section-inner">
+                <div class="container">
+                    <div class="row">
+
+                        <div class="col-sm-4 blog-item mb100 wow match-height">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="hover-item mb30">
+                                        <img src="/img/news/1.jpg" class="img-responsive smoothie" alt="title">
+                                        <div class="overlay-item-caption smoothie"></div>
+                                        <div class="hover-item-caption smoothie">
+                                            <h3 class="vertical-center smoothie"><a href="single-post-right-sidebar.html" class="smoothie btn btn-primary page-scroll" title="view article">View</a></h3>
+                                        </div>
+                                    </div>
+                                    <h2 class="post-title">The Ultimate Experience</h2>
+                                    <div class="item-metas text-muted mb30">
+                                        <span class="meta-item"><i class="pe-icon pe-7s-folder"></i> POSTED IN <span>News</span></span>
+                                        <span class="meta-item"><i class="pe-icon pe-7s-ticket"></i> TAGS <span>Photography</span></span>
+                                        <span class="meta-item"><i class="pe-icon pe-7s-user"></i> AUTHOR <span>Danny Jones</span></span>
+                                        <span class="meta-item"><i class="pe-icon pe-7s-comment"></i> COMMENTS <span>3</span></span>
+                                    </div>
+                                    <p>Behind sooner dining so window excuse he summer. Breakfast met certainty and fulfilled propriety led. Waited get either are wooded little her. Contrasted unreserved as mr particular collecting it everything as indulgence. Seems ask meant merry could put. Age old begin had boy noisy table front whole given.</p>
+                                    <a class="btn btn-primary mt30" href="single-post-right-sidebar.html">Read More</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4 blog-item mb100 wow match-height">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="hover-item mb30">
+                                        <img src="/img/news/2.jpg" class="img-responsive smoothie" alt="title">
+                                        <div class="overlay-item-caption smoothie"></div>
+                                        <div class="hover-item-caption smoothie">
+                                            <h3 class="vertical-center smoothie"><a href="single-post-right-sidebar.html" class="smoothie btn btn-primary page-scroll" title="view article">View</a></h3>
+                                        </div>
+                                    </div>
+                                    <h2 class="post-title">The Ultimate Experience</h2>
+                                    <div class="item-metas text-muted mb30">
+                                        <span class="meta-item"><i class="pe-icon pe-7s-folder"></i> POSTED IN <span>News</span></span>
+                                        <span class="meta-item"><i class="pe-icon pe-7s-ticket"></i> TAGS <span>Photography</span></span>
+                                        <span class="meta-item"><i class="pe-icon pe-7s-user"></i> AUTHOR <span>Danny Jones</span></span>
+                                        <span class="meta-item"><i class="pe-icon pe-7s-comment"></i> COMMENTS <span>3</span></span>
+                                    </div>
+                                    <p>Behind sooner dining so window excuse he summer. Breakfast met certainty and fulfilled propriety led. Waited get either are wooded little her. Contrasted unreserved as mr particular collecting it everything as indulgence. Seems ask meant merry could put. Age old begin had boy noisy table front whole given.</p>
+                                    <a class="btn btn-primary mt30" href="single-post-right-sidebar.html">Read More</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4 blog-item mb100 wow match-height">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="hover-item mb30">
+                                        <img src="/img/news/3.jpg" class="img-responsive smoothie" alt="title">
+                                        <div class="overlay-item-caption smoothie"></div>
+                                        <div class="hover-item-caption smoothie">
+                                            <h3 class="vertical-center smoothie"><a href="single-post-right-sidebar.html" class="smoothie btn btn-primary page-scroll" title="view article">View</a></h3>
+                                        </div>
+                                    </div>
+                                    <h2 class="post-title">The Ultimate Experience</h2>
+                                    <div class="item-metas text-muted mb30">
+                                        <span class="meta-item"><i class="pe-icon pe-7s-folder"></i> POSTED IN <span>News</span></span>
+                                        <span class="meta-item"><i class="pe-icon pe-7s-ticket"></i> TAGS <span>Photography</span></span>
+                                        <span class="meta-item"><i class="pe-icon pe-7s-user"></i> AUTHOR <span>Danny Jones</span></span>
+                                        <span class="meta-item"><i class="pe-icon pe-7s-comment"></i> COMMENTS <span>3</span></span>
+                                    </div>
+                                    <p>Behind sooner dining so window excuse he summer. Breakfast met certainty and fulfilled propriety led. Waited get either are wooded little her. Contrasted unreserved as mr particular collecting it everything as indulgence. Seems ask meant merry could put. Age old begin had boy noisy table front whole given.</p>
+                                    <a class="btn btn-primary mt30" href="single-post-right-sidebar.html">Read More</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4 blog-item mb100 wow match-height">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="hover-item mb30">
+                                        <img src="/img/news/14.jpg" class="img-responsive smoothie" alt="title">
+                                        <div class="overlay-item-caption smoothie"></div>
+                                        <div class="hover-item-caption smoothie">
+                                            <h3 class="vertical-center smoothie"><a href="single-post-right-sidebar.html" class="smoothie btn btn-primary page-scroll" title="view article">View</a></h3>
+                                        </div>
+                                    </div>
+                                    <h2 class="post-title">The Ultimate Experience</h2>
+                                    <div class="item-metas text-muted mb30">
+                                        <span class="meta-item"><i class="pe-icon pe-7s-folder"></i> POSTED IN <span>News</span></span>
+                                        <span class="meta-item"><i class="pe-icon pe-7s-ticket"></i> TAGS <span>Photography</span></span>
+                                        <span class="meta-item"><i class="pe-icon pe-7s-user"></i> AUTHOR <span>Danny Jones</span></span>
+                                        <span class="meta-item"><i class="pe-icon pe-7s-comment"></i> COMMENTS <span>3</span></span>
+                                    </div>
+                                    <p>Behind sooner dining so window excuse he summer. Breakfast met certainty and fulfilled propriety led. Waited get either are wooded little her. Contrasted unreserved as mr particular collecting it everything as indulgence. Seems ask meant merry could put. Age old begin had boy noisy table front whole given.</p>
+                                    <a class="btn btn-primary mt30" href="single-post-right-sidebar.html">Read More</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4 blog-item mb100 wow match-height">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="hover-item mb30">
+                                        <img src="/img/news/5.jpg" class="img-responsive smoothie" alt="title">
+                                        <div class="overlay-item-caption smoothie"></div>
+                                        <div class="hover-item-caption smoothie">
+                                            <h3 class="vertical-center smoothie"><a href="single-post-right-sidebar.html" class="smoothie btn btn-primary page-scroll" title="view article">View</a></h3>
+                                        </div>
+                                    </div>
+                                    <h2 class="post-title">The Ultimate Experience</h2>
+                                    <div class="item-metas text-muted mb30">
+                                        <span class="meta-item"><i class="pe-icon pe-7s-folder"></i> POSTED IN <span>News</span></span>
+                                        <span class="meta-item"><i class="pe-icon pe-7s-ticket"></i> TAGS <span>Photography</span></span>
+                                        <span class="meta-item"><i class="pe-icon pe-7s-user"></i> AUTHOR <span>Danny Jones</span></span>
+                                        <span class="meta-item"><i class="pe-icon pe-7s-comment"></i> COMMENTS <span>3</span></span>
+                                    </div>
+                                    <p>Behind sooner dining so window excuse he summer. Breakfast met certainty and fulfilled propriety led. Waited get either are wooded little her. Contrasted unreserved as mr particular collecting it everything as indulgence. Seems ask meant merry could put. Age old begin had boy noisy table front whole given.</p>
+                                    <a class="btn btn-primary mt30" href="single-post-right-sidebar.html">Read More</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4 blog-item mb100 wow match-height">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="hover-item mb30">
+                                        <img src="/img/news/6.jpg" class="img-responsive smoothie" alt="title">
+                                        <div class="overlay-item-caption smoothie"></div>
+                                        <div class="hover-item-caption smoothie">
+                                            <h3 class="vertical-center smoothie"><a href="single-post-right-sidebar.html" class="smoothie btn btn-primary page-scroll" title="view article">View</a></h3>
+                                        </div>
+                                    </div>
+                                    <h2 class="post-title">The Ultimate Experience</h2>
+                                    <div class="item-metas text-muted mb30">
+                                        <span class="meta-item"><i class="pe-icon pe-7s-folder"></i> POSTED IN <span>News</span></span>
+                                        <span class="meta-item"><i class="pe-icon pe-7s-ticket"></i> TAGS <span>Photography</span></span>
+                                        <span class="meta-item"><i class="pe-icon pe-7s-user"></i> AUTHOR <span>Danny Jones</span></span>
+                                        <span class="meta-item"><i class="pe-icon pe-7s-comment"></i> COMMENTS <span>3</span></span>
+                                    </div>
+                                    <p>Behind sooner dining so window excuse he summer. Breakfast met certainty and fulfilled propriety led. Waited get either are wooded little her. Contrasted unreserved as mr particular collecting it everything as indulgence. Seems ask meant merry could put. Age old begin had boy noisy table front whole given.</p>
+                                    <a class="btn btn-primary mt30" href="single-post-right-sidebar.html">Read More</a>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row paging text-center">
+						<a class="btn btn-primary mt30 col-sm-6" href="#">Previous</a>
+						<a class="btn btn-primary mt30 col-sm-6" href="#">Next</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div id="footer-wrapper">
+        	<section class="dark-wrapper">
+                <div class="section-inner">
+                	<div class="container">
+                		<div class="row">
+        		            <div class="col-md-4">
+        		            	<div class="widget about-us-widget">
+                                    <h4 class="widget-title"><strong>Phrase</strong> Global</h4>
+                                    <p>Was drawing natural fat respect husband. An as noisy an offer drawn blush place. These tried for way joy wrote witty. In mr began music weeks after at begin.</p>
+                                </div>
+        		        	</div>
+        		        	<div class="col-md-4">
+                                <div class="widget">
+                                  <h4 class="widget-title"><strong>Derniers</strong> Projets</h4>
+                                  <div>
+                                    <div class="media">
+                                      <div class="pull-left">
+                                        <img class="widget-img" src="assets/img/widget/widget1.jpg" alt="">
+                                      </div>
+                                      <div class="media-body">
+                                        <span class="media-heading"><a href="#">Blog Post A</a></span>
+                                        <small class="muted">Posted 14 April 2015</small>
+                                      </div>
+                                    </div>
+                                    <div class="media">
+                                      <div class="pull-left">
+                                        <img class="widget-img" src="assets/img/widget/widget2.jpg" alt="">
+                                      </div>
+                                      <div class="media-body">
+                                        <span class="media-heading"><a href="#">Blog Post B</a></span>
+                                        <small class="muted">Posted 14 April 2015</small>
+                                      </div>
+                                    </div>
+                                  </div>  
+                                </div>
+        		        	</div>
+        		        	<div class="col-md-4">
+                                <div class="widget">
+                                  <h4 class="widget-title"><strong>Projets</strong> par type</h4>
+                                  <div class="tagcloud">
+                                    <a href="#" class="tag-link btn btn-theme btn-white btn-xs" title="3 topics">Local</a>
+                                    <a href="#" class="tag-link btn btn-theme btn-white btn-xs" title="3 topics">Business</a>
+                                    <a href="#" class="tag-link btn btn-theme btn-white btn-xs" title="3 topics">Media</a>
+                                    <a href="#" class="tag-link btn btn-theme btn-white btn-xs" title="3 topics">Photogtraphy</a>
+                                    <a href="#" class="tag-link btn btn-theme btn-white btn-xs" title="3 topics">Aid</a>
+                                    <a href="#" class="tag-link btn btn-theme btn-white btn-xs" title="3 topics">Fashion</a>
+                                    <a href="#" class="tag-link btn btn-theme btn-white btn-xs" title="3 topics">News</a>
+                                    <a href="#" class="tag-link btn btn-theme btn-white btn-xs" title="3 topics">Cars</a>
+                                    <a href="#" class="tag-link btn btn-theme btn-white btn-xs" title="3 topics">Global Affairs</a>
+                                    <a href="#" class="tag-link btn btn-theme btn-white btn-xs" title="3 topics">Music</a>
+                                    <a href="#" class="tag-link btn btn-theme btn-white btn-xs" title="3 topics">Downloads</a>
+                                    <a href="#" class="tag-link btn btn-theme btn-white btn-xs" title="3 topics">MP3</a>
+                                  </div> 
+                                </div>
+        		        	</div>
+        	        	</div>
+                	</div>
+                </div>
+            </section>
+
+            <footer class="white-wrapper">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12 text-center">
+                            <ul class="list-inline social-links wow">
+                                <li>
+                                    <a href="#"><i class="fa fa-twitter"></i></a>
+                                </li>
+                                <li>
+                                    <a href="#"><i class="fa fa-facebook"></i></a>
+                                </li>
+                                <li>
+                                    <a href="#"><i class="fa fa-linkedin"></i></a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <hr class="thin-hr" />
+
+                        <div class="col-md-12 text-center wow">
+                            <span class="copyright">Copyright 2021. HealtyHeart</span>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+
+    </div>
+
+    <div class="flexpanel">
+        <div class="viewport-wrap">
+            <div class="viewport">
+                <div class="widget mb50">
+                  <h4 class="widget-title">Derniers Projets</h4>
+                  <div>
+                    <div class="media">
+                      <div class="pull-left">
+                        <img class="widget-img" src="assets/img/widget/widget1.jpg" alt="">
+                      </div>
+                      <div class="media-body">
+                        <span class="media-heading"><a href="#">Panic In London</a></span>
+                        <small class="muted">Posted 14 April 2015</small>
+                      </div>
+                    </div>
+                    <div class="media">
+                      <div class="pull-left">
+                        <img class="widget-img" src="assets/img/widget/widget2.jpg" alt="">
+                      </div>
+                      <div class="media-body">
+                        <span class="media-heading"><a href="#">New iPhone News</a></span>
+                        <small class="muted">Posted 14 April 2015</small>
+                      </div>
+                    </div>
+                    <div class="media">
+                      <div class="pull-left">
+                        <img class="widget-img" src="assets/img/widget/widget3.jpg" alt="">
+                      </div>
+                      <div class="media-body">
+                        <span class="media-heading"><a href="#">Our Year In Review</a></span>
+                        <small class="muted">Posted 14 April 2015</small>
+                      </div>
+                    </div>
+                    <div class="media">
+                      <div class="pull-left">
+                        <img class="widget-img" src="assets/img/widget/widget4.jpg" alt="">
+                      </div>
+                      <div class="media-body">
+                        <span class="media-heading"><a href="#">jQuery Tutorial</a></span>
+                        <small class="muted">Posted 14 April 2015</small>
+                      </div>
+                    </div>
+                    <div class="media">
+                      <div class="pull-left">
+                        <img class="widget-img" src="assets/img/widget/widget5.jpg" alt="">
+                      </div>
+                      <div class="media-body">
+                        <span class="media-heading"><a href="#">Sheen Interview</a></span>
+                        <small class="muted">Posted 14 April 2015</small>
+                      </div>
+                    </div>
+                  </div>  
+                </div>
+                <div class="widget mb50">
+                  <h4 class="widget-title"><strong>Projet</strong> par catégorie</h4>
+                  <div class="tagcloud">
+                    <a href="#" class="tag-link btn btn-theme btn-xs" title="3 topics">Local</a>
+                    <a href="#" class="tag-link btn btn-theme btn-xs" title="3 topics">Business</a>
+                    <a href="#" class="tag-link btn btn-theme btn-xs" title="3 topics">Media</a>
+                    <a href="#" class="tag-link btn btn-theme btn-xs" title="3 topics">Photogtraphy</a>
+                    <a href="#" class="tag-link btn btn-theme btn-xs" title="3 topics">Aid</a>
+                    <a href="#" class="tag-link btn btn-theme btn-xs" title="3 topics">Fashion</a>
+                    <a href="#" class="tag-link btn btn-theme btn-xs" title="3 topics">News</a>
+                    <a href="#" class="tag-link btn btn-theme btn-xs" title="3 topics">Cars</a>
+                    <a href="#" class="tag-link btn btn-theme btn-xs" title="3 topics">Global Affairs</a>
+                    <a href="#" class="tag-link btn btn-theme btn-xs" title="3 topics">Music</a>
+                    <a href="#" class="tag-link btn btn-theme btn-xs" title="3 topics">Downloads</a>
+                    <a href="#" class="tag-link btn btn-theme btn-xs" title="3 topics">MP3</a>
+                  </div> 
+                </div>
+                <div class="widget about-us-widget mb50">
+                    <h4 class="widget-title">Phrase Général</h4>
+                    <p>Was drawing natural fat respect husband. An as noisy an offer drawn blush place. These tried for way joy wrote witty. In mr began music weeks after at begin.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script th:src="@{/js/jquery.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/plugins.js}"></script>
+    <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+    <script th:src="@{/js/init.js}"></script>
+    
+    <script type="text/javascript">
+    $(document).ready(function(){
+       'use strict';
+        jQuery('#headerwrap').backstretch([
+          "/img/bg/bg1.jpg",
+          "/img/bg/bg2.jpg",
+          "/img/bg/bg3.jpg"
+        ], {duration: 8000, fade: 500});
+    });
+    </script>
 
 </body>
+
 </html>

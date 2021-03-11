@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+<head>
+<th:block th:replace="../static/layout :: headerfiles"></th:block>
+<meta charset="UTF-8">
+<title>Index</title>
+</head>
+<body id="page-top" class="index">
+	<div th:replace="../static/layout :: header"></div>
+	<h1>HOME Starter</h1>
+	
+	<button class="btn btn-primary">Bouton bootstrap</button>
+	<div>
+		<a th:href="@{/ShowAllProjetList}">All Projet List</a>
+	</div>
+	<div>
+		<a th:href="@{/ShowProjetListPublie}">Catalogue</a>
+	</div>
+	<div>
+		<a th:href="@{/showListProjetByUser}">List Projet By PP(user)</a>
+	</div>
+	<div>
+		<a th:href="@{/ShowNewProjetForm}">Add Projet</a>
+	</div>
+	<div>
+		<a th:href="@{/CreerNouvelUtilsateur}">Add new user</a>
+	</div>
+	<div>
+		<a th:href="@{/showConnexionForm}">Se connecter</a>
+	</div>
+	<div>
+		<a th:href="@{/showAllUsers}">Afficher tous les utilisateurs</a>
+	</div>
+	<div>
+		<a th:href="@{/showSearchBox}">Rechercher un projet par son titre</a>
+	</div>
+	<div>
+		<a th:href="@{/showSearchBoxMulticriteres}">Recherche
+			Multicritères d'un projet</a>
+	</div>
+	<div>
+		<a th:href="@{/ShowNewUtilisateur}">Add Utilisateur</a>
+	</div>
+
+	<div th:replace="../static/layout :: footer"></div>
+
+</body>
+</html>
