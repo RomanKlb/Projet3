@@ -2412,3 +2412,9 @@ footer.white-wrapper .social-links li a {
 .demo-selector .masonry-portfolio-item {
     margin-bottom: 30px;
 }
+
+
+.default-bg{
+	background-image: url("../img/bg/bg-default.jpg") !important;
+	margin-top : 100px;
+}

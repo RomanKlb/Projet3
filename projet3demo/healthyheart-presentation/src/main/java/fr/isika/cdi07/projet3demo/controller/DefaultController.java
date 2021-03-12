@@ -39,11 +39,34 @@ public class DefaultController {
 			LOGGER.info("Utilisateur connecte : " + monUtilisateur);
 		}
 		
+		
+		
 		model.addAttribute("isConnected", isConnected);
 		model.addAttribute("Utilisateur", monUtilisateur);
 		
 
 		return "index";
+	}
+	
+	
+	@GetMapping("/accueil")
+	public String afficherPageAccueilDemo(Model model,HttpSession session) {
+		boolean isConnected = false;
+		Utilisateur monUtilisateur = null;
+		String userEmail = (String) session.getAttribute("emailUtilisateurConnecte");
+		if (userEmail != null) {
+			monUtilisateur = utilisateurService.chercherUtilisateurParEmail(userEmail);
+			isConnected = true;
+			LOGGER.info("Utilisateur connecte : " + monUtilisateur);
+		}
+		
+		
+		
+		model.addAttribute("isConnected", isConnected);
+		model.addAttribute("Utilisateur", monUtilisateur);
+		
+
+		return "indexold";
 	}
 }
 	
