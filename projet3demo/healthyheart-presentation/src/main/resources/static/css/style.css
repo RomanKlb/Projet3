@@ -30,3 +30,24 @@ label{
     border-bottom: 1px dotted #ccc;
 }
 /* FIN >>> Commentaires List */
+
+/*DEBUT >>> test formulaire registration */
+.form-input {
+    position: relative;
+    margin-bottom: 10px;
+    margin-top: 10px
+}
+
+.form-input i {
+    position: absolute;
+    font-size: 18px;
+    top: 15px;
+    left: 10px
+}
+
+.form-control {
+    height: 50px;
+    text-indent: 24px;
+    font-size: 15px
+}
+/*FIN >>> test formulaire registration */

@@ -115,6 +115,7 @@ public class DonController {
 
 	@PostMapping("/sauvegarderDonMateriel")
 	public String sauvegarderDonMateriel(@ModelAttribute("donForm") DonForm donForm) {
+		logger.info("DON MATERIEL" + donForm.getDonMateriel());
 		donForm.getParticipationProjet().setAnonyme(donForm.isAnonyme());
 		Utilisateur user = utilisateurService.chercherUtilisateurParEmail(donForm.getUtilisateur().getEmail());
 		StatutDon statutDon = donMaterielService
