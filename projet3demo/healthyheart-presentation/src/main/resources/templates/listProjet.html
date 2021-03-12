@@ -8,41 +8,48 @@
 <body>
 	<div th:replace="../static/layout :: header"></div>
 
+	<hr />
+	<h1 class="text-center">Liste de tous les projets</h1>
+	<hr />
+
+
 	<div class="container">
 		<!-- <a th:href="@{/ShowNewProjetForm}">Add Projet</a> -->
 
-		<h1 class="text-center"> Liste de tous les projets</h1>
-
-		<hr />
 		<div class="row">
+			<div class="col-1"></div>
 			<div class="col-1">
 				<form action="#" th:action="@{/selectionProjet}" method="POST">
-
-					<select th:id="ComboBoxSelectId" th:field="*{listCritere.critere}">
-						<option value="all">Tous</option>
-						<option value="actif">Actif</option>
-						<option value="create">Créé</option>
-						<option value="wait">En Attente</option>
-						<option value="approved">Approuvé</option>
-						<option value="reject">Rejeté</option>
-						<option value="published">Publié</option>
-						<option value="completed">Terminé</option>
-						<option value="deleted">Supprimé</option>
-					</select>
+					<div class="dropdown">
+						<select class="btn btn-primary" th:id="ComboBoxSelectId"
+							th:field="*{listCritere.critere}">
+							<option value="all">Tous</option>
+							<option value="actif">Actif</option>
+							<option value="create">Créé</option>
+							<option value="wait">En Attente</option>
+							<option value="approved">Approuvé</option>
+							<option value="reject">Rejeté</option>
+							<option value="published">Publié</option>
+							<option value="completed">Terminé</option>
+							<option value="deleted">Supprimé</option>
+						</select>
+					</div>
 				</form>
 			</div>
-			<div class="col-9"></div>
+			<div class="col-8"></div>
 			<div class="col-2">
-			<a th:href="@{/}" class="btn btn-link">Retour Index</a>
+				<a class="btn btn-primary" data-toggle="collapse" th:href="@{/}"
+					role="button">Retour index</a>
 			</div>
 		</div>
 
-
+		<br />
 
 		<table class="table">
 			<thead class="thead-light">
 				<tr>
 					<th>Nom PorteurProjet</th>
+					<th>StatutProjet</th>
 					<th>Type Porteur</th>
 					<th>Territoire</th>
 					<th>Titre</th>
@@ -50,17 +57,15 @@
 					<th>Montant Attendu</th>
 					<th>Date maj</th>
 					<th>Date fin</th>
-					<th>StatutProjet</th>
-					<!-- 		<th>Don matériel</th>
-					<th>Don temps</th> -->
 					<th>Action</th>
-					<!-- 	<th>Action</th> -->
+
 				</tr>
 			</thead>
 			<tbody>
 				<tr th:each="projet: ${listCritere.projets}">
 					<td
 						th:text="${projet.portefeuilleprojet.porteurprojet.role.utilisateur.email}"></td>
+					<td th:text="${projet.statutDuProjet}"></td>
 					<td th:text="${projet.categorie.typeProjet.libelle}"></td>
 					<td th:text="${projet.categorie.territoire.libelle}"></td>
 					<td th:text="${projet.titre}"></td>
@@ -69,13 +74,10 @@
 					<td
 						th:text="${#calendars.format(projet.dateMaj,'dd MM yyyy HH:mm')}"></td>
 					<td th:text="${projet.dateFin}"></td>
-					<td th:text="${projet.statutDuProjet}"></td>
 					<!-- 	<td th:text="${projet.donMateriel}?'Oui':'Non'"></td>
 					<td th:text="${projet.donTemps}?'Oui':'Non'"></td> -->
-					<td><a th:href="@{/showProjet/{id}(id=${projet.idProjet})}">Visuel</a></td>
-					<!-- 	<td><a
-					th:href="@{/showNewPictureForm/{id}(id=${projet.idProjet})}">Add
-						Image</a></td> -->
+					<td><a  th:href="@{/showProjet/{id}/ADMF(id=${projet.idProjet})}">Detail</a></td>
+
 					<!-- <td><a th:href="@{/showUpdateForm/{id}(id=${projet.idProjet})}">Update</a></td>  -->
 				</tr>
 

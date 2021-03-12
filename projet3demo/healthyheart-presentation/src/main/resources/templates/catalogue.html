@@ -8,63 +8,88 @@
 <body>
 	<div th:replace="../static/layout :: header"></div>
 
+
+	<hr />
 	<h1 class="text-center">Catalogue</h1>
 	<hr />
 
-	<section class="card-deck">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-4" th:each="projet : ${listProjetPublie}">
-					<a th:href="@{/showProjet/{id}(id=${projet.idProjet})}">
-						<div class="card" style="margin-bottom: 20px">
-							<img class="card-img-top" src="..." alt="Card image cap">
-							<div class="card-body">
-								<h5 class="card-title" th:text="${projet.titre}"></h5>
-								<p class="card-text" th:text="${projet.descriptionCourte}"></p>
+
+	<div class="row">
+		<div class="col-10"></div>
+		<div class="col-2">
+			<a class="btn btn-primary" data-toggle="collapse" th:href="@{/}"
+				role="button">Retour Index</a>
+		</div>
+	</div>
+
+	<section>
+		<div class="section-inner">
+			<div class="container">
+				<div class="row">
+					<div class="col-sm-4 blog-item mb100 wow match-height"
+						th:each="projet : ${listProjetPublie}">
+						<a th:href="@{/showProjet/{id}(id=${projet.idProjet})}">
+							<div class="card bg-light mb-3" style="margin-bottom: 20px">
+								<div class="row">
+									<div class="col-xs-12">
+										<div class="hover-item mb30">
+											<!-- 		<img th:src="" class="img-responsive smoothie"
+											alt="title"> -->
+											<div class="overlay-item-caption smoothie"></div>
+											<div class="hover-item-caption smoothie">
+												<h3 class="vertical-center smoothie"></h3>
+											</div>
+										</div>
+										<h2 class="post-title" th:text="${projet.titre}"></h2>
+										<div class="item-metas text-muted mb10">
+											<span class="meta-item"><i
+												class="pe-icon pe-7s-folder"></i> POSTED BY <span
+												th:text="${projet.portefeuilleprojet.porteurprojet.libelle}"></span></span>
+											<span class="meta-item"><i
+												class="pe-icon pe-7s-ticket"></i> TAGS <span
+												th:text="${projet.categorie.typeProjet.libelle}"></span></span>
+										</div>
+										<div class="item-metas text-muted mb10">
+											<span class="meta-item"><i class="pe-icon pe-7s-user"></i>
+												AUTHOR <span
+												th:text="${projet.portefeuilleprojet.porteurprojet.role.utilisateur.nom}"></span>
+												<span
+												th:text="${projet.portefeuilleprojet.porteurprojet.role.utilisateur.prenom}"></span></span>
+										</div>
+										<div class="item-metas text-muted mb10">
+											<span class="meta-item"><i
+												class="pe-icon pe-7s-comment"></i> CLOSING DATE <span
+												th:text="${#calendars.format(projet.dateFin,'dd MM yyyy')}"></span></span>
+											<div class="item-metas text-muted mb10">
+												<span class="meta-item"><i
+													class="pe-icon pe-7s-comment"></i> MATERIAL DONATION <span
+													th:text="${projet.isDonMateriel}"></span></span> <span
+													class="meta-item"><i class="pe-icon pe-7s-comment"></i>
+													TIME DONATION <span th:text="${projet.isDonTemps}"></span></span>
+											</div>
+										</div>
+										<div class="item-metas text-muted mb30">
+											<span class="meta-item"><i
+												class="pe-icon pe-7s-comment"></i> COLLECTED <span
+												th:text="${projet.montantCollecte}"></span></span> <span
+												class="meta-item"><i class="pe-icon pe-7s-comment"></i>
+												EXPECTED <span th:text="${projet.montantAttendu}"></span></span>
+										</div>
+										<!-- <p>Behind sooner dining so window excuse he summer.
+											Breakfast met certainty and fulfilled propriety led. Waited
+											get either are wooded little her. Contrasted unreserved as mr
+											particular collecting it everything as indulgence. Seems ask
+											meant merry could put. Age old begin had boy noisy table
+											front whole given.</p> -->
+									</div>
+								</div>
 							</div>
-							<div class="card-footer">
-								<small class="text-muted"></small>
-							</div>
-						</div>
-					</a>
+						</a>
+					</div>
 				</div>
 			</div>
 		</div>
 	</section>
-
-	<!-- th:text="${projet.montantAttendu}" -->
-
-
-	<br />
-	<br />
-	<br />
-	<br />
-	<br />
-	<br />
-	<br />
-
-	<table>
-		<thead>
-			<tr>
-				<th>Titre</th>
-				<th>Description Courte</th>
-				<th>Montant</th>
-				<th>StatutProjet</th>
-			</tr>
-
-		</thead>
-		<tbody>
-			<tr th:each="projet : ${listProjetPublie}">
-				<td th:text="${projet.titre}"></td>
-				<!--  -->
-				<td th:text="${projet.descriptionCourte}"></td>
-				<!--  -->
-				<td th:text="${projet.montantAttendu}"></td>
-				<td th:text="${projet.statutDuProjet}"></td>
-				<!--  -->
-			</tr>
-		</tbody>
-	</table>
 
 	<div th:replace="../static/layout :: footer"></div>
 </body>
