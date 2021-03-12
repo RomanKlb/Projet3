@@ -1,5 +1,6 @@
 package fr.isika.cdi07.projet3demo.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
@@ -19,6 +20,7 @@ import fr.isika.cdi07.projet3demo.model.PortefeuilleProjet;
 import fr.isika.cdi07.projet3demo.model.PorteurProjet;
 import fr.isika.cdi07.projet3demo.model.Projet;
 import fr.isika.cdi07.projet3demo.model.Role;
+import fr.isika.cdi07.projet3demo.model.StatutProjet;
 import fr.isika.cdi07.projet3demo.model.Territoire;
 import fr.isika.cdi07.projet3demo.model.TypeProjet;
 import fr.isika.cdi07.projet3demo.model.TypeRole;
@@ -62,7 +64,6 @@ public class ProjetController {
 
 	@Autowired
 	private PortefeuilleService portefeuilleService;
-
 
 
 	//SHOW ALL PROJECT
@@ -194,7 +195,7 @@ public class ProjetController {
 		monForm.getProjet().setPortefeuilleprojet(addPortefeuille);
 		projetService.ajoutProjet(monForm.getProjet());
 
-		return "redirect:/ShowAllProjetList";
+		return "redirect:/showListProjetByUser";
 	}
 
 	//SHOW FORM TO UPDATE PROJECT
@@ -295,10 +296,19 @@ public class ProjetController {
 
 		//OUI >>>> chercher les portefeuilles lies au role
 		List<Projet> projetRecup = projetService.getListProjet(role.get());
-
-		for(Projet p : projetRecup) {
-			LOGGER.info("projet : " + p);
+		List<Projet> projetActifForUser = new ArrayList<Projet>();
+		
+		for(Projet projet : projetRecup) {
+			if(projet.getStatutDuProjet().equals(StatutProjet.SUPPRIME)) {
+				continue;
+			}
+			projetActifForUser.add(projet);
 		}
+		
+		
+//		for(Projet p : projetRecup) {
+//			LOGGER.info("projet : " + p);
+//		}
 
 		//pour chaque liste affiche la lsite des projets  
 
@@ -307,7 +317,7 @@ public class ProjetController {
 		model.addAttribute("message", message);
 		model.addAttribute("prenomUtilisateur", session.getAttribute("prenomUtilisateur"));
 		model.addAttribute("message2", message2);
-		model.addAttribute("listProjetByPP", projetRecup);
+		model.addAttribute("listProjetByPP", projetActifForUser);
 
 
 		return "listProjetByUser";

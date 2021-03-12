@@ -182,6 +182,8 @@ public class ProjetService {
 		allProjet.stream()
 		.filter(p -> p.getPortefeuilleprojet().getPorteurprojet().getRole().equals(role))
 		.forEach(p -> selectionProjet.add(p));
+		
+		
 
 		return selectionProjet;
 	}

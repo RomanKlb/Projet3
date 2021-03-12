@@ -2,10 +2,47 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="fr">
 <head>
 <meta charset="UTF-8">
+<th:block th:replace="../static/layout :: headerfiles"></th:block>
 <title>Catalogue</title>
 </head>
 <body>
-	<h1>Catalogue</h1>
+	<div th:replace="../static/layout :: header"></div>
+
+	<h1 class="text-center">Catalogue</h1>
+	<hr />
+
+	<section class="card-deck">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-4" th:each="projet : ${listProjetPublie}">
+					<a th:href="@{/showProjet/{id}(id=${projet.idProjet})}">
+						<div class="card" style="margin-bottom: 20px">
+							<img class="card-img-top" src="..." alt="Card image cap">
+							<div class="card-body">
+								<h5 class="card-title" th:text="${projet.titre}"></h5>
+								<p class="card-text" th:text="${projet.descriptionCourte}"></p>
+							</div>
+							<div class="card-footer">
+								<small class="text-muted"></small>
+							</div>
+						</div>
+					</a>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- th:text="${projet.montantAttendu}" -->
+
+
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+
 	<table>
 		<thead>
 			<tr>
@@ -19,11 +56,16 @@
 		<tbody>
 			<tr th:each="projet : ${listProjetPublie}">
 				<td th:text="${projet.titre}"></td>
+				<!--  -->
 				<td th:text="${projet.descriptionCourte}"></td>
+				<!--  -->
 				<td th:text="${projet.montantAttendu}"></td>
 				<td th:text="${projet.statutDuProjet}"></td>
+				<!--  -->
 			</tr>
 		</tbody>
 	</table>
+
+	<div th:replace="../static/layout :: footer"></div>
 </body>
 </html>

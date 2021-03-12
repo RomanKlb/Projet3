@@ -10,30 +10,34 @@
 
 	<div class="container">
 		<fieldset>
-			<legend>List Projet By User</legend>
+			<h1 class="text-center">Liste de vos Projets</h1>
 
 
-			<span th:text="${message}"></span> <label
-				th:text="${prenomUtilisateur}"></label> 
+			<!-- 			<span th:text="${message}"></span> <label
+				th:text="${prenomUtilisateur}"></label>  -->
 
+			<hr />
+			<div class="row">
+				<div class="col-1"></div>
+				<div class="col-9"></div>
+				<div class="col-2">
+					<a th:href="@{/}" class="btn btn-link">Retour Index</a>
+				</div>
+			</div>
 
-
-			<table>
-				<thead>
+			<table class="table">
+				<thead class="thead-light">
 					<tr>
 						<th>Photo Principale</th>
 						<th>Titre</th>
-						<th>Description Courte</th>
-						<th>Description Longue</th>
-						<th>Montant Attendu</th>
 						<th>Montant Collecté</th>
-						<th>Date maj</th>
-						<th>Date fin</th>
+						<th>Montant Attendu</th>
 						<th>StatutProjet</th>
 						<th>Don matériel</th>
 						<th>Don temps</th>
 						<th>Portefeuille</th>
-						<th>Nom PorteurProjet</th>
+						<th>Date maj</th>
+						<th>Date fin</th>
 					</tr>
 
 				</thead>
@@ -41,19 +45,14 @@
 					<tr th:each="projet : ${listProjetByPP}">
 						<td></td>
 						<td th:text="${projet.titre}"></td>
-						<td th:text="${projet.descriptionCourte}"></td>
-						<td th:text="${projet.descriptionLongue}"></td>
-						<td th:text="${projet.montantAttendu}"></td>
 						<td th:text="${projet.montantCollecte}"></td>
-						<td
-							th:text="${#calendars.format(projet.dateMaj,'dd MMM yyyy HH:mm')}"></td>
-						<td th:text="${projet.dateFin}"></td>
+						<td th:text="${projet.montantAttendu}"></td>
 						<td th:text="${projet.statutDuProjet}"></td>
-						<td th:text="${projet.donMateriel}"></td>
-						<td th:text="${projet.donTemps}"></td>
+						<td th:text="${projet.donMateriel}?'Oui':'Non'"></td>
+						<td th:text="${projet.donTemps}?'Oui':'Non'"></td>
 						<td th:text="${projet.portefeuilleprojet.libelle}"></td>
-						<td
-							th:text="${projet.portefeuilleprojet.porteurprojet.role.utilisateur.email}"></td>
+						<td th:text="${#calendars.format(projet.dateMaj,'dd MM yyyy HH:mm')}"></td>
+						<td th:text="${projet.dateFin}"></td>
 					</tr>
 				</tbody>
 			</table>
@@ -61,6 +60,6 @@
 	</div>
 	<div th:replace="../static/layout :: footer"></div>
 
-	
+
 </body>
 </html>
