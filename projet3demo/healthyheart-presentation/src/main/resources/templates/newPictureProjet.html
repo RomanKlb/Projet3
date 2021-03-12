@@ -15,7 +15,7 @@
 		<input type="hidden" th:field="*{docform.projet}" />
 		<input type="hidden" th:field="*{docform.document.projet}" />
 
-		<div>combo Libelle image</div>
+		<div>Libelle image</div>
 		<select th:id="ImageComboBox" th:field=*{docform.libelImage}>
 			<option value="0">Selection image Projet</option>
 			<option value="1">Image Principale</option>
@@ -34,16 +34,36 @@
 
 	</form>
 	
-	<div th:each="img:${listImageProjet}">
-	<form action="#" th:action="@{/DelUploadPicture/{id}(id=${img.idDocument})}" method="POST">
+	<div th:if="${docform.image1 != -1}">
 		<hr/>
-		<label>Libelle :</label> <label th:text="${img.libelle}"/><br/>
-		<img th:src="@{/viewImage/{id}(id=${img.idDocument})}" alt="Image_projet" style=max-width:100%;height:auto;>
-		<br/><button type="submit">Supprimer l'image</button>
-	</form>	
+		<label>Libelle : Image Principale</label><br/>
+		<img th:src="@{/viewImage/{id}(id=${docform.image1})}" alt="Image_Principale_projet" style=max-width:100%;height:auto;>
+		<br/>
+		<form action="#" th:action="@{/DelUploadPicture/{id}(id=${docform.image1})}" method="POST">
+			<button type="submit">Supprimer Image Principale</button>
+		</form>	
 	</div>
-
-
+	
+	<div th:if="${docform.image2 != -1}">
+		<hr/>
+		<label>Libelle : Seconde Image</label><br/>
+		<img th:src="@{/viewImage/{id}(id=${docform.image2})}" alt="Seconde_Image_projet" style=max-width:100%;height:auto;>
+		<br/>
+		<form action="#" th:action="@{/DelUploadPicture/{id}(id=${docform.image2})}" method="POST">
+			<button type="submit">Supprimer Seconde image</button>
+		</form>	
+	</div>
+	
+	<div th:if="${docform.image3 != -1}">
+		<hr/>
+		<label>Libelle : Troisieme Image</label><br/>
+		<img th:src="@{/viewImage/{id}(id=${docform.image3})}" alt="Image_projet" style=max-width:100%;height:auto;>
+		<br/>
+		<form action="#" th:action="@{/DelUploadPicture/{id}(id=${docform.image3})}" method="POST">
+			<button type="submit">Supprimer Troisieme image</button>
+		</form>	
+	</div>
+	
 
 </body>
 </html>

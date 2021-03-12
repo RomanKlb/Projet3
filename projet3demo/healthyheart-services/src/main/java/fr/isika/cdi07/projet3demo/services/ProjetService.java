@@ -35,7 +35,9 @@ public class ProjetService {
 		return projetRepo.save(projet);
 	}
 	
-
+	public Projet saveProjet(Projet projet) {	
+		return projetRepo.save(projet);
+	}
 
 	public List<Projet> afficherAllProjet() {
 
@@ -217,7 +219,16 @@ public class ProjetService {
 	}
 	
 	
-	
+//	public Projet getProjetById(long id) {
+//		Optional<Projet> optionalP = projetRepo.findById(id);
+//		Projet projet = null;
+//		if (optionalP.isPresent()) {
+//			projet = optionalP.get();
+//		} else {
+//			throw new RuntimeException(" Projet not found for id : " + id);
+//		}
+//		return projet;
+//	}
 	
 	
 	

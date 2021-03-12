@@ -1,3 +1,31 @@
+/* DEBUT >>> formulaire des differents dons */
+.formu{
+	display:none;
+}
+.form-group{
+	padding-bottom: 9px;
+  	margin: 5px 0 5px;
+}
+/* FIN >>> formulaire des differents dons */
+
+/* DEBUT >>> Commentaires List */
+.post-comments {
+  padding-bottom: 9px;
+  margin: 5px 0 5px;
+}
+
+.user_name{
+    font-size:14px;
+    font-weight: bold;
+}
+.comments-list .media{
+    border-bottom: 1px dotted #ccc;
+}
+/* FIN >>> Commentaires List */
+
+
+/*Michel*/
+
 /* ==================================================
 //  ____  _     _   _            _   _          _____ _                              
 // |  _ \(_)___| |_(_)_ __   ___| |_(_)_   ____|_   _| |__   ___ _ __ ___   ___  ___ 

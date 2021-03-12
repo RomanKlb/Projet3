@@ -1,5 +1,7 @@
 package fr.isika.cdi07.projet3demo.controller;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import javax.servlet.http.HttpSession;
@@ -13,8 +15,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import fr.isika.cdi07.projet3demo.model.Favori;
+import fr.isika.cdi07.projet3demo.model.Projet;
 import fr.isika.cdi07.projet3demo.model.Utilisateur;
 import fr.isika.cdi07.projet3demo.modelform.LoginForm;
+import fr.isika.cdi07.projet3demo.services.FavoriService;
 import fr.isika.cdi07.projet3demo.services.UtilisateurService;
 
 @Controller
@@ -22,13 +27,16 @@ public class UtilisateurController {
 
 	private static final String REDIRECT = "redirect:/";
 
-	private static final String EMAIL_UTILISATEUR_CONNECTE = "emailUtilisateurConnecte";
+	public static final String EMAIL_UTILISATEUR_CONNECTE = "emailUtilisateurConnecte";
 	
 	@Autowired
 	private UtilisateurService utilisateurService;
 	
 	@Autowired
 	private AdresseController adresseController;
+	
+	@Autowired
+	private FavoriService favoriService;
 
 	//Créer Nouvel Utilisateur
 	@GetMapping("/CreerNouvelUtilsateur")
@@ -43,7 +51,8 @@ public class UtilisateurController {
 	public String enregistrerNouvelUtilisateur(@ModelAttribute("utilisateur") Utilisateur utilisateur, Model model) {
 		utilisateurService.ajouterUtilisateur(utilisateur);
 		
-		return adresseController.showNewProjetForm(model, utilisateur);
+//		return adresseController.showNewProjetForm(model, utilisateur);
+	return "index";
 	}
 
 	//Pour modifier Un utilisateur 
@@ -74,6 +83,16 @@ public class UtilisateurController {
 		return "login_success";
 	}
 	
+	//Se déconnecter
+		@PostMapping("/deconnexion")
+		public String deconnecter(HttpSession session) {
+			
+			session.removeAttribute(EMAIL_UTILISATEUR_CONNECTE);
+			session.removeAttribute("prenomUtilisateur");
+			return "redirect:/";
+		}
+	
+	
 	//show connexion Form
 	@GetMapping("/showConnexionForm")
 	public String saisirInformationUtilisateur(Model model) {
@@ -98,7 +117,21 @@ public class UtilisateurController {
 
 	}
 
-
+	//Afficher les favoris d'un utilisateur connecté
+		@GetMapping("/ShowMyfavoriteProjects")
+		public String afficherMesFavoris(Model model, HttpSession session) {
+			String emailUserConnecte = (String) session.getAttribute(UtilisateurController.EMAIL_UTILISATEUR_CONNECTE);
+			if(emailUserConnecte == null) {
+				return "redirect:/showConnexionForm";
+			}
+			List<Favori> listeFavoris = favoriService.afficherMesFavoris(emailUserConnecte);
+			List<Projet> maListeProjetsFavoris = new ArrayList<>();
+			for(Favori fav : listeFavoris) {		
+				maListeProjetsFavoris.add(fav.getProjet());
+			}
+			model.addAttribute("maListeProjetsFavoris", maListeProjetsFavoris);
+			return "mesFavoris";
+		}
 
 
 }

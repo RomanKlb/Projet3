@@ -15,6 +15,36 @@ public class DocumentForm {
 	
 	private String libelImage;
 	
+	private Long image1;
+	
+	private Long image2;
+	
+	private Long image3;
+	
+
+	public Long getImage1() {
+		return image1;
+	}
+
+	public void setImage1(Long image1) {
+		this.image1 = image1;
+	}
+
+	public Long getImage2() {
+		return image2;
+	}
+
+	public void setImage2(Long image2) {
+		this.image2 = image2;
+	}
+
+	public Long getImage3() {
+		return image3;
+	}
+
+	public void setImage3(Long image3) {
+		this.image3 = image3;
+	}
 
 	public String getLibelImage() {
 		return libelImage;

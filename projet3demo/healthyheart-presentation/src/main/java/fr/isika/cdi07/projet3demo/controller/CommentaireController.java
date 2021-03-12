@@ -18,6 +18,7 @@ import fr.isika.cdi07.projet3demo.model.Projet;
 import fr.isika.cdi07.projet3demo.modelform.CommentaireForm;
 import fr.isika.cdi07.projet3demo.services.ICommentaireService;
 import fr.isika.cdi07.projet3demo.services.ProjetService;
+import fr.isika.cdi07.projet3demo.services.RoleService;
 
 @Controller
 public class CommentaireController {
@@ -30,19 +31,33 @@ public class CommentaireController {
 	@Autowired
 	private ProjetService projetService;
 	
+	@Autowired
+	private RoleService roleService;
+	
+	
 	@GetMapping("/afficherListeCommentaires/projet")
 	public String afficherListeCommentaires(@RequestParam long id, Model model, HttpSession session) {		
 		String userEmail = (String)session.getAttribute("emailUtilisateurConnecte");
 				
-		CommentaireForm commentaireForm = new CommentaireForm(id);
 		Optional<Projet> projet = projetService.getProjetById(id);
-		if(!projet.isPresent())
+		if(!projet.isPresent()) 		
 			return "noFoundProjet";
+
+		CommentaireForm commentaireForm = new CommentaireForm(id);
+
+		if(userEmail == null) {
+			model.addAttribute("listeComm", commentaireService.getCommentairesList(projet.get()));
+			model.addAttribute("commentaireForm", commentaireForm);
+			return "liste_commentaires";
+		}		
+		
 		commentaireForm.setAllowedToComment(commentaireService.hasRoleToComment(projet.get(), userEmail));
-		if(commentaireForm.isAllowedToComment())
-			commentaireForm.setRole(commentaireService.getRoleNonLambda(userEmail).get());
+		if(commentaireForm.isAllowedToComment()) 
+			commentaireForm.setRole(roleService.getRoleOfUserForProjet(projet.get(), userEmail));
+
 		model.addAttribute("listeComm", commentaireService.getCommentairesList(projet.get()));
 		model.addAttribute("commentaireForm", commentaireForm);
+		
 		return "liste_commentaires";
 	}
 	
@@ -50,12 +65,13 @@ public class CommentaireController {
 	public String ajouterCommentaire(
 			@ModelAttribute("commentaireForm") CommentaireForm commentaireForm) {
 		Optional<Projet> projet = projetService.getProjetById(commentaireForm.getIdProjet());
-		logger.info("Role commentaireForm : " + commentaireForm.getRole());
+
 		Commentaire newCommentaire = new Commentaire()
 				.withLibelle(commentaireForm.getLibelle())
 				.withMessage(commentaireForm.getMessage())
 				.withRole(commentaireForm.getRole())
 				.withProjet(projet.get());
+		
 		commentaireService.saveCommentaire(newCommentaire);
 		return "redirect:/afficherListeCommentaires/projet?id=" + commentaireForm.getIdProjet();
 	}

@@ -1,57 +1,275 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="fr">
 <head>
+<th:block th:replace="../static/layout :: headerfiles"></th:block>
 <meta charset="UTF-8">
 <title>Afficher Projet selectionné</title>
+<style>
+b {
+	font: 17px Arial, sans-serif;
+	color: blue;
+}
+.Libel {
+	font: 70px Arial, sans-serif;
+	text-align:center;
+	color: blue;
+}
+</style>
 </head>
 <body>
-	<h1>Afficher Projet Selectionné</h1>
 
-	<form>
-		
-		
-		
-		<label th:text="${projet.titre}"> </label>
+	<div th:replace="../static/layout :: header"></div>
+
+	<div class="container">
+		<h2>Afficher Projet Selectionné</h2>
+
+
+		<div class="Libel"
+			th:text="${infoproj.projet.titre}">
+		</div>
+
+		<div>
+			Type de projet : <b
+				th:text="${infoproj.projet.categorie.typeProjet.libelle}"></b> /
+			Territoire : <b
+				th:text="${infoproj.projet.categorie.territoire.libelle}"></b>
+		</div>
+
+		<div th:if="${infoproj.image1 != -1}">
+			<hr />
+			<center>
+				<img th:src="@{/viewImage/{id}(id=${infoproj.image1})}"
+					alt="Image_Principale_projet"
+					style="max-width: 100%; height: auto;">
+			</center>
+		</div>
+
+		<hr />
+		<div>
+			Description courte :<br />
+			<textarea rows="10" cols="120" disabled="disabled"
+				th:field="${infoproj.projet.descriptionCourte}"
+				style="border: 2px solid silver; width: 99%; height: 200px;"></textarea>
+		</div>
+
+
+		<div>
+			Montant attendu : <b th:text="${infoproj.projet.montantAttendu}"></b>
+			€
+		</div>
+		<div>
+			Montant collecté : <b th:text="${infoproj.projet.montantCollecte}"></b>
+			€
+		</div>
+		<br />
+		<div>
+			Date fin de collecte : <b
+				th:text="${#calendars.format(infoproj.projet.dateFin,'EEEE dd MMMMM yyyy')}"></b>
+
+		</div>
+		<hr />
+		<div>
+			Projet avec possiblité de don de temps : <b
+				th:text="${infoproj.projet.donTemps}? 'Oui' : 'Non'"></b>
+		</div>
+		<div>
+			Projet avec possiblité de don de materiel : <b
+				th:text="${infoproj.projet.donMateriel}? 'Oui' : 'Non'"></b>
+		</div>
 
 
 
 		<hr />
-		<!-- 	
-			//contener 2/3 1/3
-		<img th:src=""/>
-	 -->
+
+		<div>
+			Type Porteur de projet : <b
+				th:text="${infoproj.projet.portefeuilleprojet.porteurprojet.typePorteur}">
+			</b> / Libellé : <b
+				th:text="${infoproj.projet.portefeuilleprojet.porteurprojet.libelle}">
+			</b>
+		</div>
 
 
-		<label 
-			th:text="${projet.portefeuilleprojet.porteurprojet.libelle}"></label>
-		<label 
-			th:text="${projet.portefeuilleprojet.porteurprojet.role.utilisateur.nom}"></label>
-		<label 
-			th:text="${projet.portefeuilleprojet.porteurprojet.role.utilisateur.prenom}"></label>
-		<label 
-			th:text="${projet.portefeuilleprojet.porteurprojet.role.utilisateur.email}"></label>
+
+
+		<div th:if="${infoproj.image2 != -1}">
+			<hr />
+			<center>
+				<img th:src="@{/viewImage/{id}(id=${infoproj.image2})}"
+					alt="Image_Seconde_projet" style="max-width: 100%; height: auto;">
+			</center>
+		</div>
+
+		<div>
+			Description Longue :<br />
+			<textarea rows="30" cols="120" disabled="disabled"
+				th:field="${infoproj.projet.descriptionLongue}"
+				style="border: 2px solid silver; width: 99%; height: 500px;"></textarea>
+		</div>
+
+
+		<div th:if="${infoproj.image3 != -1}">
+
+			<center>
+				<img th:src="@{/viewImage/{id}(id=${infoproj.image3})}"
+					alt="Image_Seconde_projet" style="max-width: 100%; height: auto;">
+			</center>
+			<hr />
+		</div>
+
+		<div>
+			Statut :  <b
+				th:text="${infoproj.projet.statutDuProjet}"></b><br/>
+			Projet créé/maj le <b
+				th:text="${#calendars.format(infoproj.projet.dateMaj,'EEEE dd MMMMM yyyy à HH:mm:ss')}"></b>
+
+			par <b
+				th:text="${infoproj.projet.portefeuilleprojet.porteurprojet.role.utilisateur.prenom}">
+			</b> <b
+				th:text="${infoproj.projet.portefeuilleprojet.porteurprojet.role.utilisateur.nom}">
+			</b> (email : <b
+				th:text="${infoproj.projet.portefeuilleprojet.porteurprojet.role.utilisateur.email}">
+			</b> )
+		</div>
+		<hr/>
+		
+		
+		<div class="row">
+        	<div class="col-lg-2"></div>
+        	
+        	<div th:if="${infoproj.choixUser == 'USRMAN'}">
+				 <span class="col-lg-2 text-center">
+                        <a class="btn btn-primary" th:href="@{/showUpdateForm/{id}(id=${infoproj.projet.idProjet})}">Modifier</a>
+                </span>
+                <span class="col-lg-3 text-center">
+
+                        <button class="btn btn-primary" onclick="CnfStatProj('SUPPRIMER')">Supprimer</button>
+                </span>
+                <span class="col-lg-3 text-center">
+                        <button class="btn btn-primary" onclick="CnfStatProj('ASKAPPR')">Demande Approbation</button>
+                </span>
+
+
+			</div>
 			
-		<label th:text="${projet.dateFin}"></label>
-		
-		<hr />
-		
-		<textarea rows="5" cols="15" disabled="disabled"
-			th:field="${projet.descriptionCourte}"></textarea>
-		<textarea rows="5" cols="30" disabled="disabled"
-			th:field="${projet.descriptionLongue}"></textarea>
+			<div th:if="${infoproj.choixUser == 'USRCAN'}">
+        		   <span class="col-lg-4 text-center">
 
-		<hr />
+             	       <button class="btn btn-primary" onclick="CnfStatProj('CANASKAPPR')">Annuler Approbation</button>
+       	    	 </span>
+
+         	   <span class="col-lg-4 text-center">
+
+              	      <button class="btn btn-primary" onclick="CnfStatProj('SUPPRIMER')">Supprimer</button>
+            	</span>
 
 
-		<label th:text="${projet.montantCollecte}"></label>
-		<label th:text="${projet.montantAttendu}"></label>
+			</div>
+			
+			<div th:if="${infoproj.choixUser == 'USRDEL'}">
+				<div class="col-lg-3"></div>
+                <span class="col-lg-2 text-center">
+                  <button class="btn btn-primary" onclick="CnfStatProj('SUPPRIMER')">Supprimer</button>
+                </span>
+                <div class="col-lg-3"></div>
 
-		<hr />
+			</div>
+			
+			<div th:if="${infoproj.choixUser == 'USRMOD'}">
+          	 	 <span class="col-lg-4 text-center">
 
-		<!-- 
-		//contener 1/2 1/2 ou 1 1 <img th:src="" /> <img th:src="" /> -->
-		
-		<a th:href="@{/ShowAllProjetList}">Retour liste projet</a>
-	</form>
+
+                	    <a class="btn btn-primary" th:href="@{/showUpdateForm/{id}(id=${infoproj.projet.idProjet})}">Modifier</a>
+
+           		 </span>
+          	 	<span class="col-lg-4 text-center">
+                 	   <button class="btn btn-primary" onclick="CnfStatProj('SUPPRIMER')">Supprimer</button>
+            	</span>
+
+        	</div>
+        	
+        	<div th:if="${infoproj.choixUser == 'ADMMAN'}">
+				 <span class="col-lg-2 text-center">
+                        <a class="btn btn-primary" th:href="@{/showUpdateForm/{id}(id=${infoproj.projet.idProjet})}">Modifier</a>
+                </span>
+                <span class="col-lg-3 text-center">
+
+                        <button class="btn btn-primary" onclick="CnfStatProj('REJETER')">Rejeter</button>
+                </span>
+                <span class="col-lg-3 text-center">
+                        <button class="btn btn-primary" onclick="CnfStatProj('PUBLIER')">Publier</button>
+                </span>
+
+
+			</div>
+			
+			 <div th:if="${infoproj.choixUser == 'ADMRES'}">
+				 <span class="col-lg-4 text-center">
+                        <a class="btn btn-primary" th:href="@{/showUpdateForm/{id}(id=${infoproj.projet.idProjet})}">Modifier</a>
+                </span>
+                <span class="col-lg-4 text-center">
+
+                        <button class="btn btn-primary" onclick="CnfStatProj('RESTAURER')">Restaurer</button>
+                </span>
+
+			</div>
+			
+			<div th:if="${infoproj.choixUser == 'ADMDEL'}">
+          	 	 <span class="col-lg-4 text-center">
+
+
+                	    <a class="btn btn-primary" th:href="@{/showUpdateForm/{id}(id=${infoproj.projet.idProjet})}">Modifier</a>
+
+           		 </span>
+          	 	<span class="col-lg-4 text-center">
+                 	   <button class="btn btn-primary" onclick="CnfStatProj('SUPPRIMER')">Supprimer</button>
+            	</span>
+
+        	</div>
+        	
+        				
+			<div th:if="${infoproj.choixUser == 'DONDON'}">
+          	 	 <span class="col-lg-8text-center">
+
+                	    <a class="btn btn-primary" href="#">Donner</a>
+
+           		 </span>
+
+        	</div>
+        	
+        	
+        	<div class="col-lg-2"></div>
+        </div>
+
+		<br />
+		<br /> <a th:href="@{/ShowAllProjetList}">Retour liste projet</a>
+	</div>
+	
+	<div th:replace="../static/layout :: footer"></div>
+<script th:inline="javascript">
+/*<![CDATA[*/
+function CnfStatProj(Status) {
+	switch (Status) {
+	case 'SUPPRIMER' :  var r = confirm("Confirmez la suppression\n\nAppuyer sur Ok pour confirmer la suppression du projet");break;
+	case 'PUBLIER' :  var r = confirm("Confirmez la Publication\n\nAppuyer sur Ok pour confirmer la publication du projet");break;
+	case 'REJETER' : var r = confirm("Confirmez le Rejet\n\nAppuyer sur Ok pour confirmer le rejet du projet");break;
+	case 'RESTAURER' : var r = confirm("Confirmez la Restauration\n\nAppuyer sur Ok pour confirmer la restauration du projet");break;
+	case 'APPROVE' : var r = confirm("Confirmez l'approbation\n\nAppuyer sur Ok pour approuver la validation du projet");break;
+	case 'ASKAPPR' : var r = confirm("Confirmez la demande d'Approbation\n\nAppuyer sur Ok pour confirmer la demande d'approbation du projet");break;
+	case 'CANASKAPPR' : var r = confirm("Confirmez l'Annulation demande d'Approbation\n\nAppuyer sur Ok pour confirmer l'annulation demande d'approbation du projet");break;
+	default : var r = false;
+	}
+  if (r == true) {
+	  var projid = /*[[${infoproj.projet.idProjet}]]*/ 'projid';
+	  var action = /*[[${infoproj.action}]]*/ 'action';
+      location.href = "/ModifierStatProjet/" + projid + "/" + Status + "/" + action;
+  }
+	
+
+}
+/*]]>*/
+
+
+</script>
 </body>
 </html>

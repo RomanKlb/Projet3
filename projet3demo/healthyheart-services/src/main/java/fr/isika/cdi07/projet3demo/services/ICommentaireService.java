@@ -17,5 +17,6 @@ public interface ICommentaireService {
 	void deleteCommentaireById(long id);
 	List<Commentaire> getCommentairesList(Projet projet);
 	boolean hasRoleToComment(Projet projet, String userEmail);
-	Optional<Role> getRoleNonLambda(String userEmail);
+	boolean isAnonymeForComment(Projet projet, String userEmail);
+
 }

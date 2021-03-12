@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+<head>
+<th:block th:replace="../static/layout :: headerfiles"></th:block>
+<title>Ajouter don</title>
+<meta charset="UTF-8">
+<script th:src="@{/js/radioButtonTypeDon.js}"></script>
+</head>
+
+<body>
+	<div th:replace="../static/layout :: header"></div>
+	<div class="container">
+		<h3>Veuillez sélectionner un type de don :</h3>
+		<br>
+		<div class="d-flex justify-content-around">
+			<label> <input class="form-check-input" type="radio"
+				name="donRadio" value="monetaire"> Don monétaire
+			</label> <label th:if="${donForm.participationProjet.projet.donMateriel}">
+				<input class="form-check-input" type="radio" name="donRadio"
+				value="materiel"> Don matériel
+			</label> <label th:unless="${donForm.participationProjet.projet.donMateriel}">
+				<input id="radioMaterielOff" class="form-check-input disabled"
+				type="radio" name="donRadio" value="materiel"> Don matériel
+			</label> <label th:if="${donForm.participationProjet.projet.donTemps}">
+				<input class="form-check-input" type="radio" name="donRadio"
+				value="temps"> Don de temps
+			</label> <label th:unless="${donForm.participationProjet.projet.donTemps}">
+				<input id="radioTempsOff" class="form-check-input" type="radio"
+				name="donRadio" value="temps"> Don de temps
+			</label>
+		</div>
+		<hr>
+		<!-- don monetaire form -->
+		<div class="monetaire formu">
+			<h5>Don Monétaire</h5>
+			<form action="#" th:action="@{/don/sauvegarderDonMonetaire}"
+				method="POST" th:object="${donForm}">
+				<input type="hidden" th:field="*{utilisateur.email}" /> <input
+					type="hidden" th:field="*{participationProjet.projet.idProjet}" />
+				<div class="form-check form-switch">
+					<input type="checkbox" th:field="*{anonyme}"
+						class="form-check-input" /> <label>Don anonyme?</label>
+				</div>
+				<div class="form-group">
+					<label>Montant :</label> <input class="form-control" type="text"
+						th:field="*{donMonetaire.montant}" />
+				</div>
+
+				<div class="form-group">
+					<input type="submit" value="Envoyer" class="btn btn-primary" /> <input
+						type="reset" value="Remettre à zéro" class="btn btn-light" />
+				</div>
+
+			</form>
+		</div>
+
+		<!-- don materiel form -->
+		<div class="materiel formu">
+			<h5>Don Matériel</h5>
+			<form action="#" th:action="@{/don/sauvegarderDonMateriel}"
+				class="materiel formu" th:object="${donForm}" method="POST">
+				<input type="hidden" th:field="*{utilisateur.email}" /> <input
+					type="hidden" th:field="*{participationProjet.projet.idProjet}" />
+				<div>
+					<div class="form-check form-switch">
+						<input type="checkbox" th:field="*{anonyme}"
+							class="form-check-input" /> <label>Don anonyme?</label>
+					</div>
+				</div>
+				<div class="form-group">
+					<label>Nom du matériel : </label> <input class="form-control"
+						type="text" th:field="*{donMateriel.libelle}" /> <label>Prix
+						unitaire : </label> <input class="form-control" type="text"
+						th:field="*{donMateriel.montant}" /> <label>Quantité :</label> <input
+						class="form-control" type="text"
+						th:field="*{donMateriel.quantite}" />
+				</div>
+
+				<div class="form-group">
+					<input type="submit" value="Envoyer" class="btn btn-primary" /> <input
+						type="reset" value="Remettre à zéro" class="btn btn-light" />
+				</div>
+			</form>
+		</div>
+
+		<!-- don temps form -->
+		<div class="temps formu">
+			<h5>Don de temps</h5>
+			<form action="#" th:action="@{/don/sauvegarderDonTemps}"
+				class="temps formu" th:object="${donForm}" method="POST">
+				<input type="hidden" th:field="*{utilisateur.email}" /> <input
+					type="hidden" th:field="*{participationProjet.projet.idProjet}" />
+				<div class="form-group">
+					<div class="form-check form-switch">
+						<input type="checkbox" th:field="*{anonyme}"
+							class="form-check-input" /> <label>Don anonyme?</label>
+					</div>
+				</div>
+				<div class="form-group">
+					<label>Nombre d'heures : </label> <input class="form-control" type="text"
+						th:field="*{donTemps.nbHeures}" />
+				</div>
+				<div class="form-group">
+					<input type="submit" value="Envoyer" class="btn btn-primary" /> <input
+						type="reset" value="Remettre à zéro" class="btn btn-light" />
+				</div>
+			</form>
+		</div>
+
+
+	</div>
+
+	<br>
+	<div th:replace="../static/layout :: footer"></div>
+</body>
