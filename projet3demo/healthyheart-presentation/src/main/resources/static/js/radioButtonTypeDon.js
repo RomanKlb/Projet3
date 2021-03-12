@@ -5,4 +5,6 @@ $(document).ready(function(){
         $(".formu").not(targetForm).hide();
         $(targetForm).show();
     });
+	$('input[id=radioMaterielOff]').attr("disabled",true);
+	$('input[id=radioTempsOff]').attr("disabled",true);
 });
