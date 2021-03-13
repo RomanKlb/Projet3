@@ -2,9 +2,11 @@ package fr.isika.cdi07.projet3demo.services;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,9 @@ import fr.isika.cdi07.projet3demo.model.StatutProjet;
 @Service
 public class ProjetService {
 
+	private static final Logger LOGGER = Logger.getLogger(ProjetService.class.getSimpleName());
+
+	
 	@Autowired
 	private ProjetRepository projetRepo;
 	
@@ -30,11 +35,126 @@ public class ProjetService {
 		return projetRepo.save(projet);
 	}
 	
-
+	public Projet saveProjet(Projet projet) {	
+		return projetRepo.save(projet);
+	}
 
 	public List<Projet> afficherAllProjet() {
 
 		return projetRepo.findAll();
+	}
+	
+	
+	
+	public List<Projet> listProjetInfo(String etat) {
+		List<Projet> projets = projetRepo.findAll();
+		List<Projet> projetsSelection = new ArrayList<Projet>();
+		
+		LOGGER.info("etat demandé :" +etat);
+		
+		for(Projet monProjet : projets) {
+			if(etat.equalsIgnoreCase("create")) {
+				if(!monProjet.getStatutDuProjet().equals(StatutProjet.CREE)) {
+					continue;
+				}
+			}
+			if(etat.equalsIgnoreCase("approved")) {
+				if(!monProjet.getStatutDuProjet().equals(StatutProjet.APPROUVE)) {
+					continue;
+				}
+			}			
+			if(etat.equalsIgnoreCase("wait")) {
+				if(!monProjet.getStatutDuProjet().equals(StatutProjet.EN_ATTENTE)) {
+					continue;
+				}
+			}
+			
+			if(etat.equalsIgnoreCase("reject")) {
+				if(!monProjet.getStatutDuProjet().equals(StatutProjet.REJETE)) {
+					continue;
+				}
+			}
+			if(etat.equalsIgnoreCase("published")) {
+				if(!monProjet.getStatutDuProjet().equals(StatutProjet.PUBLIE)) {
+					continue;
+				}
+			}
+			if(etat.equalsIgnoreCase("completed")) {
+				if(!monProjet.getStatutDuProjet().equals(StatutProjet.TERMINE)) {
+					continue;
+				}
+			}
+			if (etat.equalsIgnoreCase("actif")) {
+				if(monProjet.getStatutDuProjet().equals(StatutProjet.SUPPRIME)) {
+					continue;
+				}
+			}
+			if(etat.equalsIgnoreCase("deleted")) {
+				if(!monProjet.getStatutDuProjet().equals(StatutProjet.SUPPRIME)) {
+					continue;
+				}
+			}
+			
+			projetsSelection.add(monProjet);
+		}
+		
+		return projetsSelection;
+	}
+	
+	
+	public List<Projet> listProjetInfoForUser(String etat, Role role) {
+		List<Projet> projets = getListProjet(role);
+		List<Projet> projetsSelection = new ArrayList<Projet>();
+		
+		LOGGER.info("etat demandé :" +etat);
+		
+		for(Projet monProjet : projets) {
+			if(etat.equalsIgnoreCase("create")) {
+				if(!monProjet.getStatutDuProjet().equals(StatutProjet.CREE)) {
+					continue;
+				}
+			}
+			if(etat.equalsIgnoreCase("approved")) {
+				if(!monProjet.getStatutDuProjet().equals(StatutProjet.APPROUVE)) {
+					continue;
+				}
+			}			
+			if(etat.equalsIgnoreCase("wait")) {
+				if(!monProjet.getStatutDuProjet().equals(StatutProjet.EN_ATTENTE)) {
+					continue;
+				}
+			}
+			
+			if(etat.equalsIgnoreCase("reject")) {
+				if(!monProjet.getStatutDuProjet().equals(StatutProjet.REJETE)) {
+					continue;
+				}
+			}
+			if(etat.equalsIgnoreCase("published")) {
+				if(!monProjet.getStatutDuProjet().equals(StatutProjet.PUBLIE)) {
+					continue;
+				}
+			}
+			if(etat.equalsIgnoreCase("completed")) {
+				if(!monProjet.getStatutDuProjet().equals(StatutProjet.TERMINE)) {
+					continue;
+				}
+			}
+			if (etat.equalsIgnoreCase("actif")) {
+				if(monProjet.getStatutDuProjet().equals(StatutProjet.SUPPRIME)) {
+					continue;
+				}
+			}
+			if(etat.equalsIgnoreCase("deleted")) {
+				if(!monProjet.getStatutDuProjet().equals(StatutProjet.SUPPRIME)) {
+					continue;
+				}
+			}
+			
+			projetsSelection.add(monProjet);
+		}
+		
+		return projetsSelection;
 	}
 
 	public List<Projet> afficherProjetPublie() {
@@ -64,6 +184,8 @@ public class ProjetService {
 		allProjet.stream()
 		.filter(p -> p.getPortefeuilleprojet().getPorteurprojet().getRole().equals(role))
 		.forEach(p -> selectionProjet.add(p));
+		
+		
 
 		return selectionProjet;
 	}
@@ -75,29 +197,46 @@ public class ProjetService {
 							.collect(Collectors.toList());
 	}
 	
-	public List<Projet> rechercherProjetParCriteres(String titre, Long idTypeProjet, Long idTerritoire){
-		List<Projet> liste = rechercherProjetParTitre(titre);
-		if(idTypeProjet == 0 && idTerritoire == 0) {
-			return liste;
-		} else if (idTypeProjet == 0) {
-			return liste.stream()
-					.filter(p -> p.getCategorie().getTerritoire().getIdTerritoire().equals(idTerritoire))
+	public List<Projet> rechercherProjetParCriteres(String titre, Long idTypeProjet, Long idTerritoire,
+			boolean donMateriel, boolean donTemps) {
+		if(!donMateriel && !donTemps)
+			return filterProjetWithoutBool(titre, idTypeProjet, idTerritoire);
+		if(!donMateriel && donTemps)
+			return filterProjetWithoutBool(titre, idTypeProjet, idTerritoire)
+					.stream()
+					.filter(p -> p.isDonTemps())
 					.collect(Collectors.toList());
-		} else if (idTerritoire == 0) {
-			return liste.stream()
-					.filter(p -> p.getCategorie().getTypeProjet().getIdTypeProjet().equals(idTypeProjet))
+		if(donMateriel && !donTemps)
+			return filterProjetWithoutBool(titre, idTypeProjet, idTerritoire)
+					.stream()
+					.filter(p -> p.isDonMateriel())
 					.collect(Collectors.toList());
-		} else {
-			return liste.stream()
-					.filter(p -> p.getCategorie().getTypeProjet().getIdTypeProjet().equals(idTypeProjet)
-					&& p.getCategorie().getTerritoire().getIdTerritoire().equals(idTerritoire))
-					.collect(Collectors.toList());
-		}
-	
+		else
+			return filterProjetWithoutBool(titre, idTypeProjet, idTerritoire)
+			.stream()
+			.filter(p -> p.isDonMateriel() && p.isDonTemps())
+			.collect(Collectors.toList());
 	}
 	
 	
+	private List<Projet> filterProjetWithoutBool(String titre, Long idTypeProjet, Long idTerritoire) {
+		return projetRepo.findAll().stream()
+				.filter(p -> p.getTitre().contains(titre))
+				.filter(p->p.getCategorie().getTypeProjet().getIdTypeProjet().equals(idTypeProjet) || idTypeProjet.equals(0L))
+				.filter(p->p.getCategorie().getTerritoire().getIdTerritoire().equals(idTerritoire) || idTerritoire.equals(0L))
+				.collect(Collectors.toList());
+	}
 	
+//	public Projet getProjetById(long id) {
+//		Optional<Projet> optionalP = projetRepo.findById(id);
+//		Projet projet = null;
+//		if (optionalP.isPresent()) {
+//			projet = optionalP.get();
+//		} else {
+//			throw new RuntimeException(" Projet not found for id : " + id);
+//		}
+//		return projet;
+//	}
 	
 	
 	

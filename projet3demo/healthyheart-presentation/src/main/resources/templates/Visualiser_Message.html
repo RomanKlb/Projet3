@@ -14,8 +14,8 @@
 		<input type="text" disabled th:field="*{message.emetteur.email}"/>
 		</br>
 					
-		<div th:each="img:${listImageProjet}">
-		<label>Libellé :</label> <label th:text="${img.}"/> (
+		<div th:each="recpt:${lstMessagesRecu}">
+		<label>Destinataire :</label> <label th:text="${recpt.utilisateur.email}"/> (
 		<label th:text="${recpt.utilisateur.prenom}"/> <label th:text="${recpt.utilisateur.nom}"/>
 		<label>)</label>
 		</div>

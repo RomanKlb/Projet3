@@ -14,6 +14,6 @@ public interface DocumentRepository extends JpaRepository<Document, Long>{
 
 	List<Document> findAllByProjet(Optional<Projet> projet);
 
-	Optional<TypeLibelleDoc> findByProjetAndLibelle(Projet projet, TypeLibelleDoc libelle);
+	Optional<Document> findByProjetAndLibelle(Projet projet, TypeLibelleDoc libelle);
 
 }

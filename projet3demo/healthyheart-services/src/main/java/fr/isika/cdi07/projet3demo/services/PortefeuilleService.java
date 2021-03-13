@@ -27,15 +27,12 @@ public class PortefeuilleService {
 	}
 
 	public PortefeuilleProjet isPresent(PorteurProjet porteurProjet, String libelle) {
-		LOGGER.info("porteurProjet " + porteurProjet + "libelle"+libelle);
 
 		List<PortefeuilleProjet> portefeuilles = portefeuilleRepo.findAll();
-		LOGGER.info("list portefeuille " + portefeuilles);
 
 		Optional<PortefeuilleProjet> optPortefeuille = portefeuilles.stream()
 				.filter(r -> r.getLibelle().equalsIgnoreCase(libelle) && r.getPorteurprojet().equals(porteurProjet))
 				.findFirst();
-		LOGGER.info("optPortefeuillet " + optPortefeuille);
 
 		if(optPortefeuille.isPresent())
 			return optPortefeuille.get();

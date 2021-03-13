@@ -4,18 +4,17 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import fr.isika.cdi07.projet3demo.dao.DonMonetaireRepository;
-import fr.isika.cdi07.projet3demo.dao.FactureRepository;
 import fr.isika.cdi07.projet3demo.dao.ParticipationProjetRepository;
 import fr.isika.cdi07.projet3demo.dao.ProjetRepository;
 import fr.isika.cdi07.projet3demo.model.DonMonetaire;
 import fr.isika.cdi07.projet3demo.model.ParticipationProjet;
 import fr.isika.cdi07.projet3demo.model.Projet;
-import fr.isika.cdi07.projet3demo.model.Role;
 import fr.isika.cdi07.projet3demo.model.StatutDon;
 import fr.isika.cdi07.projet3demo.model.TypeParticipation;
 import fr.isika.cdi07.projet3demo.model.TypeRole;
@@ -28,7 +27,7 @@ public class DonMonetaireService implements IDonService<DonMonetaire>{
 	private DonMonetaireRepository donMonetaireRepo;
 	
 	@Autowired
-	private ParticipationProjetRepository participationProjetRepo;
+	private IParticipationProjetService participationProjetService;
 	
 	@Autowired
 	private ProjetRepository projetRepo;
@@ -53,8 +52,8 @@ public class DonMonetaireService implements IDonService<DonMonetaire>{
 	
 	@Override
 	public StatutDon enregistrerDansLaBase(DonMonetaire don, ParticipationProjet participationProjet, Utilisateur user) {
-		participationProjet.withDate(Date.valueOf(LocalDate.now()))
-							.withTypeParticipation(TypeParticipation.MONETAIRE);//normalement dans le POST du controller
+		participationProjet.withTypeParticipation(TypeParticipation.MONETAIRE)
+						.withRole(roleService.hasRole(user, TypeRole.DONATEUR));
 		checkAndSaveIfSeuilReached(don, participationProjet, user);
 		return participationProjet.getStatutDon();
 	}
@@ -62,13 +61,12 @@ public class DonMonetaireService implements IDonService<DonMonetaire>{
 	private void checkAndSaveIfSeuilReached(DonMonetaire don, ParticipationProjet participationProjet, Utilisateur user) {
 		if(don.getMontant() > 2000) {
 			participationProjet.withStatutDon(StatutDon.EN_ATTENTE);
-			participationProjetRepo.save(participationProjet);
+			participationProjetService.saveParticipation(participationProjet);
 			
 			saveDonInDB(don, participationProjet);
 		}else {
-			participationProjet.withStatutDon(StatutDon.APPROUVE)
-								.withRole(addRoleDonateurToUser(user));
-			participationProjetRepo.save(participationProjet);
+			participationProjet.withStatutDon(StatutDon.APPROUVE);
+			participationProjetService.saveParticipation(participationProjet);
 			
 			addMontantDansCollecteProjet(don, participationProjet);
 			
@@ -76,7 +74,17 @@ public class DonMonetaireService implements IDonService<DonMonetaire>{
 		}
 	}
 
-	private void addMontantDansCollecteProjet(DonMonetaire don, ParticipationProjet participationProjet) {
+	@Override
+	public Optional<DonMonetaire> obtenirDonById(long id) {
+		return donMonetaireRepo.findById(id);
+	}
+
+	@Override
+	public void supprimerDonById(long id) {
+		donMonetaireRepo.deleteById(id);
+	}	
+
+	public void addMontantDansCollecteProjet(DonMonetaire don, ParticipationProjet participationProjet) {
 		Optional<Projet> projetToDonate = projetRepo.findById(participationProjet.getProjet().getIdProjet());
 		double newMontantCollecte = projetToDonate.get().getMontantCollecte() + don.getMontant();
 		projetToDonate.get().setMontantCollecte(newMontantCollecte);
@@ -88,41 +96,14 @@ public class DonMonetaireService implements IDonService<DonMonetaire>{
 			.withParticipationProjet(participationProjet);
 		donMonetaireRepo.save(don);
 	}
-	
-	private Role addRoleDonateurToUser(Utilisateur user) {
-		return roleService.hasRole(user, TypeRole.DONATEUR);
-	}
 
 	@Override
-	public DonMonetaire obtenirDonById(long id) {
-		Optional<DonMonetaire> optional = donMonetaireRepo.findById(id);
-		if(optional.isPresent())
-			return optional.get();
-		throw new RuntimeException("Don not found");
+	public List<DonMonetaire> getListDonsByStatut(StatutDon statutDon) {
+		return afficherDons()
+				.stream()
+				.filter(d -> d.getParticipationProjet().getStatutDon().equals(statutDon))
+				.collect(Collectors.toList());
 	}
-
-	@Override
-	public void supprimerDonById(long id) {
-		donMonetaireRepo.deleteById(id);
-	}
-
-	@Override
-	public void modifierStatutDon(long idParticipation, StatutDon statutDon) {
-		Optional<ParticipationProjet> optional = participationProjetRepo.findById(idParticipation);
-		if(optional.isPresent()) {
-			optional.get().setStatutDon(statutDon);	
-			participationProjetRepo.save(optional.get());
-			//TODO switch statutdon
-			//si APPROUVE >>> ajout du role DONATEUR + ajout du montant dans projet
-			//si REJETE >>> ne rien faire
-		}
-			
-	}
-
-	
-
-	
-
 
 
 }

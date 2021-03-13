@@ -60,7 +60,7 @@ public class DocumentService {
 		return documentRepo.findAllByProjet(projet);
 	}
 
-	public Optional<TypeLibelleDoc> findbyProjetAndLibelle(Projet projet, TypeLibelleDoc libelle) {
+	public Optional<Document> findbyProjetAndLibelle(Projet projet, TypeLibelleDoc libelle) {
 		return documentRepo.findByProjetAndLibelle(projet, libelle);
 		
 	}

@@ -14,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -56,6 +57,7 @@ public class Projet {
 	@Column(nullable = false)
 	private Double montantCollecte;
 	
+	
 	@Column(name="don_materiel")
 	private boolean donMateriel;
 	
@@ -73,6 +75,9 @@ public class Projet {
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false, name="statut_du_projet")
 	private StatutProjet statutDuProjet;
+	
+	@Transient
+	private boolean isFavori;
 	
 
 	public Projet() {
@@ -209,6 +214,17 @@ public class Projet {
 	public void setCategorie(Categorie categorie) {
 		this.categorie = categorie;
 	}
+
+	
+	public boolean isFavori() {
+		return isFavori;
+	}
+
+
+	public void setFavori(boolean isFavori) {
+		this.isFavori = isFavori;
+	}
+
 
 	@Override
 	public String toString() {
