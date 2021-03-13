@@ -10,28 +10,32 @@
 		<form action="#" th:action="@{/rechercherProjetMulticriteres}"
 			th:object="${rechercheMultiForm}" method="POST">
 			<div>
-				<label>Titre du projet :</label> 
-				<input type="text" placeholder="Titre" th:field="*{titre}">
+				<label>Titre du projet :</label> <input type="text"
+					placeholder="Titre" th:field="*{titre}">
 			</div>
-			
 			<select th:id="typeProjetIdComboBox"
 				th:field=*{typeProjet.idTypeProjet}>
 				<option value="0">Selection TypeProjet</option>
 				<option th:each="tp : ${listTypeProjet}"
 					th:value="${tp.idTypeProjet}" th:text="${tp.libelle}"></option>
-			</select> <br />
-			
-			<select th:id="territoireIdComboBox"
+			</select> <br /> <select th:id="territoireIdComboBox"
 				th:field=*{territoire.idTerritoire}>
 				<option value="0">Selection Territoire</option>
 				<option th:each="t : ${listTerritoire}" th:value="${t.idTerritoire}"
 					th:text="${t.libelle}"></option>
 			</select>
 			<div>
-			<button type="submit">Rechercher</button>
+				<br /> <label>Don matériel :</label> <input type="checkbox"
+					th:field="*{donMateriel}">
+			</div>
+			<div>
+				<label>Don temps :</label> <input type="checkbox"
+					th:field="*{donTemps}">
+			</div>
+			<div>
+				<button type="submit">Rechercher</button>
 			</div>
 		</form>
 	</fieldset>
-
 </body>
 </html>

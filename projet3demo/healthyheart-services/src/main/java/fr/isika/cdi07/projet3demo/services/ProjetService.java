@@ -197,27 +197,35 @@ public class ProjetService {
 							.collect(Collectors.toList());
 	}
 	
-	public List<Projet> rechercherProjetParCriteres(String titre, Long idTypeProjet, Long idTerritoire){
-		List<Projet> liste = rechercherProjetParTitre(titre);
-		if(idTypeProjet == 0 && idTerritoire == 0) {
-			return liste;
-		} else if (idTypeProjet == 0) {
-			return liste.stream()
-					.filter(p -> p.getCategorie().getTerritoire().getIdTerritoire().equals(idTerritoire))
+	public List<Projet> rechercherProjetParCriteres(String titre, Long idTypeProjet, Long idTerritoire,
+			boolean donMateriel, boolean donTemps) {
+		if(!donMateriel && !donTemps)
+			return filterProjetWithoutBool(titre, idTypeProjet, idTerritoire);
+		if(!donMateriel && donTemps)
+			return filterProjetWithoutBool(titre, idTypeProjet, idTerritoire)
+					.stream()
+					.filter(p -> p.isDonTemps())
 					.collect(Collectors.toList());
-		} else if (idTerritoire == 0) {
-			return liste.stream()
-					.filter(p -> p.getCategorie().getTypeProjet().getIdTypeProjet().equals(idTypeProjet))
+		if(donMateriel && !donTemps)
+			return filterProjetWithoutBool(titre, idTypeProjet, idTerritoire)
+					.stream()
+					.filter(p -> p.isDonMateriel())
 					.collect(Collectors.toList());
-		} else {
-			return liste.stream()
-					.filter(p -> p.getCategorie().getTypeProjet().getIdTypeProjet().equals(idTypeProjet)
-					&& p.getCategorie().getTerritoire().getIdTerritoire().equals(idTerritoire))
-					.collect(Collectors.toList());
-		}
-	
+		else
+			return filterProjetWithoutBool(titre, idTypeProjet, idTerritoire)
+			.stream()
+			.filter(p -> p.isDonMateriel() && p.isDonTemps())
+			.collect(Collectors.toList());
 	}
 	
+	
+	private List<Projet> filterProjetWithoutBool(String titre, Long idTypeProjet, Long idTerritoire) {
+		return projetRepo.findAll().stream()
+				.filter(p -> p.getTitre().contains(titre))
+				.filter(p->p.getCategorie().getTypeProjet().getIdTypeProjet().equals(idTypeProjet) || idTypeProjet.equals(0L))
+				.filter(p->p.getCategorie().getTerritoire().getIdTerritoire().equals(idTerritoire) || idTerritoire.equals(0L))
+				.collect(Collectors.toList());
+	}
 	
 //	public Projet getProjetById(long id) {
 //		Optional<Projet> optionalP = projetRepo.findById(id);

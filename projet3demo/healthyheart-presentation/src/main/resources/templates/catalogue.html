@@ -2,6 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="fr">
 <head>
 <meta charset="UTF-8">
+<script src="https://kit.fontawesome.com/9768d7d480.js"
+	crossorigin="anonymous"></script>
 <th:block th:replace="../static/layout :: headerfiles"></th:block>
 <title>Catalogue</title>
 </head>
@@ -27,53 +29,69 @@
 			<div class="container">
 				<div class="row">
 					<div class="col-sm-4 blog-item mb100 wow match-height"
-						th:each="projet : ${listProjetPublie}">
-						<a th:href="@{/showProjet/{id}/DON(id=${projet.idProjet})}">
+						th:each="projetPublie : ${listProjetPublie}">
+						<a
+							th:href="@{/showProjet/{id}/DON(id=${projetPublie.projet.idProjet})}">
 							<div class="card bg-light mb-3" style="margin-bottom: 20px">
 								<div class="row">
 									<div class="col-xs-12">
 										<div class="hover-item mb30">
-											<!-- 		<img th:src="" class="img-responsive smoothie"
-											alt="title"> -->
+											<div th:if="${projetPublie.idImage != -1}">
+												<center>
+													<img
+														th:src="@{/viewImage/{id}(id=${projetPublie.idImage})}"
+														style="max-width: 100%; height: auto;">
+												</center>
+											</div>
 											<div class="overlay-item-caption smoothie"></div>
 											<div class="hover-item-caption smoothie">
 												<h3 class="vertical-center smoothie"></h3>
 											</div>
 										</div>
-										<h2 class="post-title" th:text="${projet.titre}"></h2>
+										<h2 class="post-title" th:text="${projetPublie.projet.titre}"></h2>
 										<div class="item-metas text-muted mb10">
 											<span class="meta-item"><i
 												class="pe-icon pe-7s-folder"></i> POSTED BY <span
-												th:text="${projet.portefeuilleprojet.porteurprojet.libelle}"></span></span>
+												th:text="${projetPublie.projet.portefeuilleprojet.porteurprojet.libelle}"></span></span>
 											<span class="meta-item"><i
 												class="pe-icon pe-7s-ticket"></i> TAGS <span
-												th:text="${projet.categorie.typeProjet.libelle}"></span></span>
+												th:text="${projetPublie.projet.categorie.typeProjet.libelle}"></span></span>
 										</div>
 										<div class="item-metas text-muted mb10">
 											<span class="meta-item"><i class="pe-icon pe-7s-user"></i>
 												AUTHOR <span
-												th:text="${projet.portefeuilleprojet.porteurprojet.role.utilisateur.nom}"></span>
+												th:text="${projetPublie.projet.portefeuilleprojet.porteurprojet.role.utilisateur.nom}"></span>
 												<span
-												th:text="${projet.portefeuilleprojet.porteurprojet.role.utilisateur.prenom}"></span></span>
+												th:text="${projetPublie.projet.portefeuilleprojet.porteurprojet.role.utilisateur.prenom}"></span></span>
 										</div>
 										<div class="item-metas text-muted mb10">
 											<span class="meta-item"><i
 												class="pe-icon pe-7s-comment"></i> CLOSING DATE <span
-												th:text="${#calendars.format(projet.dateFin,'dd MM yyyy')}"></span></span>
+												th:text="${#calendars.format(projetPublie.projet.dateFin,'dd MM yyyy')}"></span></span>
 											<div class="item-metas text-muted mb10">
 												<span class="meta-item"><i
 													class="pe-icon pe-7s-comment"></i> MATERIAL DONATION <span
-													th:text="${projet.isDonMateriel}"></span></span> <span
+													th:text="${projetPublie.projet.isDonMateriel}"></span></span> <span
 													class="meta-item"><i class="pe-icon pe-7s-comment"></i>
-													TIME DONATION <span th:text="${projet.isDonTemps}"></span></span>
+													TIME DONATION <span
+													th:text="${projetPublie.projet.isDonTemps}"></span></span>
 											</div>
 										</div>
 										<div class="item-metas text-muted mb30">
 											<span class="meta-item"><i
 												class="pe-icon pe-7s-comment"></i> COLLECTED <span
-												th:text="${projet.montantCollecte}"></span></span> <span
+												th:text="${projetPublie.projet.montantCollecte}"></span></span> <span
 												class="meta-item"><i class="pe-icon pe-7s-comment"></i>
-												EXPECTED <span th:text="${projet.montantAttendu}"></span></span>
+												EXPECTED <span
+												th:text="${projetPublie.projet.montantAttendu}"></span></span>
+										</div>
+										<div class="row">
+											<span th:if="${projetPublie.projet.isFavori}"><a
+												th:href="@{/gererFavori/{idProjet}(idProjet=${projetPublie.projet.idProjet})}"><i
+													class="fas fa-heart"></i></a></span> <span
+												th:if="${!projetPublie.projet.isFavori}"><a
+												th:href="@{/gererFavori/{idProjet}(idProjet=${projetPublie.projet.idProjet})}"><i
+													class="far fa-heart"></i></a></span>
 										</div>
 										<!-- <p>Behind sooner dining so window excuse he summer.
 											Breakfast met certainty and fulfilled propriety led. Waited

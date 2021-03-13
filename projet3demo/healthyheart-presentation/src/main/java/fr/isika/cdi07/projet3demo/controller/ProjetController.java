@@ -37,7 +37,10 @@ import fr.isika.cdi07.projet3demo.model.TypeRole;
 import fr.isika.cdi07.projet3demo.model.Utilisateur;
 import fr.isika.cdi07.projet3demo.modelform.ListProjetForm;
 import fr.isika.cdi07.projet3demo.modelform.PresentationProjetForm;
+import fr.isika.cdi07.projet3demo.modelform.ProjetDocumentForm;
 import fr.isika.cdi07.projet3demo.modelform.ProjetForm;
+import fr.isika.cdi07.projet3demo.modelform.RechercheMulticriteresForm;
+import fr.isika.cdi07.projet3demo.modelform.RechercheParTitreForm;
 import fr.isika.cdi07.projet3demo.services.CategorieService;
 import fr.isika.cdi07.projet3demo.services.DocumentService;
 import fr.isika.cdi07.projet3demo.services.FavoriService;
@@ -151,16 +154,46 @@ public class ProjetController {
 	//SHOW PROJECT WITH STATUS "PUBLIE"
 	@GetMapping("/ShowProjetListPublie")
 	public String showProjetListPublie(Model model, HttpSession session) {
-		
+
 		String emailUserConnecte = (String) session.getAttribute(UtilisateurController.EMAIL_UTILISATEUR_CONNECTE);
-		
+
 		List<Projet> allProjetPublie = projetService.afficherProjetPublie();
 
-		allProjetPublie.forEach(projet -> projet.setFavori(favoriService.estFavori(projet.getIdProjet(), emailUserConnecte)));
+		
 
+		//créer une form avec projet et document pour chopper les infos des images :)
 
+		List<ProjetDocumentForm> pdf = new ArrayList<ProjetDocumentForm>();
 
-		model.addAttribute("listProjetPublie", allProjetPublie);
+		for(Projet monProjet : allProjetPublie) {
+			ProjetDocumentForm monProjetform = new ProjetDocumentForm();
+			monProjetform.setProjet(monProjet);
+			
+//			allProjetPublie.forEach(projet -> projet.setFavori(favoriService.estFavori(projet.getIdProjet(), emailUserConnecte)));
+			monProjet.setFavori(false);
+			if(favoriService.estFavori(monProjet.getIdProjet(), emailUserConnecte)) {
+				monProjet.setFavori(true);
+			}
+			
+			
+			Optional<Document> monDoc = Optional.empty();
+			monDoc = documentService.findbyProjetAndLibelle(monProjet,TypeLibelleDoc.IMAGE_PRINCIPALE);
+			if (!monDoc.isPresent()) {
+				monDoc = documentService.findbyProjetAndLibelle(monProjet,TypeLibelleDoc.IMAGE_SECONDE);
+				if(!monDoc.isPresent()) {
+					monDoc = documentService.findbyProjetAndLibelle(monProjet,TypeLibelleDoc.IMAGE_TROISIEME);
+				}
+			}
+			if(!monDoc.isPresent()) {
+				monProjetform.setIdImage(-1L);
+			} else {
+				LOGGER.info("image : " + monDoc.get());
+				monProjetform.setIdImage(monDoc.get().getIdDocument());
+			}
+			pdf.add(monProjetform);
+		}
+
+		model.addAttribute("listProjetPublie", pdf);
 		return "catalogue";
 	}
 
@@ -235,7 +268,7 @@ public class ProjetController {
 		monForm.getProjet().setPortefeuilleprojet(addPortefeuille);
 		projetService.ajoutProjet(monForm.getProjet());
 
-		return "redirect:/showListProjetByUser";
+		return "redirect:/NewPictureForm/"+monForm.getProjet().getIdProjet();
 	}
 
 	//SHOW FORM TO UPDATE PROJECT
@@ -308,10 +341,10 @@ public class ProjetController {
 		PortefeuilleProjet addPortefeuille =  portefeuilleService.ajoutPortefeuille(portefeuille);
 
 		monForm.getProjet().setPortefeuilleprojet(addPortefeuille);
+		monForm.getProjet().setDateMaj(Date.from(Instant.now()));
+		projetService.saveProjet(monForm.getProjet());
 
-		projetService.ajoutProjet(monForm.getProjet());
-
-		return "redirect:/ShowAllProjetList";
+		return "redirect:/NewPictureForm/"+monForm.getProjet().getIdProjet();
 	}
 
 
@@ -395,29 +428,21 @@ public class ProjetController {
 	}
 
 	//Recherche multicritères
-	@PostMapping("/rechercherProjetMulticriteres")
-	public String rechercherProjetMulticriteres(@ModelAttribute("rechercheMultiForm") RechercheMulticriteresForm rechercheMultiForm,
-			Model model) {
-		List<Projet> listeProjetsmulti = projetService.rechercherProjetParCriteres(rechercheMultiForm.getTitre(),
-				rechercheMultiForm.getTypeProjet().getIdTypeProjet(), rechercheMultiForm.getTerritoire().getIdTerritoire());
-		System.out.println(listeProjetsmulti.size());
-		if(!listeProjetsmulti.isEmpty()) {
-			model.addAttribute("listeProjetsRechercheMulticriteres", listeProjetsmulti);
-			return "listeProjets_rechercheMulti";
+		@PostMapping("/rechercherProjetMulticriteres")
+		public String rechercherProjetMulticriteres(@ModelAttribute("rechercheMultiForm") RechercheMulticriteresForm rechercheMultiForm,
+				Model model) {
+			List<Projet> listeProjetsmulti = projetService.rechercherProjetParCriteres(rechercheMultiForm.getTitre(),
+					rechercheMultiForm.getTypeProjet().getIdTypeProjet(), rechercheMultiForm.getTerritoire().getIdTerritoire(),
+					rechercheMultiForm.isDonMateriel(), rechercheMultiForm.isDonTemps());
+			System.out.println(listeProjetsmulti.size());
+			if(!listeProjetsmulti.isEmpty()) {
+				model.addAttribute("listeProjetsRechercheMulticriteres", listeProjetsmulti);
+				return "listeProjets_rechercheMulti";
+			}
+			return "redirect:/showSearchBoxMulticriteres";
 		}
-		return "redirect:/showSearchBoxMulticriteres";
-	}
 
-//	@GetMapping("/showProjets/{id}")
-//	public String showProjet(@PathVariable (value = "id") Long id, Model model) {
-//
-//	
-//		Projet projet = projetService.getProjetByIdNoOptional(id);
-//		model.addAttribute("projet", projet);
-//		
-//		return "vueProjet";
-//	}
-
+	
 	//Pierre ok
 
 	@GetMapping("/showProjet/{id}/{act}")
