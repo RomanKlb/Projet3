@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,7 +25,7 @@ public class DonTempsService implements IDonService<DonTemps>{
 	private DonTempsRepository donTempsRepo;
 	
 	@Autowired
-	private ParticipationProjetRepository participationProjetRepo;
+	private IParticipationProjetService participationProjetService;
 	
 	@Autowired
 	private RoleService roleService;
@@ -41,8 +42,8 @@ public class DonTempsService implements IDonService<DonTemps>{
 
 	@Override
 	public StatutDon enregistrerDansLaBase(DonTemps don, ParticipationProjet participationProjet, Utilisateur user) {
-		participationProjet.withDate(Date.valueOf(LocalDate.now()))
-							.withTypeParticipation(TypeParticipation.TEMPS);
+		participationProjet.withTypeParticipation(TypeParticipation.TEMPS)
+						.withRole(roleService.hasRole(user, TypeRole.DONATEUR));
 		checkAndSaveIfSeuilReached(don, participationProjet, user);
 		return participationProjet.getStatutDon();
 	}
@@ -59,17 +60,14 @@ public class DonTempsService implements IDonService<DonTemps>{
 	}
 	
 	private void checkAndSaveIfSeuilReached(DonTemps don, ParticipationProjet participationProjet, Utilisateur user) {
-		if(don.getNbHeures() > 100) {
+		if(don.getNbHeures() > 100) 
 			participationProjet.withStatutDon(StatutDon.EN_ATTENTE);
-			participationProjetRepo.save(participationProjet);
-			
+		else 
+			participationProjet.withStatutDon(StatutDon.APPROUVE);
+		
+			participationProjetService.saveParticipation(participationProjet);
 			saveDonInDB(don, participationProjet);
-		}else {
-			participationProjet.withStatutDon(StatutDon.APPROUVE)
-						.withRole(roleService.hasRole(user, TypeRole.DONATEUR));
-			participationProjetRepo.save(participationProjet);
-			saveDonInDB(don, participationProjet);
-		}
+		
 	}
 
 	private void saveDonInDB(DonTemps don, ParticipationProjet participationProjet) {
@@ -77,5 +75,15 @@ public class DonTempsService implements IDonService<DonTemps>{
 			.withParticipationProjet(participationProjet);
 		donTempsRepo.save(don);
 	}
+
+	@Override
+	public List<DonTemps> getListDonsByStatut(StatutDon statutDon) {
+		return afficherDons()
+				.stream()
+				.filter(d -> d.getParticipationProjet().getStatutDon().equals(statutDon))
+				.collect(Collectors.toList());
+	}
+	
+	
 
 }

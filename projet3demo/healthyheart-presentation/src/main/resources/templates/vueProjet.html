@@ -4,27 +4,22 @@
 <th:block th:replace="../static/layout :: headerfiles"></th:block>
 <meta charset="UTF-8">
 <title>Afficher Projet selectionné</title>
-<style>
-b {
-	font: 17px Arial, sans-serif;
-	color: blue;
-}
-.Libel {
-	font: 70px Arial, sans-serif;
-	text-align:center;
-	color: blue;
-}
-</style>
+
 </head>
 <body>
+<br/><br/><br/><br/><br/>
+
+
+
+			<hr />
+			<h1 class="text-center">Détail du Projet</h1>
+			<hr />
 
 	<div th:replace="../static/layout :: header"></div>
 
 	<div class="container">
-		<h2>Afficher Projet Selectionné</h2>
-
-
-		<div class="Libel"
+		
+		<div class="text-center"
 			th:text="${infoproj.projet.titre}">
 		</div>
 
@@ -229,9 +224,9 @@ b {
         	
         				
 			<div th:if="${infoproj.choixUser == 'DONDON'}">
-          	 	 <span class="col-lg-8text-center">
+          	 	 <span class="col-lg-8 text-center">
 
-                	    <a class="btn btn-primary" href="#">Donner</a>
+                	    <a class="btn btn-primary" th:href="@{'/don/faireUnDon/projet?id=' + ${infoproj.projet.idProjet}}">Donner</a>
 
            		 </span>
 

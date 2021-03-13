@@ -32,6 +32,7 @@ import fr.isika.cdi07.projet3demo.model.Role;
 import fr.isika.cdi07.projet3demo.model.StatutProjet;
 import fr.isika.cdi07.projet3demo.model.Territoire;
 import fr.isika.cdi07.projet3demo.model.TypeLibelleDoc;
+import fr.isika.cdi07.projet3demo.model.TypePorteur;
 import fr.isika.cdi07.projet3demo.model.TypeProjet;
 import fr.isika.cdi07.projet3demo.model.TypeRole;
 import fr.isika.cdi07.projet3demo.model.Utilisateur;
@@ -159,7 +160,7 @@ public class ProjetController {
 
 		List<Projet> allProjetPublie = projetService.afficherProjetPublie();
 
-		
+
 
 		//créer une form avec projet et document pour chopper les infos des images :)
 
@@ -168,14 +169,14 @@ public class ProjetController {
 		for(Projet monProjet : allProjetPublie) {
 			ProjetDocumentForm monProjetform = new ProjetDocumentForm();
 			monProjetform.setProjet(monProjet);
-			
-//			allProjetPublie.forEach(projet -> projet.setFavori(favoriService.estFavori(projet.getIdProjet(), emailUserConnecte)));
+
+			//			allProjetPublie.forEach(projet -> projet.setFavori(favoriService.estFavori(projet.getIdProjet(), emailUserConnecte)));
 			monProjet.setFavori(false);
 			if(favoriService.estFavori(monProjet.getIdProjet(), emailUserConnecte)) {
 				monProjet.setFavori(true);
 			}
-			
-			
+
+
 			Optional<Document> monDoc = Optional.empty();
 			monDoc = documentService.findbyProjetAndLibelle(monProjet,TypeLibelleDoc.IMAGE_PRINCIPALE);
 			if (!monDoc.isPresent()) {
@@ -219,7 +220,7 @@ public class ProjetController {
 
 		Role roleOfUser = roleService.hasRole(user, TypeRole.PORTEURPROJET);
 		PorteurProjet porteurProjet = porteurProjetService.isPresent(roleOfUser);
-
+		LOGGER.info("role dans le get :" +roleOfUser);
 		monForm.setRole(roleOfUser);
 		monForm.setPorteurProjet(porteurProjet);
 		monForm.setProjet(projet);
@@ -258,11 +259,17 @@ public class ProjetController {
 			Categorie withTypeProjet = new Categorie().withTerritoire(territoire).withTypeProjet(typeProjet);
 			categorieToUse = categorieService.ajoutCategorie(withTypeProjet);
 		}
+		LOGGER.info("PORTEUR PROJET ES TU Là?"+monForm.getRole());
 		monForm.getProjet().setCategorie(categorieToUse);
-
+		//		monForm.getPorteurProjet().setTypePorteur(TypePorteur.PRIVE);
+		Role monRole = roleService.saveRole(monForm.getRole());
+		monForm.getPorteurProjet().setRole(monRole);
 		PorteurProjet monPorteur = porteurProjetService.ajoutPorteur(monForm.getPorteurProjet());
 
+
 		PortefeuilleProjet portefeuille = portefeuilleService.isPresent(monPorteur, "Defaut");
+		portefeuilleService.ajoutPortefeuille(portefeuille);
+
 		PortefeuilleProjet addPortefeuille =  portefeuilleService.ajoutPortefeuille(portefeuille);
 
 		monForm.getProjet().setPortefeuilleprojet(addPortefeuille);
@@ -369,29 +376,43 @@ public class ProjetController {
 
 		//OUI >>>> chercher les portefeuilles lies au role
 		List<Projet> projetRecup = projetService.getListProjet(role.get());
-		List<Projet> projetActifForUser = new ArrayList<Projet>();
+		//		List<Projet> projetActifForUser = new ArrayList<Projet>();
+		List<ProjetDocumentForm> pdf = new ArrayList<ProjetDocumentForm>();
 
-		for(Projet projet : projetRecup) {
-			if(projet.getStatutDuProjet().equals(StatutProjet.SUPPRIME)) {
+		for(Projet monProjet : projetRecup) {
+			if(monProjet.getStatutDuProjet().equals(StatutProjet.SUPPRIME)) {
 				continue;
 			}
-			projetActifForUser.add(projet);
+			//			projetActifForUser.add(projet);
+
+			ProjetDocumentForm monProjetform = new ProjetDocumentForm();
+			monProjetform.setProjet(monProjet);
+
+			//				allProjetPublie.forEach(projet -> projet.setFavori(favoriService.estFavori(projet.getIdProjet(), emailUserConnecte)));
+			monProjet.setFavori(false);
+			if(favoriService.estFavori(monProjet.getIdProjet(), userEmail)) {
+				monProjet.setFavori(true);
+			}
+
+
+			Optional<Document> monDoc = Optional.empty();
+			monDoc = documentService.findbyProjetAndLibelle(monProjet,TypeLibelleDoc.IMAGE_PRINCIPALE);
+			if (!monDoc.isPresent()) {
+				monDoc = documentService.findbyProjetAndLibelle(monProjet,TypeLibelleDoc.IMAGE_SECONDE);
+				if(!monDoc.isPresent()) {
+					monDoc = documentService.findbyProjetAndLibelle(monProjet,TypeLibelleDoc.IMAGE_TROISIEME);
+				}
+			}
+			if(!monDoc.isPresent()) {
+				monProjetform.setIdImage(-1L);
+			} else {
+				LOGGER.info("image : " + monDoc.get());
+				monProjetform.setIdImage(monDoc.get().getIdDocument());
+			}
+			pdf.add(monProjetform);
 		}
 
-
-		//		for(Projet p : projetRecup) {
-		//			LOGGER.info("projet : " + p);
-		//		}
-
-		//pour chaque liste affiche la lsite des projets  
-
-		String message = "Bonjour ";
-		String message2 = "Voici vos projets par statut";
-		model.addAttribute("message", message);
-		model.addAttribute("prenomUtilisateur", session.getAttribute("prenomUtilisateur"));
-		model.addAttribute("message2", message2);
-		model.addAttribute("listProjetByPP", projetActifForUser);
-
+		model.addAttribute("listProjetForUser", pdf);
 
 		return "listProjetByUser";
 	}
@@ -428,21 +449,21 @@ public class ProjetController {
 	}
 
 	//Recherche multicritères
-		@PostMapping("/rechercherProjetMulticriteres")
-		public String rechercherProjetMulticriteres(@ModelAttribute("rechercheMultiForm") RechercheMulticriteresForm rechercheMultiForm,
-				Model model) {
-			List<Projet> listeProjetsmulti = projetService.rechercherProjetParCriteres(rechercheMultiForm.getTitre(),
-					rechercheMultiForm.getTypeProjet().getIdTypeProjet(), rechercheMultiForm.getTerritoire().getIdTerritoire(),
-					rechercheMultiForm.isDonMateriel(), rechercheMultiForm.isDonTemps());
-			System.out.println(listeProjetsmulti.size());
-			if(!listeProjetsmulti.isEmpty()) {
-				model.addAttribute("listeProjetsRechercheMulticriteres", listeProjetsmulti);
-				return "listeProjets_rechercheMulti";
-			}
-			return "redirect:/showSearchBoxMulticriteres";
+	@PostMapping("/rechercherProjetMulticriteres")
+	public String rechercherProjetMulticriteres(@ModelAttribute("rechercheMultiForm") RechercheMulticriteresForm rechercheMultiForm,
+			Model model) {
+		List<Projet> listeProjetsmulti = projetService.rechercherProjetParCriteres(rechercheMultiForm.getTitre(),
+				rechercheMultiForm.getTypeProjet().getIdTypeProjet(), rechercheMultiForm.getTerritoire().getIdTerritoire(),
+				rechercheMultiForm.isDonMateriel(), rechercheMultiForm.isDonTemps());
+		System.out.println(listeProjetsmulti.size());
+		if(!listeProjetsmulti.isEmpty()) {
+			model.addAttribute("listeProjetsRechercheMulticriteres", listeProjetsmulti);
+			return "listeProjets_rechercheMulti";
 		}
+		return "redirect:/showSearchBoxMulticriteres";
+	}
 
-	
+
 	//Pierre ok
 
 	@GetMapping("/showProjet/{id}/{act}")
@@ -455,17 +476,23 @@ public class ProjetController {
 			return "error";
 
 		Projet monProjet = projet.get();
+		
+		Utilisateur user = null;
+		
 
+		if(!act.equalsIgnoreCase("DON")) {
 		String userEmail = (String)session.getAttribute("emailUtilisateurConnecte");
 		if (userEmail == null) {
 			return "redirect:/showConnexionForm";
 		}
 
-		Utilisateur user = utilisateurService.chercherUtilisateurParEmail(userEmail);
+		user = utilisateurService.chercherUtilisateurParEmail(userEmail);
 		if (user == null) {
 			return "Error";
+		} else {
+			
 		}
-
+		}
 		switch (act) {
 		case "ADMU" :
 			if (!monProjet.getPortefeuilleprojet().getPorteurprojet().getRole().getUtilisateur().equals(user)) {

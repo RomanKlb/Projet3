@@ -86,8 +86,6 @@ public class PorteurProjet {
 		builder.append(iban);
 		builder.append(", typePorteur=");
 		builder.append(typePorteur);
-		builder.append(", role=");
-		builder.append(role.getTypeRole());
 		builder.append("]");
 		return builder.toString();
 	}

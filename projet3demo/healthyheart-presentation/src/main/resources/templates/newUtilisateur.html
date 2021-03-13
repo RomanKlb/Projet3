@@ -4,15 +4,20 @@
 <th:block th:replace="../static/layout :: headerfiles"></th:block>
 <meta charset="UTF-8">
 <title>Nouvel utilisateur</title>
-<link rel="stylesheet"
-	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
 	<div th:replace="../static/layout :: header"></div>
+	
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<hr />
+	<h1 class="text-center">Créer mon compte utilisateur</h1>
+	<hr />
+	
 	<div class="container mt-5 mb-5">
-		<div class="row">
-			<h3 class="text-center">Créer mon compte utilisateur</h3>
-		</div>
 		<form action="#" th:action="@{/enregistrerUtilisateur}"
 			th:object="${utilisateur}" method="POST">
 			<div class="row d-flex align-items-center justify-content-center">
@@ -31,7 +36,7 @@
 								class="form-control" th:field="*{email}" placeholder="Votre adresse email">
 						</div>
 						<div class="form-input">
-							<i class="fa fa-lock"></i> <input type="text"
+							<i class="fa fa-lock"></i> <input type="password"
 								class="form-control" th:field="*{mdp}" placeholder="Votre mot de passe">
 						</div>
 						<div class="form-check">

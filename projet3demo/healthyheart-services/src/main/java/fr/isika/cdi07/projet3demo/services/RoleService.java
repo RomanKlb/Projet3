@@ -89,6 +89,10 @@ public class RoleService {
 
 	}
 	
+	public Role saveRole(Role role) {
+		return roleRepo.save(role);
+	}
+	
 	
 	
 }

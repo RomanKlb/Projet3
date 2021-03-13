@@ -84,12 +84,12 @@ public class UtilisateurController {
 	}
 	
 	//Se déconnecter
-		@PostMapping("/deconnexion")
+		@GetMapping("/deconnexion")
 		public String deconnecter(HttpSession session) {
 			
 			session.removeAttribute(EMAIL_UTILISATEUR_CONNECTE);
 			session.removeAttribute("prenomUtilisateur");
-			return "redirect:/";
+			return "redirect:/accueil";
 		}
 	
 	
@@ -110,7 +110,7 @@ public class UtilisateurController {
 		if(optionalUtilisateur.isPresent()) {
 			session.setAttribute(EMAIL_UTILISATEUR_CONNECTE, optionalUtilisateur.get().getEmail());
 			session.setAttribute("prenomUtilisateur", optionalUtilisateur.get().getPrenom());
-			return REDIRECT + "utilisateurConnecte";
+			return REDIRECT;
 
 		}
 		return REDIRECT + "showConnexionForm";

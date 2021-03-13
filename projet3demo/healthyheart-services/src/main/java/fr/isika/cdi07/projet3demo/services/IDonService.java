@@ -15,4 +15,5 @@ public interface IDonService<T extends Don> {
 	StatutDon enregistrerDansLaBase(T don, ParticipationProjet participationProjet, Utilisateur user);
 	Optional<T> obtenirDonById(long id);
 	void supprimerDonById(long id);
+	List<T> getListDonsByStatut(StatutDon statutDon);
 }
