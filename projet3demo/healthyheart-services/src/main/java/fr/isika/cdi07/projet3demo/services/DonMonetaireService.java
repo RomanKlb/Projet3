@@ -1,10 +1,10 @@
 package fr.isika.cdi07.projet3demo.services;
 
 import java.sql.Date;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,7 +27,7 @@ public class DonMonetaireService implements IDonService<DonMonetaire>{
 	private DonMonetaireRepository donMonetaireRepo;
 	
 	@Autowired
-	private ParticipationProjetRepository participationProjetRepo;
+	private IParticipationProjetService participationProjetService;
 	
 	@Autowired
 	private ProjetRepository projetRepo;
@@ -52,8 +52,8 @@ public class DonMonetaireService implements IDonService<DonMonetaire>{
 	
 	@Override
 	public StatutDon enregistrerDansLaBase(DonMonetaire don, ParticipationProjet participationProjet, Utilisateur user) {
-		participationProjet.withDate(Date.from(Instant.now()))
-							.withTypeParticipation(TypeParticipation.MONETAIRE);//normalement dans le POST du controller
+		participationProjet.withTypeParticipation(TypeParticipation.MONETAIRE)
+						.withRole(roleService.hasRole(user, TypeRole.DONATEUR));
 		checkAndSaveIfSeuilReached(don, participationProjet, user);
 		return participationProjet.getStatutDon();
 	}
@@ -61,13 +61,12 @@ public class DonMonetaireService implements IDonService<DonMonetaire>{
 	private void checkAndSaveIfSeuilReached(DonMonetaire don, ParticipationProjet participationProjet, Utilisateur user) {
 		if(don.getMontant() > 2000) {
 			participationProjet.withStatutDon(StatutDon.EN_ATTENTE);
-			participationProjetRepo.save(participationProjet);
+			participationProjetService.saveParticipation(participationProjet);
 			
 			saveDonInDB(don, participationProjet);
 		}else {
-			participationProjet.withStatutDon(StatutDon.APPROUVE)
-								.withRole(roleService.hasRole(user, TypeRole.DONATEUR));
-			participationProjetRepo.save(participationProjet);
+			participationProjet.withStatutDon(StatutDon.APPROUVE);
+			participationProjetService.saveParticipation(participationProjet);
 			
 			addMontantDansCollecteProjet(don, participationProjet);
 			
@@ -96,6 +95,14 @@ public class DonMonetaireService implements IDonService<DonMonetaire>{
 		don.withDate(Date.valueOf(LocalDate.now()))
 			.withParticipationProjet(participationProjet);
 		donMonetaireRepo.save(don);
+	}
+
+	@Override
+	public List<DonMonetaire> getListDonsByStatut(StatutDon statutDon) {
+		return afficherDons()
+				.stream()
+				.filter(d -> d.getParticipationProjet().getStatutDon().equals(statutDon))
+				.collect(Collectors.toList());
 	}
 
 

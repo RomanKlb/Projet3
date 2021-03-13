@@ -13,7 +13,7 @@ import fr.isika.cdi07.projet3demo.model.Utilisateur;
 @Service
 public interface IParticipationProjetService {
 
-	ParticipationProjet addParticipation(ParticipationProjet participationProjet);
+	ParticipationProjet saveParticipation(ParticipationProjet participationProjet);
 	int countParticipationsByProjet(Projet projet);
 	Optional<ParticipationProjet> getParticipationById(long id);
 	Optional<ParticipationProjet> getParticipationByProjetAndUser(Projet projet, Utilisateur user);
@@ -21,4 +21,5 @@ public interface IParticipationProjetService {
 	List<ParticipationProjet> getAllApprovedParticipationFromUser(Utilisateur user);
 	boolean checkIfAnonyme(Projet projet, Utilisateur user);
 	void updateStatutDon(ParticipationProjet participationProjet, StatutDon statutDon);
+	List<ParticipationProjet> getAllParticipationsByStatutDon(StatutDon statutDon);
 }

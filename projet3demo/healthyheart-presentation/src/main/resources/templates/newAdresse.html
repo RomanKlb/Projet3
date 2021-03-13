@@ -1,45 +1,55 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="fr">
 <head>
+<th:block th:replace="../static/layout :: headerfiles"></th:block>
 <meta charset="UTF-8">
 <title>Création Adresse</title>
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
+	<div th:replace="../static/layout :: header"></div>
 
-	<fieldset>
-		<legend>création adresse </legend>
+	<div class="container mt-5 mb-5">
+		<div class="row">
+			<h3 class="text-center">Créer mon compte utilisateur</h3>
+		</div>
 		<form action="#" th:action="@{/enregistrerAdresse}" method="POST">
-
-
 			<!-- Add hidden form field to handle update -->
 			<input type="hidden" th:field="*{utilisateur.email}" />
+			<div class="row d-flex align-items-center justify-content-center">
+				<div class="col-md-6">
+					<div class="card px-5 py-5">				
+						<div class="form-input">
+							<i class="fa fa-address-card"></i> <input type="text"
+								class="form-control" th:field="*{adresse.libelle}" placeholder="Mon adresse principale">
+						</div>
+						<div class="form-input">
+							<i class="fa fa-map-marked-alt"></i> <input type="text"
+								class="form-control" th:field="*{adresse.rue}" placeholder="Votre numéro et rue">
+						</div>
+						<div class="form-input">
+							<i class="fa fa-map-marked-alt"></i> <input type="text"
+								class="form-control" th:field="*{adresse.codePostal}" placeholder="Votre code postal">
+						</div>
+						<div class="form-input">
+							<i class="fa fa-city"></i> <input type="text"
+								class="form-control" th:field="*{adresse.ville}" placeholder="Votre ville">
+						</div>
+						<div class="form-input">
+							<i class="fa fa-globe-asia"></i> <input type="text"
+								class="form-control" th:field="*{adresse.pays}" placeholder="Votre pays">
+						</div>
 
+						<button class="btn btn-primary mt-4 signup" type="submit">Sauvegarder</button>
 
-
-			<div>
-				<label>CE QUE TU VEUX :</label> <input type="text"
-					th:field="*{adresse.libelle}" placeholder="nom ce que tu veux">
+					</div>
+				</div>
 			</div>
-			<div>
-				<label>numéro et rue :</label> <input type="text" th:field="*{adresse.rue}"
-					placeholder="numéro et rue">
-			</div>
-			<div>
-				<label>code postal :</label> <input type="text"
-					th:field="*{adresse.codePostal}" placeholder="code postal">
-			</div>
-			<div>
-				<label>ville :</label> <input type="text" th:field="*{adresse.ville}"
-					placeholder="ville">
-			</div>
-			<div>
-				<label>pays :</label> <input type="text" th:field="*{adresse.pays}"
-					placeholder="pays">
-			</div>
-
-			<button type="submit">Suivant</button>
 		</form>
-	</fieldset>
+	</div>
+	<br />
+	<div th:replace="../static/layout :: footer"></div>
 
 </body>
 </html>

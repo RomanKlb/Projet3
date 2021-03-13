@@ -1,10 +1,10 @@
 package fr.isika.cdi07.projet3demo.services;
 
 import java.sql.Date;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,7 +25,7 @@ public class DonMaterielService implements  IDonService<DonMateriel>{
 	private DonMaterielRepository donMaterielRepo;
 	
 	@Autowired
-	private ParticipationProjetRepository participationProjetRepo;
+	private IParticipationProjetService participationProjetService;
 	
 	@Autowired
 	private RoleService roleService;
@@ -42,8 +42,8 @@ public class DonMaterielService implements  IDonService<DonMateriel>{
 
 	@Override
 	public StatutDon enregistrerDansLaBase(DonMateriel don, ParticipationProjet participationProjet, Utilisateur user) {
-		participationProjet.withDate(Date.from(Instant.now()))
-							.withTypeParticipation(TypeParticipation.MATERIEL);
+		participationProjet.withTypeParticipation(TypeParticipation.MATERIEL)
+						.withRole(roleService.hasRole(user, TypeRole.DONATEUR));
 		checkAndSaveIfSeuilReached(don, participationProjet, user);
 		return participationProjet.getStatutDon();
 	}
@@ -61,23 +61,28 @@ public class DonMaterielService implements  IDonService<DonMateriel>{
 	
 	private void checkAndSaveIfSeuilReached(DonMateriel don, ParticipationProjet participationProjet, Utilisateur user) {
 		double totalMateriel = don.getMontant() * don.getQuantite();
-		if(totalMateriel > 10000) {
+		if(totalMateriel > 10000) 
 			participationProjet.withStatutDon(StatutDon.EN_ATTENTE);
-			participationProjetRepo.save(participationProjet);
-			
+		else 
+			participationProjet.withStatutDon(StatutDon.APPROUVE);
+		
+			participationProjetService.saveParticipation(participationProjet);			
 			saveDonInDB(don, participationProjet);
-		}else {
-			participationProjet.withStatutDon(StatutDon.APPROUVE)
-								.withRole(roleService.hasRole(user, TypeRole.DONATEUR));
-			participationProjetRepo.save(participationProjet);			
-			saveDonInDB(don, participationProjet);
-		}
+		
 	}
 
 	private void saveDonInDB(DonMateriel don, ParticipationProjet participationProjet) {
 		don.withDate(Date.valueOf(LocalDate.now()))
 			.withParticipationProjet(participationProjet);
 		donMaterielRepo.save(don);
+	}
+
+	@Override
+	public List<DonMateriel> getListDonsByStatut(StatutDon statutDon) {
+		return afficherDons()
+				.stream()
+				.filter(d -> d.getParticipationProjet().getStatutDon().equals(statutDon))
+				.collect(Collectors.toList());
 	}
 
 }

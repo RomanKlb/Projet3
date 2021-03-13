@@ -36,7 +36,7 @@ import fr.isika.cdi07.projet3demo.services.UtilisateurService;
 @Validated
 public class DonController {
 
-	private static final String DEFAULT_REDIRECTION = "redirect:/don/afficherListeDesDons";
+	private static final String VALIDATE_REDIRECTION = "/don/don_valide";
 	private static final String EN_ATTENTE_REDIRECTION = "/don/don_en_attente";
 	private static final Logger logger = Logger.getLogger(DonController.class.getSimpleName());
 
@@ -109,7 +109,7 @@ public class DonController {
 		StatutDon statutDon = donMonetaireService
 				.enregistrerDansLaBase(donForm.getDonMonetaire(), donForm.getParticipationProjet(), user);
 		return statutDon.equals(StatutDon.APPROUVE)
-				? DEFAULT_REDIRECTION
+				? VALIDATE_REDIRECTION
 						: EN_ATTENTE_REDIRECTION;
 	}
 
@@ -121,7 +121,7 @@ public class DonController {
 		StatutDon statutDon = donMaterielService
 				.enregistrerDansLaBase(donForm.getDonMateriel(), donForm.getParticipationProjet(), user);
 		return statutDon.equals(StatutDon.APPROUVE)
-				? DEFAULT_REDIRECTION
+				? VALIDATE_REDIRECTION
 						: EN_ATTENTE_REDIRECTION;
 	}
 
@@ -132,7 +132,7 @@ public class DonController {
 		StatutDon statutDon = donTempsService
 				.enregistrerDansLaBase(donForm.getDonTemps(), donForm.getParticipationProjet(), user);
 		return statutDon.equals(StatutDon.APPROUVE)
-				? DEFAULT_REDIRECTION
+				? VALIDATE_REDIRECTION
 						: EN_ATTENTE_REDIRECTION;
 	}
 }
