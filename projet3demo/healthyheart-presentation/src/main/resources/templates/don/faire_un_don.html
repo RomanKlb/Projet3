@@ -25,22 +25,31 @@
 	<div class="container mt-5 mb-5">
 		<h3>Veuillez sélectionner un type de don :</h3>
 		<br>
-		<div class="d-flex justify-content-around">
-			<label> <input class="form-check-input" type="radio"
+		<div class="row">
+		<div class="col-md-4">
+		<label> <input class="form-check-input" type="radio"
 				name="donRadio" value="monetaire"> Don monétaire
-			</label> <label th:if="${donForm.participationProjet.projet.donMateriel}">
+			</label> 
+		</div>
+		<div class="col-md-4">
+		<label th:if="${donForm.participationProjet.projet.donMateriel}">
 				<input class="form-check-input" type="radio" name="donRadio"
 				value="materiel"> Don matériel
 			</label> <label th:unless="${donForm.participationProjet.projet.donMateriel}">
 				<input id="radioMaterielOff" class="form-check-input disabled"
-				type="radio" name="donRadio" value="materiel"> Don matériel
-			</label> <label th:if="${donForm.participationProjet.projet.donTemps}">
+				type="radio" name="donRadio" value="materiel" disabled> Don matériel
+			</label> 
+		</div>
+		<div class="col-md-4">
+		<label th:if="${donForm.participationProjet.projet.donTemps}">
 				<input class="form-check-input" type="radio" name="donRadio"
 				value="temps"> Don de temps
 			</label> <label th:unless="${donForm.participationProjet.projet.donTemps}">
 				<input id="radioTempsOff" class="form-check-input" type="radio"
-				name="donRadio" value="temps"> Don de temps
+				name="donRadio" value="temps" disabled> Don de temps
 			</label>
+		</div>
+			
 		</div>
 		<hr>
 		<!-- don monetaire form -->
@@ -56,7 +65,7 @@
 					<div class="col-md-6">
 						<div class="card px-5 py-5">
 							<div class="form-input">
-								<i class="fa fa-euro-sign"></i> <input type="text"
+								<i class="fa fa-euro-sign"></i> <input type="number"
 									class="form-control" th:field="*{donMonetaire.montant}"
 									placeholder="Votre montant">
 							</div>
@@ -92,12 +101,12 @@
 									placeholder="Quel matériel voulez-vous donner ?">
 							</div>
 							<div class="form-input">
-								<i class="fas fa-euro-sign"></i> <input type="text"
+								<i class="fas fa-euro-sign"></i> <input type="number"
 									class="form-control" th:field="*{donMateriel.montant}"
 									placeholder="Prix unitaire">
 							</div>
 							<div class="form-input">
-								<i class="fas fa-euro-sign"></i> <input type="text"
+								<i class="fas fa-euro-sign"></i> <input type="number"
 									class="form-control" th:field="*{donMateriel.quantite}"
 									placeholder="Quantité">
 							</div>
@@ -128,7 +137,7 @@
 					<div class="col-md-6">
 						<div class="card px-5 py-5">
 							<div class="form-input">
-								<i class="fas fa-euro-sign"></i> <input type="text"
+								<i class="fas fa-euro-sign"></i> <input type="number"
 									class="form-control" th:field="*{donTemps.nbHeures}"
 									placeholder="Votre montant">
 							</div>
@@ -155,7 +164,14 @@
 	<br>
 	<div th:replace="../static/layout :: footer"></div>
 	
-	<script th:src="@{/js/radioButtonTypeDon.js}"></script>
+	<script>$(document).ready(function(){
+	    $('input[type="radio"]').click(function(){
+	        var inputValue = $(this).attr("value");
+	        var targetForm = $("." + inputValue);
+	        $(".formu").not(targetForm).hide();
+	        $(targetForm).show();
+	    });
+	});</script>
 
 </body>
 </html>

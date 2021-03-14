@@ -22,7 +22,10 @@
 		<div class="text-center"
 			th:text="${infoproj.projet.titre}">
 		</div>
-
+		<div>
+			<a class="btn btn-primary" th:href="@{/don/afficherListeContributeurs/{id}(id=${infoproj.projet.idProjet})}">Liste contributeurs</a>
+			<a class="btn btn-primary" th:href="@{'/afficherListeCommentaires/projet?id=' + ${infoproj.projet.idProjet}}">Commentaires</a>
+		</div>
 		<div>
 			Type de projet : <b
 				th:text="${infoproj.projet.categorie.typeProjet.libelle}"></b> /
