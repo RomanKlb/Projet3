@@ -2,27 +2,109 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>Detail d'un message recu</title>
+<th:block th:replace="../static/layout_light:: headerfiles"></th:block>
+<title>Liste Projet By User</title>
 </head>
-<body>
-		<h2>Détails sur message recu</h2>
+<body id="page-top" class="index">
+	<div th:replace="../static/layout_light:: header"></div>
+
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+
+	<hr />
+	<h1 class="text-center">Message recu</h1>
 	<hr>
-		<label>Titre: </label>
-		<input type="text" disabled th:field="${message.titre}"/>
-		</br>
-		<label>Emetteur : </label>
-		<input type="text" disabled th:field="${message.emetteur.email}"/>
-					
-		<br/>
-		<label>Date/Heure emission: </label>
-		<input type="text" disabled th:field="${message.date}"/>
-		</br>
-		<label th:text="${infoLu}"/><br/>
-		<label>Contenu message : </label><br/>
-		<textarea rows="5" cols="33" disabled th:field="${message.contenu}"/>
-		</br>
-		
-	<a th:href="@{/afficherListeUserMessages}">retour à la liste</a>
+	<div class="container">
+		<div class="form-group">
+			<div class="row">
+				<div class="col-2"></div>
+				<div class="col-4">
+					<label>Titre: </label> <input type="text"
+						th:field="${message.titre}" class="form-control" disabled />
+
+				</div>
+				<div class="col-6"></div>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<div class="row">
+				<div class="col-2"></div>
+				<div class="col-4">
+					<label>Emetter : </label> <span type="text"
+						th:text="${message.emetteur.email} + ' ( ' + ${message.emetteur.prenom} + ' ' + ${message.emetteur.nom}  +' )' "
+						class="form-control" />
+
+				</div>
+				<div class="col-6"></div>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<div class="row">
+				<div class="col-2"></div>
+				<div class="col-8">
+					<label>Date/Heure emission : </label><span type="text"
+						th:text="${#calendars.format(message.date,'EEEEE dd/MM/yyyy à HH:mm::ss')}"
+						class="form-control" />
+				</div>
+				<div class="col-2"></div>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<div class="row">
+				<div class="col-2"></div>
+				<div class="col-8">
+					<label>Contenu message</label>
+					<textarea rows="10" class="form-control" type="text"
+						th:field="${message.contenu}" disabled></textarea>
+				</div>
+				<div class="col-2"></div>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<div class="row">
+				<div class="col-2"></div>
+				<div class="col-8">
+					<label>Date/Heure lecture : </label> <span th:text="${infoLu}"
+						class="form-control" />
+				</div>
+				<div class="col-2"></div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-lg-2"></div>
+
+			<div class="col-lg-2">
+				<a class="btn btn-primary" data-toggle="collapse"
+					th:href="@{/ReponseUserMessage/{id}(id=${message.idMessage})}" role="button">Répondre</a>
+			</div>
+			<div class="col-lg-1"></div>
+			<div class="col-lg-2">
+				<a class="btn btn-primary" data-toggle="collapse"
+					th:href="@{/SupprimerUserMessage/{id}(id=${idMsgRecu})}" role="button">Supprimer</a>
+			</div>
+			<div class="col-lg-1"></div>
+			<div class="col-lg-2">
+				<a class="btn btn-primary" data-toggle="collapse"
+					th:href="@{/afficherListeUserMessages}" role="button"> boite de
+					récéption</a>
+			</div>
+			<div class="col-lg-2"></div>
+		</div>
+		<br />
+
+
+	</div>
+
+	<div th:replace="../static/layout_light :: footer"></div>
+
 
 </body>
 </html>

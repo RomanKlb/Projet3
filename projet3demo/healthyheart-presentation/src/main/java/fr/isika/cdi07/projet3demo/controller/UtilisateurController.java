@@ -43,16 +43,21 @@ public class UtilisateurController {
 	public String creerNouvelUtilisateur(Model model) {
 		Utilisateur utilisateur = new Utilisateur();
 		model.addAttribute("utilisateur", utilisateur);
+		model.addAttribute("errmsg","");
 		return "newUtilisateur";
 	}
 
 	//Enregistrer un utilisateur
 	@PostMapping("/enregistrerUtilisateur")
-	public String enregistrerNouvelUtilisateur(@ModelAttribute("utilisateur") Utilisateur utilisateur, Model model) {
+	public String enregistrerNouvelUtilisateur(@ModelAttribute("utilisateur") Utilisateur utilisateur, Model model,HttpSession session) {
+		Optional<Utilisateur> tstUser = utilisateurService.chercherOptionalUtilisateurParEmail(utilisateur.getEmail());
+		if (tstUser.isPresent()) {
+			model.addAttribute("errmsg","un utilisateur existe déjà avec ce email");
+			return "newUtilisateur";
+		}
 		utilisateurService.ajouterUtilisateur(utilisateur);
-		
-//		return adresseController.showNewProjetForm(model, utilisateur);
-	return "index";
+		session.setAttribute(EMAIL_UTILISATEUR_CONNECTE, utilisateur.getEmail());
+	return REDIRECT;
 	}
 
 	//Pour modifier Un utilisateur 
@@ -84,13 +89,13 @@ public class UtilisateurController {
 	}
 	
 	//Se déconnecter
-		@GetMapping("/deconnexion")
-		public String deconnecter(HttpSession session) {
-			
-			session.removeAttribute(EMAIL_UTILISATEUR_CONNECTE);
-			session.removeAttribute("prenomUtilisateur");
-			return "redirect:/accueil";
-		}
+	@GetMapping("/deconnexion")
+	public String deconnecter(HttpSession session) {
+		
+		session.removeAttribute(EMAIL_UTILISATEUR_CONNECTE);
+		session.removeAttribute("prenomUtilisateur");
+		return "redirect:/accueil";
+	}
 	
 	
 	//show connexion Form
