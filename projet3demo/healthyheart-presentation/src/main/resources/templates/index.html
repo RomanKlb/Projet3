@@ -10,55 +10,32 @@
 	<div id="headerwrap" class="fullheight no-overlay default-bg">
 		<div class="container vertical-center">
 
-<br/><br/><br/><br/><br/>
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
 			<div class="container">
 				<h1>HOME Starter</h1>
 
 				<div th:if="${isConnected}">
 					<label>Utilisateur connecté : <label
 						th:text=" ${Utilisateur.email} + ' (' + ${Utilisateur.prenom} + ' ' +  ${Utilisateur.nom} + ')'" />
-						<a th:href="@{/deconnexion}" >Deconnexion</a>
-				
+						<br />
+					<a th:href="@{/deconnexion}" class="btn btn-primary">Deconnexion</a>
+
 						<div th:if="${nbMsg != -1}">
 							<a class="btn btn-primary" href="/afficherListeUserMessages/"
-								th:text="${nbMsg} + ' messages non lus'"></a>
+								th:text="'Messageie (' + ${nbMsg} + ' message(s) non lu(s)'"></a>
+						</div>
+
+
+						<div th:if="${isAdmin}">
+							<a class="btn btn-primary" href="/ShowAllProjetList/">Liste Projets</a>
 						</div>
 				</div>
 
-
-				<button class="btn btn-primary">Bouton bootstrap</button>
-				<div>
-					<a th:href="@{/ShowAllProjetList}">All Projet List</a>
-				</div>
-				<div>
-					<a th:href="@{/ShowProjetListPublie}">Catalogue</a>
-				</div>
-				<div>
-					<a th:href="@{/showListProjetByUser}">List Projet By PP(user)</a>
-				</div>
-				<div>
-					<a th:href="@{/ShowNewProjetForm}">Add Projet</a>
-				</div>
-				<div>
-					<a th:href="@{/CreerNouvelUtilsateur}">Add new user</a>
-				</div>
-				<div>
-					<a th:href="@{/showConnexionForm}">Se connecter</a>
-				</div>
-				<div>
-					<a th:href="@{/showAllUsers}">Afficher tous les utilisateurs</a>
-				</div>
-				<div>
-					<a th:href="@{/showSearchBox}">Rechercher un projet par son
-						titre</a>
-				</div>
-				<div>
-					<a th:href="@{/showSearchBoxMulticriteres}">Recherche
-						Multicritères d'un projet</a>
-				</div>
-				<div>
-					<a th:href="@{/ShowNewUtilisateur}">Add Utilisateur</a>
-				</div>
+	
 			</div>
 		</div>
 	</div>

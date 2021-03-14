@@ -111,7 +111,7 @@ public class ProjetController {
 
 		Utilisateur user = utilisateurService.chercherUtilisateurParEmail(userEmail);
 		if (user == null) {
-			return "ErrorSite";
+			return "Error";
 		}
 		// Role >>>> ADMIN?
 		Optional<Role> role = roleService.testIsAdmin(user);
@@ -244,6 +244,8 @@ public class ProjetController {
 	@PostMapping("/saveProjet")
 	public String saveProjet(@ModelAttribute("monForm") ProjetForm monForm, @ModelAttribute("typeProjet") TypeProjet typeProjet, 
 			@ModelAttribute("territoire") Territoire territoire, HttpSession session) {
+		
+
 
 		LOGGER.info("Selected data : idTypeProjet : " + typeProjet.getIdTypeProjet() + " idTerritoire " + territoire.getIdTerritoire());
 
@@ -274,7 +276,17 @@ public class ProjetController {
 
 		monForm.getProjet().setPortefeuilleprojet(addPortefeuille);
 		projetService.ajoutProjet(monForm.getProjet());
-
+		
+		// enregistrement dans l'historique
+		Historique monHisto = new Historique();
+		monHisto.setActeur(monRole.getUtilisateur());
+		monHisto.setDateHeure(monForm.getProjet().getDateMaj());
+		monHisto.setEtatProjet(StatutProjet.CREE);
+		monHisto.setEvenement("Création Projet par utilisateur");
+		monHisto.setProjet(monForm.getProjet());
+		monHisto.setLibelle("Création Projet par utilisateur");
+		histoService.ajout(monHisto);
+		
 		return "redirect:/NewPictureForm/"+monForm.getProjet().getIdProjet();
 	}
 
@@ -322,6 +334,15 @@ public class ProjetController {
 	@PostMapping("/updateProjet")
 	public String updateProjet(@ModelAttribute("monForm") ProjetForm monForm, HttpSession session) {
 
+		String userEmail = (String)session.getAttribute("emailUtilisateurConnecte");
+		if (userEmail == null) {
+			return "error";
+		}
+
+		Utilisateur user = utilisateurService.chercherUtilisateurParEmail(userEmail);
+		if (user == null) {
+			return "Error";
+		}
 		LOGGER.info("Selected data : idTypeProjet : " + monForm.getTypeProjet().getIdTypeProjet() + " idTerritoire " + monForm.getTerritoire().getIdTerritoire());
 
 		if(monForm.getTypeProjet().getIdTypeProjet().equals(0L) || monForm.getTerritoire().getIdTerritoire().equals(0L)) {
@@ -351,7 +372,18 @@ public class ProjetController {
 		monForm.getProjet().setDateMaj(Date.from(Instant.now()));
 		projetService.saveProjet(monForm.getProjet());
 
+		// enregistrement dans l'historique
+		Historique monHisto = new Historique();
+		monHisto.setActeur(user);
+		monHisto.setDateHeure(monForm.getProjet().getDateMaj());
+		monHisto.setEtatProjet(monForm.getProjet().getStatutDuProjet());
+		monHisto.setEvenement("Modification Projet");
+		monHisto.setProjet(monForm.getProjet());
+		monHisto.setLibelle("Modification projet");
+		histoService.ajout(monHisto);
+
 		return "redirect:/NewPictureForm/"+monForm.getProjet().getIdProjet();
+		
 	}
 
 
@@ -582,7 +614,9 @@ public class ProjetController {
 	@RequestMapping("/ModifierStatProjet/{id}/{stat}/{orig}")
 	public String modifStatProj(@PathVariable(value = "id") Long id,@PathVariable(value = "stat") String stat,
 			@PathVariable(value = "orig") String orig, Model model,HttpSession session) {
-		String retUrl = "redirect:/ShowAllProjetList";;
+		String retUrl = "redirect:/ShowAllProjetList";
+		if (orig.equalsIgnoreCase("ADMU"))
+			retUrl = "redirect/showListProjetByUser";
 
 		// LOGGER.info("Pojet id="+id +" / NewStatus=" + stat + "/ Orig :" + orig);
 

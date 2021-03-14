@@ -52,10 +52,13 @@
 							<span>Déjà inscrit ?</span> <a th:href="@{/showConnexionForm}"
 								class="text-decoration-none">Se connecter</a>
 						</div>
+						
 					</div>
 				</div>
 			</div>
 		</form>
+		<div th:text="*{errmsg}" style="color:red;"></div>
+
 	</div>
 	<br />
 	<div th:replace="../static/layout :: footer"></div>
