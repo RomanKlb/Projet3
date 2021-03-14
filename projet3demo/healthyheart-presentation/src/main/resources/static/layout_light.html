@@ -71,7 +71,7 @@
 						<span class="sr-only"></span> <span class="icon-bar"></span> <span
 							class="icon-bar"></span> <span class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand smoothie" href="/"
+					<a class="navbar-brand smoothie" th:href="@{/}"
 						style="margin-top: 0px;"><img
 						th:src="@{/img/LogotitreHealthyHeart2.png}" alt="Logo" width="150"></a>
 				</div>
@@ -93,10 +93,10 @@
 								class="fa fa-angle-down"></span></a>
 							<ul class="dropdown-menu" role="menu">
 								<li><a th:href="@{/showListProjetByUser}">Mes projets</a></li>
+								<li><a th:href="@{/}">Mes favoris</a></li>
 								<li><a th:href="@{/afficherListeUserMessages}">Mes
 										Messages</a></li>
-								<li><a th:href="@{/}">Mes participations</a></li>
-								<!-- LIST des projets sur lesquels il y a eu un financement de ma part?? -->
+								<li><a th:href="@{/showMyContributions}">Mes participations</a></li>
 								<li><a th:href="@{/showConnexionForm}">Connexion</a></li>
 							</ul></li>
 						<li><a th:href="@{/showSearchBoxMulticriteres}"><i
@@ -138,7 +138,7 @@
 						<hr class="thin-hr" />
 
 						<div class="col-md-12 text-center wow">
-							<span class="copyright">Copyright 2021. HealtyHeart</span>
+							<span class="copyright">Copyright 2021. HealthyHeart</span>
 						</div>
 					</div>
 				</div>

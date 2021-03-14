@@ -19,7 +19,16 @@
 
 	<div class="container-fluid">
 		<div class="row">
-			<div class="col-lg-7"></div>
+			<div class="col-lg-2 text-center">
+				<a class="btn btn-primary"
+					th:href="@{'/afficherListeCommentaires/projet?id=' + ${infoproj.projet.idProjet}}">Commentaires</a>
+				
+			</div>
+			<div class="col-lg-2">
+			<a class="btn btn-primary"
+					th:href="@{/don/afficherListeContributeurs/{id}(id=${infoproj.projet.idProjet})}">Liste
+					contributeurs</a></div>
+			<div class="col-lg-3"></div>
 			<div class="col-lg-5 text-right">
 				mise à jour le <b
 					th:text="${#calendars.format(infoproj.projet.dateMaj,'EEEE dd MMMMM yyyy à HH:mm:ss')}"></b>
@@ -184,15 +193,9 @@
 				</div>
 			</div>
 		</div>
-		<br />
-		<br />
-		<br />
-
-
-
+		<br /> <br /> <br />
 		<div class="row">
 			<div class="col-lg-2"></div>
-
 			<div th:if="${infoproj.choixUser == 'USRMAN'}">
 				<span class="col-lg-2 text-center"> <a
 					class="btn btn-primary"
@@ -204,10 +207,7 @@
 					<button class="btn btn-primary" onclick="CnfStatProj('ASKAPPR')">Demande
 						Approbation</button>
 				</span>
-
-
 			</div>
-
 			<div th:if="${infoproj.choixUser == 'USRCAN'}">
 				<span class="col-lg-4 text-center">
 
@@ -217,10 +217,7 @@
 
 					<button class="btn btn-primary" onclick="CnfStatProj('SUPPRIMER')">Supprimer</button>
 				</span>
-
-
 			</div>
-
 			<div th:if="${infoproj.choixUser == 'USRDEL'}">
 				<div class="col-lg-3"></div>
 				<span class="col-lg-2 text-center">
@@ -229,7 +226,6 @@
 				<div class="col-lg-3"></div>
 
 			</div>
-
 			<div th:if="${infoproj.choixUser == 'USRMOD'}">
 				<span class="col-lg-4 text-center"> <a
 					class="btn btn-primary"
@@ -240,7 +236,6 @@
 				</span>
 
 			</div>
-
 			<div th:if="${infoproj.choixUser == 'ADMMAN'}">
 				<span class="col-lg-2 text-center"> <a
 					class="btn btn-primary"
@@ -251,10 +246,7 @@
 				</span> <span class="col-lg-3 text-center">
 					<button class="btn btn-primary" onclick="CnfStatProj('PUBLIER')">Publier</button>
 				</span>
-
-
 			</div>
-
 			<div th:if="${infoproj.choixUser == 'ADMRES'}">
 				<span class="col-lg-4 text-center"> <a
 					class="btn btn-primary"
@@ -265,7 +257,6 @@
 				</span>
 
 			</div>
-
 			<div th:if="${infoproj.choixUser == 'ADMDEL'}">
 				<span class="col-lg-4 text-center"> <a
 					class="btn btn-primary"
@@ -274,20 +265,13 @@
 				</span> <span class="col-lg-4 text-center">
 					<button class="btn btn-primary" onclick="CnfStatProj('SUPPRIMER')">Supprimer</button>
 				</span>
-
 			</div>
-
-
 			<div th:if="${infoproj.choixUser == 'DONDON'}">
 				<span class="col-lg-8 text-center"> <a
 					class="btn btn-primary"
 					th:href="@{'/don/faireUnDon/projet?id=' + ${infoproj.projet.idProjet}}">Donner</a>
-
 				</span>
-
 			</div>
-
-
 			<div class="col-lg-2"></div>
 		</div>
 	</div>

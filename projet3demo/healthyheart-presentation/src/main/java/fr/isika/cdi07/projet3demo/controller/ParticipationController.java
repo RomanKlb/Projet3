@@ -3,6 +3,8 @@ package fr.isika.cdi07.projet3demo.controller;
 import java.util.List;
 import java.util.Optional;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,11 +15,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import fr.isika.cdi07.projet3demo.model.DonMateriel;
 import fr.isika.cdi07.projet3demo.model.DonMonetaire;
 import fr.isika.cdi07.projet3demo.model.DonTemps;
+import fr.isika.cdi07.projet3demo.model.ParticipationProjet;
 import fr.isika.cdi07.projet3demo.model.StatutDon;
+import fr.isika.cdi07.projet3demo.model.Utilisateur;
 import fr.isika.cdi07.projet3demo.services.DonMaterielService;
 import fr.isika.cdi07.projet3demo.services.DonMonetaireService;
 import fr.isika.cdi07.projet3demo.services.DonTempsService;
 import fr.isika.cdi07.projet3demo.services.IParticipationProjetService;
+import fr.isika.cdi07.projet3demo.services.UtilisateurService;
 
 @Controller
 public class ParticipationController {
@@ -33,6 +38,9 @@ public class ParticipationController {
 	
 	@Autowired
 	private DonTempsService donTempsService;
+	
+	@Autowired
+	private UtilisateurService utilisateurService;
 	
 	@GetMapping("/showAllEnAttenteDon")
 	public String showAllEnAttenteDon(Model model) {
@@ -86,4 +94,22 @@ public class ParticipationController {
 		return "redirect:/showAllEnAttenteDon";
 	}
 
+	@GetMapping("/showMyContributions")
+	public String showMyContributions(Model model, HttpSession session) {
+		String userEmail = (String)session.getAttribute("emailUtilisateurConnecte");
+		if (userEmail == null) {
+			return "redirect:/showConnexionForm";
+		}
+		Utilisateur user = utilisateurService.chercherUtilisateurParEmail(userEmail);
+		if (user == null) {
+			return "ErrorSite";
+		}
+		
+		List<ParticipationProjet> participationsList = participationService.getAllApprovedParticipationFromUser(user);
+		
+		model.addAttribute("participations", participationsList);
+		
+		return "mes_contributions";
+	}
+	
 }

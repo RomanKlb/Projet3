@@ -275,6 +275,16 @@ public class ProjetController {
 		monForm.getProjet().setPortefeuilleprojet(addPortefeuille);
 		projetService.ajoutProjet(monForm.getProjet());
 
+		// enregistrement dans l'historique
+		Historique monHisto = new Historique();
+		monHisto.setActeur(monRole.getUtilisateur());
+		monHisto.setDateHeure(monForm.getProjet().getDateMaj());
+		monHisto.setEtatProjet(StatutProjet.CREE);
+		monHisto.setEvenement("Création Projet par utilisateur");
+		monHisto.setProjet(monForm.getProjet());
+		monHisto.setLibelle("Création Projet par utilisateur");
+		histoService.ajout(monHisto);
+
 		return "redirect:/NewPictureForm/"+monForm.getProjet().getIdProjet();
 	}
 
@@ -322,6 +332,16 @@ public class ProjetController {
 	@PostMapping("/updateProjet")
 	public String updateProjet(@ModelAttribute("monForm") ProjetForm monForm, HttpSession session) {
 
+		String userEmail = (String)session.getAttribute("emailUtilisateurConnecte");
+		if (userEmail == null) {
+			return "error";
+		}
+
+		Utilisateur user = utilisateurService.chercherUtilisateurParEmail(userEmail);
+		if (user == null) {
+			return "Error";
+		}
+
 		LOGGER.info("Selected data : idTypeProjet : " + monForm.getTypeProjet().getIdTypeProjet() + " idTerritoire " + monForm.getTerritoire().getIdTerritoire());
 
 		if(monForm.getTypeProjet().getIdTypeProjet().equals(0L) || monForm.getTerritoire().getIdTerritoire().equals(0L)) {
@@ -350,6 +370,16 @@ public class ProjetController {
 		monForm.getProjet().setPortefeuilleprojet(addPortefeuille);
 		monForm.getProjet().setDateMaj(Date.from(Instant.now()));
 		projetService.saveProjet(monForm.getProjet());
+
+		// enregistrement dans l'historique
+		Historique monHisto = new Historique();
+		monHisto.setActeur(user);
+		monHisto.setDateHeure(monForm.getProjet().getDateMaj());
+		monHisto.setEtatProjet(monForm.getProjet().getStatutDuProjet());
+		monHisto.setEvenement("Modification Projet");
+		monHisto.setProjet(monForm.getProjet());
+		monHisto.setLibelle("Modification projet");
+		histoService.ajout(monHisto);
 
 		return "redirect:/NewPictureForm/"+monForm.getProjet().getIdProjet();
 	}
@@ -451,13 +481,44 @@ public class ProjetController {
 	//Recherche multicritères
 	@PostMapping("/rechercherProjetMulticriteres")
 	public String rechercherProjetMulticriteres(@ModelAttribute("rechercheMultiForm") RechercheMulticriteresForm rechercheMultiForm,
-			Model model) {
+			Model model, HttpSession session) {
+		String userEmail = (String)session.getAttribute("emailUtilisateurConnecte");
 		List<Projet> listeProjetsmulti = projetService.rechercherProjetParCriteres(rechercheMultiForm.getTitre(),
 				rechercheMultiForm.getTypeProjet().getIdTypeProjet(), rechercheMultiForm.getTerritoire().getIdTerritoire(),
 				rechercheMultiForm.isDonMateriel(), rechercheMultiForm.isDonTemps());
-		System.out.println(listeProjetsmulti.size());
+
 		if(!listeProjetsmulti.isEmpty()) {
 			model.addAttribute("listeProjetsRechercheMulticriteres", listeProjetsmulti);
+
+			List<ProjetDocumentForm> pdf = new ArrayList<ProjetDocumentForm>();
+			for(Projet monProjet : listeProjetsmulti) {
+				if(!monProjet.getStatutDuProjet().equals(StatutProjet.PUBLIE)) {
+					continue;
+				}
+				ProjetDocumentForm monProjetform = new ProjetDocumentForm();
+				monProjetform.setProjet(monProjet);
+				//			allProjetPublie.forEach(projet -> projet.setFavori(favoriService.estFavori(projet.getIdProjet(), emailUserConnecte)));
+				monProjet.setFavori(false);
+				if(favoriService.estFavori(monProjet.getIdProjet(), userEmail)) {
+					monProjet.setFavori(true);
+				}
+				Optional<Document> monDoc = Optional.empty();
+				monDoc = documentService.findbyProjetAndLibelle(monProjet,TypeLibelleDoc.IMAGE_PRINCIPALE);
+				if (!monDoc.isPresent()) {
+					monDoc = documentService.findbyProjetAndLibelle(monProjet,TypeLibelleDoc.IMAGE_SECONDE);
+					if(!monDoc.isPresent()) {
+						monDoc = documentService.findbyProjetAndLibelle(monProjet,TypeLibelleDoc.IMAGE_TROISIEME);
+					}
+				}
+				if(!monDoc.isPresent()) {
+					monProjetform.setIdImage(-1L);
+				} else {
+					LOGGER.info("image : " + monDoc.get());
+					monProjetform.setIdImage(monDoc.get().getIdDocument());
+				}
+				pdf.add(monProjetform);
+			}
+			model.addAttribute("listProjetPublie", pdf);
 			return "listeProjets_rechercheMulti";
 		}
 		return "redirect:/showSearchBoxMulticriteres";
@@ -476,22 +537,22 @@ public class ProjetController {
 			return "error";
 
 		Projet monProjet = projet.get();
-		
+
 		Utilisateur user = null;
-		
+
 
 		if(!act.equalsIgnoreCase("DON")) {
-		String userEmail = (String)session.getAttribute("emailUtilisateurConnecte");
-		if (userEmail == null) {
-			return "redirect:/showConnexionForm";
-		}
+			String userEmail = (String)session.getAttribute("emailUtilisateurConnecte");
+			if (userEmail == null) {
+				return "redirect:/showConnexionForm";
+			}
 
-		user = utilisateurService.chercherUtilisateurParEmail(userEmail);
-		if (user == null) {
-			return "Error";
-		} else {
-			
-		}
+			user = utilisateurService.chercherUtilisateurParEmail(userEmail);
+			if (user == null) {
+				return "Error";
+			} else {
+
+			}
 		}
 		switch (act) {
 		case "ADMU" :
@@ -583,6 +644,9 @@ public class ProjetController {
 	public String modifStatProj(@PathVariable(value = "id") Long id,@PathVariable(value = "stat") String stat,
 			@PathVariable(value = "orig") String orig, Model model,HttpSession session) {
 		String retUrl = "redirect:/ShowAllProjetList";;
+
+		if (orig.equalsIgnoreCase("ADMU"))
+			retUrl = "redirect:/showListProjetByUser";
 
 		// LOGGER.info("Pojet id="+id +" / NewStatus=" + stat + "/ Orig :" + orig);
 
