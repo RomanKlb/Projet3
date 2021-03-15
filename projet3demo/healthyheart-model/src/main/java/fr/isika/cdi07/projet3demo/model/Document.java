@@ -115,8 +115,6 @@ public class Document {
 		builder.append(idDocument);
 		builder.append(", typeDocument=");
 		builder.append(typeDocument);
-		builder.append(", fichier=");
-		builder.append(Arrays.toString(fichier));
 		builder.append(", libelle=");
 		builder.append(libelle);
 		builder.append(", date=");

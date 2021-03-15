@@ -1,5 +1,6 @@
 package fr.isika.cdi07.projet3demo.controller;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
@@ -131,7 +132,7 @@ public class ProjetController {
 	public String selectionProjet(@ModelAttribute("listCritere") ListProjetForm lpf, Model model) {
 
 		List<Projet> listeProjets = projetService.listProjetInfo(lpf.getCritere());
-		LOGGER.info("taille liste" + listeProjets.size());
+		// LOGGER.info("taille liste" + listeProjets.size());
 
 		ListProjetForm monLpf = new ListProjetForm();
 
@@ -159,8 +160,13 @@ public class ProjetController {
 		String emailUserConnecte = (String) session.getAttribute(UtilisateurController.EMAIL_UTILISATEUR_CONNECTE);
 
 		List<Projet> allProjetPublie = projetService.afficherProjetPublie();
+		
+		Instant start = Instant.now();
+    
 
 
+
+		// LOGGER.info("Construction catalogue Debut : " + Instant.now());
 
 		//créer une form avec projet et document pour chopper les infos des images :)
 
@@ -179,21 +185,24 @@ public class ProjetController {
 
 			Optional<Document> monDoc = Optional.empty();
 			monDoc = documentService.findbyProjetAndLibelle(monProjet,TypeLibelleDoc.IMAGE_PRINCIPALE);
-			if (!monDoc.isPresent()) {
-				monDoc = documentService.findbyProjetAndLibelle(monProjet,TypeLibelleDoc.IMAGE_SECONDE);
-				if(!monDoc.isPresent()) {
-					monDoc = documentService.findbyProjetAndLibelle(monProjet,TypeLibelleDoc.IMAGE_TROISIEME);
-				}
-			}
+//			if (!monDoc.isPresent()) {
+//				monDoc = documentService.findbyProjetAndLibelle(monProjet,TypeLibelleDoc.IMAGE_SECONDE);
+//				if(!monDoc.isPresent()) {
+//					monDoc = documentService.findbyProjetAndLibelle(monProjet,TypeLibelleDoc.IMAGE_TROISIEME);
+//				}
+//			}
 			if(!monDoc.isPresent()) {
 				monProjetform.setIdImage(-1L);
 			} else {
-				LOGGER.info("image : " + monDoc.get());
 				monProjetform.setIdImage(monDoc.get().getIdDocument());
 			}
 			pdf.add(monProjetform);
 		}
+		
+		Instant finish = Instant.now();
+		long timeElapsed = Duration.between(start, finish).toMillis();
 
+		// LOGGER.info("Construction catalogue fin : " + Instant.now() + " / temps : " + timeElapsed);
 		model.addAttribute("listProjetPublie", pdf);
 		return "catalogue";
 	}
@@ -212,22 +221,42 @@ public class ProjetController {
 			return "ErrorSite";
 		}
 
-
-
 		Projet projet = new Projet();
 		ProjetForm monForm = new ProjetForm();
-		//		Optional<Role> role = roleService.testIsPorteurProjet(user);
+		PorteurProjet porteurProjet = new PorteurProjet();
+		monForm.setTypePorteur("0");
 
-		Role roleOfUser = roleService.hasRole(user, TypeRole.PORTEURPROJET);
-		PorteurProjet porteurProjet = porteurProjetService.isPresent(roleOfUser);
-		LOGGER.info("role dans le get :" +roleOfUser);
-		monForm.setRole(roleOfUser);
+		Role roleOfUser = roleService.hasRoleNoSave(user, TypeRole.PORTEURPROJET);
+		if(roleOfUser.getIdRole() != null) {
+			porteurProjet = porteurProjetService.isPresent(roleOfUser);
+			if(porteurProjet.getTypePorteur() != null) {
+				if(porteurProjet.getTypePorteur().equals(TypePorteur.PRIVE)) {
+					monForm.setTypePorteur("1");
+				}else if(porteurProjet.getTypePorteur().equals(TypePorteur.HOPITAL)) {
+					monForm.setTypePorteur("2");
+				} else if(porteurProjet.getTypePorteur().equals(TypePorteur.ASSOCIATION)) {
+					monForm.setTypePorteur("3");
+				} else if(porteurProjet.getTypePorteur().equals(TypePorteur.ENTREPRISE)) {
+					monForm.setTypePorteur("4");
+				}
+			}
+		}
+
+
+		//		LOGGER.info("role dans le get :" + roleOfUser2);
+		monForm.setUtilisateur(user);
+		//		monForm.setRole(roleOfUser2);
+		monForm.setRole(null);
 		monForm.setPorteurProjet(porteurProjet);
 		monForm.setProjet(projet);
+
+		// LOGGER.info("monForm" + monForm);
 
 		Territoire territoire = new Territoire();
 		TypeProjet typeProjet = new TypeProjet();
 		Categorie categorie = new Categorie();
+		//		List<TypePorteur> listTypePorteurProjet = new ArrayList<TypePorteur>();
+		//		listTypePorteurProjet = porteurProjetService.afficherAllTypePorteurProjet();
 
 		model.addAttribute("monForm", monForm);
 		model.addAttribute("categorie", categorie);
@@ -235,6 +264,7 @@ public class ProjetController {
 		model.addAttribute("territoire", territoire);
 		model.addAttribute("listTerritoire", territoireService.afficherAllTerritoire());
 		model.addAttribute("listTypeProjet", typeProjetService.afficherAllTypeProjet());
+		//		model.addAttribute("listTPP", listTypePorteurProjet);
 
 		return "newProjet";
 	}
@@ -244,8 +274,48 @@ public class ProjetController {
 	@PostMapping("/saveProjet")
 	public String saveProjet(@ModelAttribute("monForm") ProjetForm monForm, @ModelAttribute("typeProjet") TypeProjet typeProjet, 
 			@ModelAttribute("territoire") Territoire territoire, HttpSession session) {
+		// LOGGER.info("TYPE PORTEUR " + monForm.getPorteurProjet().getTypePorteur());
+		// LOGGER.info("Selected data : idTypeProjet : " + typeProjet.getIdTypeProjet() + " idTerritoire " + territoire.getIdTerritoire());
+		// LOGGER.info("roleee post" + monForm.getRole());
+		// LOGGER.info("monForm POST " + monForm);
 
-		LOGGER.info("Selected data : idTypeProjet : " + typeProjet.getIdTypeProjet() + " idTerritoire " + territoire.getIdTerritoire());
+		String userEmail = (String)session.getAttribute("emailUtilisateurConnecte");
+		if (userEmail == null) {
+			return "redirect:/showConnexionForm";
+		}
+
+		Utilisateur user = utilisateurService.chercherUtilisateurParEmail(userEmail);
+		if (user == null) {
+			return "ErrorSite";
+		}
+		
+		monForm.setRole(roleService.hasRole(user, TypeRole.PORTEURPROJET)); 
+		// LOGGER.info("role POST ?" + monForm.getRole());
+
+		monForm.getPorteurProjet().setRole(monForm.getRole());
+
+		switch (monForm.getTypePorteur()) {
+		case "1":
+			monForm.getPorteurProjet().setTypePorteur(TypePorteur.PRIVE);
+			break;
+		case "2":
+			monForm.getPorteurProjet().setTypePorteur(TypePorteur.HOPITAL);			
+			break;
+
+		case "3":
+			monForm.getPorteurProjet().setTypePorteur(TypePorteur.ASSOCIATION);			
+			break;
+
+		case "4":
+			monForm.getPorteurProjet().setTypePorteur(TypePorteur.ENTREPRISE);			
+			break;
+		default:
+			session.setAttribute("erreurSelection", "vous n'avez pas selectionné");
+			return "redirect:/ShowNewProjetForm/";
+		}
+		// LOGGER.info("porteurProjet dans le post nouvelle version" + monForm.getPorteurProjet());
+		PorteurProjet monPorteur = porteurProjetService.ajoutPorteur(monForm.getPorteurProjet());
+
 
 		if(typeProjet.getIdTypeProjet().equals(0L) || territoire.getIdTerritoire().equals(0L)) {
 			return "redirect:/ShowNewProjetForm";
@@ -259,12 +329,11 @@ public class ProjetController {
 			Categorie withTypeProjet = new Categorie().withTerritoire(territoire).withTypeProjet(typeProjet);
 			categorieToUse = categorieService.ajoutCategorie(withTypeProjet);
 		}
-		LOGGER.info("PORTEUR PROJET ES TU Là?"+monForm.getRole());
+
+
 		monForm.getProjet().setCategorie(categorieToUse);
-		//		monForm.getPorteurProjet().setTypePorteur(TypePorteur.PRIVE);
-		Role monRole = roleService.saveRole(monForm.getRole());
-		monForm.getPorteurProjet().setRole(monRole);
-		PorteurProjet monPorteur = porteurProjetService.ajoutPorteur(monForm.getPorteurProjet());
+
+
 
 
 		PortefeuilleProjet portefeuille = portefeuilleService.isPresent(monPorteur, "Defaut");
@@ -277,7 +346,7 @@ public class ProjetController {
 
 		// enregistrement dans l'historique
 		Historique monHisto = new Historique();
-		monHisto.setActeur(monRole.getUtilisateur());
+		monHisto.setActeur(user);
 		monHisto.setDateHeure(monForm.getProjet().getDateMaj());
 		monHisto.setEtatProjet(StatutProjet.CREE);
 		monHisto.setEvenement("Création Projet par utilisateur");
@@ -302,15 +371,18 @@ public class ProjetController {
 			return "ErrorSite";
 		}
 
-		Role roleOfUser = roleService.hasRole(user, TypeRole.PORTEURPROJET);
-
 		Projet projet = projetService.getProjetByIdNoOptional(id);
+		
+		Role role = projet.getPortefeuilleprojet().getPorteurprojet().getRole();
+		if(role.getIdRole() == null)
+			return "error";
+
 		ProjetForm monForm = new ProjetForm();
 
-		PorteurProjet porteurProjet = porteurProjetService.isPresent(roleOfUser);
+		PorteurProjet porteurProjet = porteurProjetService.isPresent(role);
 
-		LOGGER.info("*************PORTEUR PROJET : " + porteurProjet);
-		monForm.setRole(roleOfUser);
+		// LOGGER.info("*************PORTEUR PROJET : " + porteurProjet);
+		monForm.setRole(role);
 		monForm.setPorteurProjet(porteurProjet);
 		monForm.setProjet(projet);
 
@@ -342,7 +414,7 @@ public class ProjetController {
 			return "Error";
 		}
 
-		LOGGER.info("Selected data : idTypeProjet : " + monForm.getTypeProjet().getIdTypeProjet() + " idTerritoire " + monForm.getTerritoire().getIdTerritoire());
+		// LOGGER.info("Selected data : idTypeProjet : " + monForm.getTypeProjet().getIdTypeProjet() + " idTerritoire " + monForm.getTerritoire().getIdTerritoire());
 
 		if(monForm.getTypeProjet().getIdTypeProjet().equals(0L) || monForm.getTerritoire().getIdTerritoire().equals(0L)) {
 			return "redirect:/ShowNewProjetForm";
@@ -358,10 +430,10 @@ public class ProjetController {
 		}
 		monForm.getProjet().setCategorie(categorieToUse);
 
-		LOGGER.info("PORTEURprojet POSTTTT : " + monForm.getPorteurProjet());
+		// LOGGER.info("PORTEURprojet POSTTTT : " + monForm.getPorteurProjet());
 		PorteurProjet monPorteur = porteurProjetService.ajoutPorteur(monForm.getPorteurProjet());
 
-		LOGGER.info("PORTEFEUILLE ************************* POSTTTT : "+monPorteur);
+		// LOGGER.info("PORTEFEUILLE ************************* POSTTTT : "+monPorteur);
 
 
 		PortefeuilleProjet portefeuille = portefeuilleService.isPresent(monPorteur, "defaut");
@@ -396,13 +468,13 @@ public class ProjetController {
 
 		Utilisateur user = utilisateurService.chercherUtilisateurParEmail(userEmail);
 		if (user == null) {
-			return "ErrorSite";
+			return "Error";
 		}
 
 		// Role >>>> PorteurProjet?
 		Optional<Role> role = roleService.testIsPorteurProjet(user);
 		if(!role.isPresent())
-			return "noFoundListProjet";
+			return "redirect:/";
 
 		//OUI >>>> chercher les portefeuilles lies au role
 		List<Projet> projetRecup = projetService.getListProjet(role.get());
@@ -427,16 +499,16 @@ public class ProjetController {
 
 			Optional<Document> monDoc = Optional.empty();
 			monDoc = documentService.findbyProjetAndLibelle(monProjet,TypeLibelleDoc.IMAGE_PRINCIPALE);
-			if (!monDoc.isPresent()) {
-				monDoc = documentService.findbyProjetAndLibelle(monProjet,TypeLibelleDoc.IMAGE_SECONDE);
-				if(!monDoc.isPresent()) {
-					monDoc = documentService.findbyProjetAndLibelle(monProjet,TypeLibelleDoc.IMAGE_TROISIEME);
-				}
-			}
+//			if (!monDoc.isPresent()) {
+//				monDoc = documentService.findbyProjetAndLibelle(monProjet,TypeLibelleDoc.IMAGE_SECONDE);
+//				if(!monDoc.isPresent()) {
+//					monDoc = documentService.findbyProjetAndLibelle(monProjet,TypeLibelleDoc.IMAGE_TROISIEME);
+//				}
+//			}
 			if(!monDoc.isPresent()) {
 				monProjetform.setIdImage(-1L);
 			} else {
-				LOGGER.info("image : " + monDoc.get());
+				// LOGGER.info("image : " + monDoc.get());
 				monProjetform.setIdImage(monDoc.get().getIdDocument());
 			}
 			pdf.add(monProjetform);
@@ -504,16 +576,16 @@ public class ProjetController {
 				}
 				Optional<Document> monDoc = Optional.empty();
 				monDoc = documentService.findbyProjetAndLibelle(monProjet,TypeLibelleDoc.IMAGE_PRINCIPALE);
-				if (!monDoc.isPresent()) {
-					monDoc = documentService.findbyProjetAndLibelle(monProjet,TypeLibelleDoc.IMAGE_SECONDE);
-					if(!monDoc.isPresent()) {
-						monDoc = documentService.findbyProjetAndLibelle(monProjet,TypeLibelleDoc.IMAGE_TROISIEME);
-					}
-				}
+//				if (!monDoc.isPresent()) {
+//					monDoc = documentService.findbyProjetAndLibelle(monProjet,TypeLibelleDoc.IMAGE_SECONDE);
+//					if(!monDoc.isPresent()) {
+//						monDoc = documentService.findbyProjetAndLibelle(monProjet,TypeLibelleDoc.IMAGE_TROISIEME);
+//					}
+//				}
 				if(!monDoc.isPresent()) {
 					monProjetform.setIdImage(-1L);
 				} else {
-					LOGGER.info("image : " + monDoc.get());
+					// LOGGER.info("image : " + monDoc.get());
 					monProjetform.setIdImage(monDoc.get().getIdDocument());
 				}
 				pdf.add(monProjetform);
@@ -701,16 +773,16 @@ public class ProjetController {
 
 		case "APPROVE" : monStatut = StatutProjet.APPROUVE;
 		libEvent="Demande d'approbation par porteur projet";
-		msg.setTitre("le projet '" + monProjet.getTitre() + "'a été approuvé");
-		msg.setContenu("le projet '" + monProjet.getTitre() + "'a été approuvé par un administrateur");
+		msg.setTitre("le projet '" + monProjet.getTitre() + "' a été approuvé");
+		msg.setContenu("le projet '" + monProjet.getTitre() + "' a été approuvé par un administrateur");
 		msg.setEmetteur(user);
 		userDest = monProjet.getPortefeuilleprojet().getPorteurprojet().getRole().getUtilisateur();
 		libEvent="Approbation projet par un administrateur";
 		break;
 
 		case "PUBLIER" : monStatut = StatutProjet.PUBLIE;
-		msg.setTitre("le projet '" + monProjet.getTitre() + "'a été publié");
-		msg.setContenu("le projet '" + monProjet.getTitre() + "'a été publié par un administrateur");
+		msg.setTitre("le projet '" + monProjet.getTitre() + "' a été publié");
+		msg.setContenu("le projet '" + monProjet.getTitre() + "' a été publié par un administrateur");
 		msg.setEmetteur(user);
 		userDest = monProjet.getPortefeuilleprojet().getPorteurprojet().getRole().getUtilisateur();
 		libEvent="Publication du projet par un Administrateur";
@@ -720,17 +792,23 @@ public class ProjetController {
 		libEvent="Suppression par le porteur projet";
 		if (orig.equalsIgnoreCase("ADMF")) {
 			libEvent="Suppression par un administrateur";
-			msg.setTitre("le projet '" + monProjet.getTitre() + "'a été supprimé");
-			msg.setContenu("le projet '" + monProjet.getTitre() + "'a été supprimé par un administrateur");
+			msg.setTitre("le projet '" + monProjet.getTitre() + "' a été supprimé");
+			msg.setContenu("le projet '" + monProjet.getTitre() + "' a été supprimé par un administrateur");
 			msg.setEmetteur(user);
 			userDest = monProjet.getPortefeuilleprojet().getPorteurprojet().getRole().getUtilisateur();
+		} else if (orig.equalsIgnoreCase("ADMU")) {
+			libEvent="Suppression par le porteur de projet";
+			msg.setTitre("le projet '" + monProjet.getTitre() + "' a été supprimé");
+			msg.setContenu("le projet '" + monProjet.getTitre() + "' a été supprimé le porteur de projet");
+			msg.setEmetteur(user);
+			userDest = userAdm;
 		}
 		break;
 
 		case "REJETER" : monStatut = StatutProjet.REJETE;
 		libEvent="Rejet du projet par un Administrateur";
-		msg.setTitre("le projet '" + monProjet.getTitre() + "'a été rejeté");
-		msg.setContenu("le projet '" + monProjet.getTitre() + "'a été rejeté par un administrateur");
+		msg.setTitre("le projet '" + monProjet.getTitre() + "' a été rejeté");
+		msg.setContenu("le projet '" + monProjet.getTitre() + "' a été rejeté par un administrateur");
 		msg.setEmetteur(user);
 		userDest = monProjet.getPortefeuilleprojet().getPorteurprojet().getRole().getUtilisateur();
 		break;
@@ -739,9 +817,9 @@ public class ProjetController {
 			if (monProjet.getStatutDuProjet().equals(StatutProjet.SUPPRIME)) {
 				monStatut = StatutProjet.CREE;
 				libEvent="Restauration (suite suppression) du projet par un Administrateur";
-				msg.setTitre("le projet '" + monProjet.getTitre() + "'a été restauré");
+				msg.setTitre("le projet '" + monProjet.getTitre() + "' a été restauré");
 				msg.setContenu("le projet '" + monProjet.getTitre() + 
-						"'a été restauré (suite suppresion) par un administrateur");
+						"' a été restauré (suite suppresion) par un administrateur");
 				msg.setEmetteur(user);
 				userDest = monProjet.getPortefeuilleprojet().getPorteurprojet().getRole().getUtilisateur();
 			} else {
@@ -821,6 +899,28 @@ public class ProjetController {
 		}		
 	}
 
+
+		@GetMapping("/showProjetHisto/{id}/{act}")
+		public String showProjetHisto(@PathVariable(value = "id") Long id,@PathVariable(value = "act") String act, Model model,HttpSession session) {
+
+
+			Optional<Projet> projet = projetService.getProjetById(id);
+
+			if (!projet.isPresent())
+				return "error";
+
+			Projet monProjet = projet.get();
+			
+			List<Historique> histoListe = histoService.afficherHistoriqueByProjet(monProjet);
+			// LOGGER.info("Taille liste histo : " + histoListe.size());
+			
+			model.addAttribute("histoListe", histoListe);
+			model.addAttribute("action", act);
+			model.addAttribute("idProj", id);
+			
+			return "listHistoProjet";
+
+		}
 
 
 }

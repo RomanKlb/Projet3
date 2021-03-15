@@ -35,11 +35,11 @@
 			<tbody>
 				<tr th:each="contrib:${contributeursList}">
 					<td><p th:text="${contrib.idParticipation}"></p></td>
-					<td th:if="${contrib.anonyme}">
+					<td th:if="${!contrib.anonyme}">
 						<p
 							th:text="${contrib.role.utilisateur.nom} + ' ' + ${contrib.role.utilisateur.prenom}"></p>
 					</td>
-					<td th:unless="${contrib.anonyme}">
+					<td th:unless="${!contrib.anonyme}">
 						<p>Anonyme</p>
 					</td>
 					<td><p th:text="${contrib.typeParticipation}"></p></td>

@@ -13,6 +13,8 @@ import fr.isika.cdi07.projet3demo.model.TypeLibelleDoc;
 public interface DocumentRepository extends JpaRepository<Document, Long>{
 
 	List<Document> findAllByProjet(Optional<Projet> projet);
+	
+	List<Document> getByProjet(Projet projet);
 
 	Optional<Document> findByProjetAndLibelle(Projet projet, TypeLibelleDoc libelle);
 

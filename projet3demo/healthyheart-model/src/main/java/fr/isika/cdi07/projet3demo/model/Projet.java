@@ -35,11 +35,11 @@ public class Projet {
 	
 	@Column(nullable = false)
 	private String titre;
-	
-	@Column(nullable = false, name="description_courte")
+
+	@Column(nullable = false, name="description_courte",columnDefinition = "TEXT")
 	private String descriptionCourte;
 	
-	@Column(nullable = false, name="description_longue")
+	@Column(nullable = false, name="description_longue",columnDefinition = "TEXT")
 	private String descriptionLongue;
 	
 	@Temporal(TemporalType.TIMESTAMP)
@@ -249,8 +249,8 @@ public class Projet {
 		builder.append(donMateriel);
 		builder.append(", donTemps=");
 		builder.append(donTemps);
-		builder.append(", PorteurProjet=");
-		builder.append(portefeuilleprojet.getPorteurprojet().getRole().getUtilisateur().getEmail());
+//		builder.append(", PorteurProjet=");
+//		builder.append(portefeuilleprojet.getPorteurprojet().getRole().getUtilisateur().getEmail());
 		builder.append(", statutDuProjet=");
 		builder.append(statutDuProjet);
 		builder.append("]");

@@ -6,6 +6,7 @@ import fr.isika.cdi07.projet3demo.model.PorteurProjet;
 import fr.isika.cdi07.projet3demo.model.Projet;
 import fr.isika.cdi07.projet3demo.model.Role;
 import fr.isika.cdi07.projet3demo.model.Territoire;
+import fr.isika.cdi07.projet3demo.model.TypePorteur;
 import fr.isika.cdi07.projet3demo.model.TypeProjet;
 import fr.isika.cdi07.projet3demo.model.Utilisateur;
 
@@ -18,8 +19,15 @@ public class ProjetForm {
 	private TypeProjet typeProjet;
 	private Role role;
 	private Utilisateur utilisateur;
+	private String typePorteur;
 	
 	
+	public String getTypePorteur() {
+		return typePorteur;
+	}
+	public void setTypePorteur(String typePorteur) {
+		this.typePorteur = typePorteur;
+	}
 	public Role getRole() {
 		return role;
 	}

@@ -48,7 +48,8 @@ import fr.isika.cdi07.projet3demo.services.ProjetService;
 public class DocumentController {
 
 	private static final Logger LOGGER = Logger.getLogger(DocumentController.class.getSimpleName());
-	private static final Long MAXJPEGSIZE = 800000L;
+	private static final Long MAXJPEGSIZE = 400000L;
+	private static final Long MAXJPEGSIZELOAD = 800000L;
 
 	@Autowired
 	private ProjetService projetService;
@@ -120,7 +121,7 @@ public class DocumentController {
 			libelDoc = TypeLibelleDoc.IMAGE_TROISIEME;
 			break;
 		default:
-			session.setAttribute("ErrorNewPicture", "Vous n'avez n'avez pas selectionné de type d'image");
+			session.setAttribute("ErrorNewPicture", "Vous n'avez pas selectionné de type d'image");
 			return "redirect:/NewPictureForm/" + monProjet.getIdProjet();
 
 		}
@@ -142,7 +143,7 @@ public class DocumentController {
 		documentForm.getImage().transferTo(monFile);
 
 		Long fileLen = monFile.length();
-		
+		// LOGGER.info("Taille image in : " + fileLen);
 		if (fileLen > MAXJPEGSIZE && fileLen < 13000000) {
 			File newFile = compressImage(monFile);
 			monFile.delete();
@@ -150,8 +151,10 @@ public class DocumentController {
 			fileLen = monFile.length();
 			// LOGGER.info("fichier compresse :" + monFile.getAbsolutePath() + " / taille : " + monFile.length());
 		}
+		
+		// LOGGER.info("Taille image out : " + fileLen + " / max=" + MAXJPEGSIZELOAD );
 
-		if (fileLen >= MAXJPEGSIZE) {
+		if (fileLen >= MAXJPEGSIZELOAD ) {
 			session.setAttribute("ErrorNewPicture", "Selectionnez une image de 5Mo maximum");
 			monFile.delete();
 			return "redirect:/NewPictureForm/" + monProjet.getIdProjet();
@@ -171,9 +174,19 @@ public class DocumentController {
 	@RequestMapping(value = "/viewImage/{id}", method = RequestMethod.GET)
 	public void getImageAsByteArray(@PathVariable(value = "id") Long id, HttpServletResponse response)
 			throws IOException {
-		InputStream in = new ByteArrayInputStream(documentService.getDocumentById(id).getFichier());
+		byte[] byteArray = documentService.getDocumentById(id).getFichier();
 		response.setContentType(MediaType.IMAGE_JPEG_VALUE);
-		IOUtils.copy(in, response.getOutputStream());
+		// response.setHeader("Content-Disposition", "filename=\"THE FILE NAME\"");
+		response.setContentLength(byteArray.length);
+		OutputStream os = response.getOutputStream();
+
+		try {
+		   os.write(byteArray , 0, byteArray.length);
+		} catch (Exception excp) {
+		   //handle error
+		} finally {
+		    os.close();
+		}
 	}
 
 	@RequestMapping("/DelUploadPicture/{id}")

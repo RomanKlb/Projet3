@@ -27,6 +27,13 @@ public class RoleService {
 	@Autowired
 	private UtilisateurService utilisateurService;
 
+//	public Optional<Role> hasRole(Utilisateur user, TypeRole typeRole) {
+//
+//		List<Role> roles = roleRepo.findAll();
+//		return roles.stream().filter(r -> r.getUtilisateur().equals(user) && r.getTypeRole().equals(typeRole)).findFirst();
+//		
+//	}
+	
 	public Role hasRole(Utilisateur user, TypeRole typeRole) {
 
 		List<Role> roles = roleRepo.findAll();
@@ -38,8 +45,22 @@ public class RoleService {
 		newRole.setTypeRole(typeRole);
 		newRole.setUtilisateur(user);
 		
-
 		return roleRepo.save(newRole);
+	}
+	
+	public Role hasRoleNoSave(Utilisateur user, TypeRole typeRole) {
+
+		List<Role> roles = roleRepo.findAll();
+		Optional<Role> optRole = roles.stream().filter(r -> r.getUtilisateur().equals(user) && r.getTypeRole().equals(typeRole)).findFirst();
+		if(optRole.isPresent())
+			return optRole.get();
+		
+		Role newRole = new Role();
+		newRole.setTypeRole(typeRole);
+		newRole.setUtilisateur(user);
+		
+		return newRole;
+		// return roleRepo.save(newRole);
 	}
 	
 	public Optional<Role> testIsPorteurProjet(Utilisateur user) {

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import fr.isika.cdi07.projet3demo.dao.HistoriqueRepository;
 import fr.isika.cdi07.projet3demo.model.Historique;
+import fr.isika.cdi07.projet3demo.model.Projet;
 
 
 @Service
@@ -26,6 +27,10 @@ public class HistoriqueService {
 
 	public Historique getHistoById(Long histoId) {
 		return historiqueRepo.getOne(histoId);
+	}
+	
+	public List<Historique> afficherHistoriqueByProjet(Projet projet) {
+		return historiqueRepo.getByProjet(projet);
 	}
 
 

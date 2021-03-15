@@ -5,10 +5,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
 
 import fr.isika.cdi07.projet3demo.dao.DocumentRepository;
 import fr.isika.cdi07.projet3demo.model.Document;
@@ -18,6 +21,8 @@ import fr.isika.cdi07.projet3demo.model.TypeLibelleDoc;
 
 @Service
 public class DocumentService {
+	
+	private static final Logger LOGGER = Logger.getLogger(DocumentService.class.getSimpleName());
 	
 	@Autowired
 	private DocumentRepository documentRepo;
@@ -61,8 +66,9 @@ public class DocumentService {
 	}
 
 	public Optional<Document> findbyProjetAndLibelle(Projet projet, TypeLibelleDoc libelle) {
-		return documentRepo.findByProjetAndLibelle(projet, libelle);
-		
+		return documentRepo.findAll().stream().
+				filter(d -> d.getProjet().equals(projet) && d.getLibelle().equals(libelle)).
+				findFirst();		
 	}
 	
 	public void DeleteDocument(Document document) {

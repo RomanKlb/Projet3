@@ -22,13 +22,29 @@
 			<div class="col-lg-2 text-center">
 				<a class="btn btn-primary"
 					th:href="@{'/afficherListeCommentaires/projet?id=' + ${infoproj.projet.idProjet}}">Commentaires</a>
-				
+
 			</div>
 			<div class="col-lg-2">
-			<a class="btn btn-primary"
+				<a class="btn btn-primary"
 					th:href="@{/don/afficherListeContributeurs/{id}(id=${infoproj.projet.idProjet})}">Liste
-					contributeurs</a></div>
-			<div class="col-lg-3"></div>
+					contributeurs</a>
+			</div>
+			<div th:if="${infoproj.action == 'ADMF'}">
+				<div class="col-lg-1">
+					<a class="btn btn-primary"
+					th:href="@{/showProjetHisto/{id}/ADMF(id=${infoproj.projet.idProjet})}">Historique</a>
+				</div>
+			</div>
+			<div th:if="${infoproj.action == 'ADMU'}">
+				<div class="col-lg-1">
+					<a class="btn btn-primary"
+					th:href="@{/showProjetHisto/{id}/ADMU(id=${infoproj.projet.idProjet})}">Historique</a>
+				</div>
+			</div>
+			<div th:if="${infoproj.action == 'DON'}">
+				<div class="col-lg-1"></div>
+			</div>
+			<div class="col-lg-2"></div>
 			<div class="col-lg-5 text-right">
 				mise à jour le <b
 					th:text="${#calendars.format(infoproj.projet.dateMaj,'EEEE dd MMMMM yyyy à HH:mm:ss')}"></b>
