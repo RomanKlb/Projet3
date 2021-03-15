@@ -29,6 +29,7 @@ import fr.isika.cdi07.projet3demo.model.PortefeuilleProjet;
 import fr.isika.cdi07.projet3demo.model.PorteurProjet;
 import fr.isika.cdi07.projet3demo.model.Projet;
 import fr.isika.cdi07.projet3demo.model.Role;
+import fr.isika.cdi07.projet3demo.model.StatutDon;
 import fr.isika.cdi07.projet3demo.model.StatutProjet;
 import fr.isika.cdi07.projet3demo.model.Territoire;
 import fr.isika.cdi07.projet3demo.model.TypeLibelleDoc;
@@ -215,6 +216,7 @@ public class ProjetController {
 
 
 		Projet projet = new Projet();
+		
 		ProjetForm monForm = new ProjetForm();
 		//		Optional<Role> role = roleService.testIsPorteurProjet(user);
 
