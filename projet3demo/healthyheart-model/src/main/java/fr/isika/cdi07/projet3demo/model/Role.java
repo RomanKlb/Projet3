@@ -59,6 +59,10 @@ public class Role {
 	}
 
 
+	public void setIdRole(Long idRole) {
+		this.idRole = idRole;
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();

@@ -1,5 +1,6 @@
 package fr.isika.cdi07.projet3demo.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
@@ -30,13 +31,23 @@ public class PorteurProjetService {
 			
 		PorteurProjet newPorteurProjet = new PorteurProjet();
 		newPorteurProjet.setRole(role);
-		newPorteurProjet.setTypePorteur(TypePorteur.PRIVE);
-//		return porteurProjetRepo.save(newPorteurProjet);
+//		newPorteurProjet.setTypePorteur(TypePorteur.PRIVE);
 		return newPorteurProjet;
 	}
 	
 	public PorteurProjet ajoutPorteur(PorteurProjet porteurProjet) {
 		return porteurProjetRepo.save(porteurProjet);
+	}
+
+	public List<TypePorteur> afficherAllTypePorteurProjet() {
+		
+		List<TypePorteur> listTypePorteur = new ArrayList<TypePorteur>();
+		listTypePorteur.add(TypePorteur.ASSOCIATION);
+		listTypePorteur.add(TypePorteur.ENTREPRISE);
+		listTypePorteur.add(TypePorteur.HOPITAL);
+		listTypePorteur.add(TypePorteur.PRIVE);		
+		
+		return listTypePorteur;
 	}
 
 }

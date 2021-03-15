@@ -120,7 +120,7 @@ public class DocumentController {
 			libelDoc = TypeLibelleDoc.IMAGE_TROISIEME;
 			break;
 		default:
-			session.setAttribute("ErrorNewPicture", "Vous n'avez n'avez pas selectionné de type d'image");
+			session.setAttribute("ErrorNewPicture", "Vous n'avez pas selectionné de type d'image");
 			return "redirect:/NewPictureForm/" + monProjet.getIdProjet();
 
 		}

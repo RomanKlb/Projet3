@@ -249,8 +249,8 @@ public class Projet {
 		builder.append(donMateriel);
 		builder.append(", donTemps=");
 		builder.append(donTemps);
-		builder.append(", PorteurProjet=");
-		builder.append(portefeuilleprojet.getPorteurprojet().getRole().getUtilisateur().getEmail());
+//		builder.append(", PorteurProjet=");
+//		builder.append(portefeuilleprojet.getPorteurprojet().getRole().getUtilisateur().getEmail());
 		builder.append(", statutDuProjet=");
 		builder.append(statutDuProjet);
 		builder.append("]");

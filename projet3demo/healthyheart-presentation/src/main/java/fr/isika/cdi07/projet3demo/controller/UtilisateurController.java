@@ -15,10 +15,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import fr.isika.cdi07.projet3demo.model.Document;
 import fr.isika.cdi07.projet3demo.model.Favori;
 import fr.isika.cdi07.projet3demo.model.Projet;
+import fr.isika.cdi07.projet3demo.model.StatutProjet;
+import fr.isika.cdi07.projet3demo.model.TypeLibelleDoc;
 import fr.isika.cdi07.projet3demo.model.Utilisateur;
 import fr.isika.cdi07.projet3demo.modelform.LoginForm;
+import fr.isika.cdi07.projet3demo.modelform.ProjetDocumentForm;
+import fr.isika.cdi07.projet3demo.services.DocumentService;
 import fr.isika.cdi07.projet3demo.services.FavoriService;
 import fr.isika.cdi07.projet3demo.services.UtilisateurService;
 
@@ -37,6 +42,9 @@ public class UtilisateurController {
 	
 	@Autowired
 	private FavoriService favoriService;
+	
+	@Autowired
+	private DocumentService documentService;
 
 	//Créer Nouvel Utilisateur
 	@GetMapping("/CreerNouvelUtilsateur")
@@ -123,20 +131,50 @@ public class UtilisateurController {
 	}
 
 	//Afficher les favoris d'un utilisateur connecté
-		@GetMapping("/ShowMyfavoriteProjects")
-		public String afficherMesFavoris(Model model, HttpSession session) {
-			String emailUserConnecte = (String) session.getAttribute(UtilisateurController.EMAIL_UTILISATEUR_CONNECTE);
-			if(emailUserConnecte == null) {
-				return "redirect:/showConnexionForm";
+			@GetMapping("/ShowMyfavoriteProjects")
+			public String afficherMesFavoris(Model model, HttpSession session) {
+				String emailUserConnecte = (String) session.getAttribute(UtilisateurController.EMAIL_UTILISATEUR_CONNECTE);
+				if(emailUserConnecte == null) {
+					return "redirect:/showConnexionForm";
+				}
+				List<Favori> listeFavoris = favoriService.afficherMesFavoris(emailUserConnecte);
+				List<Projet> maListeProjetsFavoris = new ArrayList<>();
+				for(Favori fav : listeFavoris) {		
+					maListeProjetsFavoris.add(fav.getProjet());
+				}
+				if(!maListeProjetsFavoris.isEmpty()) {
+					model.addAttribute("listeProjetsRechercheMulticriteres", maListeProjetsFavoris);
+					List<ProjetDocumentForm> pdf = new ArrayList<ProjetDocumentForm>();
+					for(Projet monProjet : maListeProjetsFavoris) {
+						if(!monProjet.getStatutDuProjet().equals(StatutProjet.PUBLIE)) {
+							continue;
+						}
+						ProjetDocumentForm monProjetform = new ProjetDocumentForm();
+						monProjetform.setProjet(monProjet);
+						//			allProjetPublie.forEach(projet -> projet.setFavori(favoriService.estFavori(projet.getIdProjet(), emailUserConnecte)));
+						monProjet.setFavori(false);
+						if(favoriService.estFavori(monProjet.getIdProjet(), emailUserConnecte)) {
+							monProjet.setFavori(true);
+						}
+						Optional<Document> monDoc = Optional.empty();
+						monDoc = documentService.findbyProjetAndLibelle(monProjet,TypeLibelleDoc.IMAGE_PRINCIPALE);
+						if (!monDoc.isPresent()) {
+							monDoc = documentService.findbyProjetAndLibelle(monProjet,TypeLibelleDoc.IMAGE_SECONDE);
+							if(!monDoc.isPresent()) {
+								monDoc = documentService.findbyProjetAndLibelle(monProjet,TypeLibelleDoc.IMAGE_TROISIEME);
+							}
+						}
+						if(!monDoc.isPresent()) {
+							monProjetform.setIdImage(-1L);
+						} else {
+							monProjetform.setIdImage(monDoc.get().getIdDocument());
+						}
+						pdf.add(monProjetform);
+					}
+					model.addAttribute("listProjetPublie", pdf);
+					return "liste_mesFavoris";
+				}
+				return "pas_de_favori";
 			}
-			List<Favori> listeFavoris = favoriService.afficherMesFavoris(emailUserConnecte);
-			List<Projet> maListeProjetsFavoris = new ArrayList<>();
-			for(Favori fav : listeFavoris) {		
-				maListeProjetsFavoris.add(fav.getProjet());
-			}
-			model.addAttribute("maListeProjetsFavoris", maListeProjetsFavoris);
-			return "mesFavoris";
-		}
-
 
 }
