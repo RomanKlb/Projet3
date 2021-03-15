@@ -103,7 +103,7 @@ public class InMemoryDonMonetaireRepository implements DonMonetaireRepository{
 	@Override
 	public Optional<DonMonetaire> findById(Long id) {
 		// TODO Auto-generated method stub
-		return null;
+		return Optional.empty();
 	}
 
 	@Override
@@ -145,7 +145,7 @@ public class InMemoryDonMonetaireRepository implements DonMonetaireRepository{
 	@Override
 	public <S extends DonMonetaire> Optional<S> findOne(Example<S> example) {
 		// TODO Auto-generated method stub
-		return null;
+		return Optional.empty();
 	}
 
 	@Override
